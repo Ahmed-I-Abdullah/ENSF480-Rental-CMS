@@ -1,7 +1,5 @@
-package src;
+package main;
 
-
-import src.controller.ControllerManager;
 import java.io.FileNotFoundException;
 
 public class App {
