@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ControllerManager {
@@ -41,7 +42,7 @@ public class ControllerManager {
     throws FileNotFoundException {
     File inputFile = new File(filePath);
     Scanner fileScanner = new Scanner(inputFile);
-    fileScanner.useDelimiter("(;(\r)?\n)|(--\n)");
+    fileScanner.useDelimiter("(;(\r)?\n'\")|(--\n)");
 
     try {
       Statement statement = databaseConnection.createStatement();
@@ -56,5 +57,17 @@ public class ControllerManager {
       e.printStackTrace();
       System.exit(-1);
     }
+  }
+
+
+  public static void executeQuery(String query) throws SQLException {
+    try {
+        Statement statement = databaseConnection.createStatement();
+        statement.execute(query);
+        statement.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+        System.exit(-1);
+      }
   }
 }

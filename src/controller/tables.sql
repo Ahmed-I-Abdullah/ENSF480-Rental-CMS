@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS PROPERTY
 (
   ID UUID NOT NULL DEFAULT uuid_generate_v1(),
   Property_type VARCHAR(32),
-  State INT,
+  Current_state INT NOT NULL,
   No_bedrooms INT,
   No_bathrooms INT,
   Is_furnished BIT,
@@ -61,3 +61,41 @@ CREATE TABLE IF NOT EXISTS EMAIL_MESSAGE
   FOREIGN KEY (Landlord_email) REFERENCES PERSON(Email),
   FOREIGN KEY (Property_id) REFERENCES PROPERTY(ID)
 );
+
+CREATE TABLE IF NOT EXISTS PROPERTY_STATE
+(
+  Property_id UUID NOT NULL,
+  State_date TIMESTAMP NOT NULL,
+  State INT NOT NULL,
+  PRIMARY KEY(Property_id, State_date),
+  FOREIGN KEY (Property_id) REFERENCES PROPERTY(ID)
+);
+
+CREATE OR REPLACE FUNCTION insert_state() RETURNS TRIGGER AS
+  '
+  BEGIN
+      IF NEW.ID IS NULL THEN
+              RAISE EXCEPTION ''property id cannot be null'';
+      END IF;        
+            
+      IF NEW.Current_state IS NULL THEN
+              RAISE EXCEPTION ''property state cannot be null'';
+      END IF;
+    
+      INSERT INTO PROPERTY_STATE(Property_id, State_date, state)
+             VALUES(NEW.ID, NOW(), NEW.Current_state);
+
+       RETURN NULL; 
+  END;
+  '
+ LANGUAGE PLPGSQL;
+
+
+ DROP TRIGGER IF EXISTS insert_state_trigger ON PROPERTY;
+
+CREATE TRIGGER insert_state_trigger
+     AFTER INSERT OR UPDATE ON PROPERTY
+     FOR EACH ROW
+     EXECUTE PROCEDURE insert_state();
+
+
