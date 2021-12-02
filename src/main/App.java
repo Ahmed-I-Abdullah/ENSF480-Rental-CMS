@@ -15,7 +15,8 @@ public class App {
         try {
             AdminController am = new AdminController(m);
             long t = System.currentTimeMillis() - (3*24*60*60*1000);
-            am.generateReport(new Date(t), new Date());
+            long t2 = System.currentTimeMillis() + (3*24*60*60*1000);
+            am.generateReport(new Date(t), new Date(t2));
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);
