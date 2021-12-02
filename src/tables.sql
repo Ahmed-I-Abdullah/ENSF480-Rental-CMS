@@ -66,6 +66,8 @@ CREATE TABLE IF NOT EXISTS PAID_BY
   Landlord_email VARCHAR(64) NOT NULL,
   Fee_id UUID NOT NULL,
   Property_id UUID NOT NULL,
+  Start_date TIMESTAMP NOT NULL DEFAULT NOW(),
+  Num_periods INT NOT NULL,
   PRIMARY KEY(Landlord_email, Fee_id, Property_id),
   FOREIGN KEY (Landlord_email) REFERENCES PERSON(Email),
   FOREIGN KEY (Fee_id) REFERENCES POSTING_FEE(ID),

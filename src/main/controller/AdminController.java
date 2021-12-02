@@ -2,10 +2,13 @@ package src.main.controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import src.main.model.property.ListingState;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
@@ -33,8 +36,56 @@ public class AdminController extends UserController {
 
     System.out.println("listings added in period: " + numListings);
     System.out.println("rents in period: " + numRented);
-    System.out.println("total active listing is: " + totalNumActive());
+    System.out.println("total active listing is: " + totalNumActive);
   }
+
+  public void changeFeeAmount(int amount) throws SQLException {
+    Connection connection = ControllerManager.getConnection();
+
+    String mostRecentFee = "SELECT * " +
+    "FROM POSTING_FEE p1 " +
+    "WHERE p1.Date_updated = (SELECT MAX(Date_updated) FROM POSTING_FEE p2);";
+
+    Statement statment = connection.createStatement();
+    ResultSet result = statment.executeQuery(mostRecentFee);
+    result.next();
+    int previousDuration = result.getInt("duration");
+
+    String amountUpdate = "INSERT INTO POSTING_FEE(ID, Amount, Duration, Date_updated) " + 
+    "VALUES(DEFAULT, ?, ?, NOW());";
+
+    PreparedStatement pStatment = connection.prepareStatement(amountUpdate);
+
+    pStatment.setInt(1, amount);
+    pStatment.setInt(2, previousDuration);
+
+    pStatment.executeUpdate();
+  }
+
+  public void changeFeeDuration(int durationMonth) throws SQLException {
+    Connection connection = ControllerManager.getConnection();
+
+    String mostRecentFee = "SELECT * " +
+    "FROM POSTING_FEE p1 " +
+    "WHERE p1.Date_updated = (SELECT MAX(Date_updated) FROM POSTING_FEE p2);";
+
+    Statement statment = connection.createStatement();
+    ResultSet result = statment.executeQuery(mostRecentFee);
+    result.next();
+    int previousAmount = result.getInt("amount");
+
+    String amountUpdate = "INSERT INTO POSTING_FEE(ID, Amount, Duration, Date_updated) " + 
+    "VALUES(DEFAULT, ?, ?, NOW());";
+
+    PreparedStatement pStatment = connection.prepareStatement(amountUpdate);
+
+    pStatment.setInt(1, previousAmount);
+    pStatment.setInt(2, durationMonth);
+
+    pStatment.executeUpdate();
+  }
+
+
 
   private int numListingsInPeriod(String from, String to) throws SQLException {
     Connection connection = ControllerManager.getConnection();
