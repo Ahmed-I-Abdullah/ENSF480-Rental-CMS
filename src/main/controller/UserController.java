@@ -1,4 +1,6 @@
-package main.controller;
+package src.main.controller;
+
+import src.main.model.user.User;
 
 public class UserController {
     private User user;

@@ -1,5 +1,5 @@
-package main.model.user;
+package src.main.model.user;
 
-public interface User {
-    public int getUserType();
+public interface User {    
+    public UserType getUserType();
 }

@@ -1,4 +1,4 @@
-package main.controller;
+package src.main.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,6 +36,10 @@ public class ControllerManager {
       e.printStackTrace();
       System.exit(-1);
     }
+  }
+
+  public static Connection getConnection() {
+    return databaseConnection;
   }
 
   public static void runSQLScript(String filePath)
