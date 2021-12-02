@@ -4,6 +4,7 @@ import src.main.controller.ControllerManager;
 import src.main.controller.AdminController;
 import src.main.controller.UserController;
 import src.main.model.user.Manager;
+import src.main.model.user.UserType;
 import java.io.FileNotFoundException;
 import java.util.Date;
 
@@ -24,7 +25,12 @@ public class App {
         }
 
         UserController um = new UserController(m);
-
+        try {
+            um.logIn("test@domain.com", "12345678");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
         
     }
 }
