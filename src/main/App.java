@@ -24,13 +24,7 @@ public class App {
         }
 
         UserController um = new UserController(m);
-        try {
-            um.hash_password("12345678");
-            um.hash_password("12345678");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
+
         
     }
 }

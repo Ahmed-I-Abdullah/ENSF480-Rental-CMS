@@ -21,11 +21,19 @@ public class UserController {
     return user;
   }
 
-  public boolean signUp(String email, String name, String password) {
-      return true;
-  }
+//   public boolean signUp(
+//     String email,
+//     String name,
+//     String password,
+//     UserType userType
+//   ) {
+//     String hashedPassword = hashPassword(password);
+//     Connection connection = ControllerManager.getConnection();
+//     String insertPersonUpdate = 
+//     PreparedStatement pStatment = connection.prepareStatement(listedQuery);
+//   }
 
-  public String hash_password(String password) throws NoSuchAlgorithmException {
+  public String hashPassword(String password) throws NoSuchAlgorithmException {
     StringBuilder hashedPassword = new StringBuilder();
     String salt = "!15wRP/8N:F8*uu5A>?4"; // should probably be in environment variables
     MessageDigest md = MessageDigest.getInstance("SHA-512");
