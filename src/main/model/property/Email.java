@@ -1,5 +1,7 @@
 package src.main.model.property;
-import src.main.model.user.*;
+
+import src.main.model.user.RegisteredRenter;
+import src.main.model.user.Landlord; 
 
 public class Email {
     private RegisteredRenter renter;
