@@ -1,4 +1,4 @@
-package property;
+package src.main.model.property;
 import java.util.*;
 //import user.Landlord; when connected package add this
 

@@ -1,4 +1,4 @@
-package property;
+package src.main.model.property;
 
 public class Payment {
     private boolean paid;
