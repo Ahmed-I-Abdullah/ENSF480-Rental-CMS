@@ -1,7 +1,4 @@
 package src.main.view;
-//package GUIPackage;
-
-import java.awt.Graphics;
 
 public abstract class Decorator implements Widget {
 	protected Widget wid;

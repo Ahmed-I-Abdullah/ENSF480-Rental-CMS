@@ -1,5 +1,5 @@
 package src.main.model.property;
-//import src.main.model.user;// when connected package add this
+import src.main.model.user.*;
 
 public class Email {
     private RegisteredRenter renter;
@@ -35,9 +35,9 @@ public class Email {
         return false;
     }
 
-    private Landlord getPropertyOwner(){
-        return interestedIn.getPostedBy();
-    }
+    // private Landlord getPropertyOwner(){
+    //     return interestedIn.getPostedBy();
+    // }
 
     public RegisteredRenter getRenter() {
         return this.renter;

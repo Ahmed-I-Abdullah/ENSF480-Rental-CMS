@@ -1,7 +1,6 @@
 package src.main.view;
-//package GUIPackage;
+
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Font;
 import javax.swing.*;
 public abstract class Page extends JPanel {
