@@ -11,7 +11,8 @@ public class Property{
     private String description;
 
     public Property(int houseID, Address address, ListingDetails specifications, Landlord postedBy, Date datePosted, String description) {
-        this.houseID = houseID;
+        //connect DB, get house ID, set it here
+        //this.houseID = 
         this.address = address;
         this.specifications = specifications;
         this.postedBy = postedBy;
@@ -25,10 +26,6 @@ public class Property{
 
     public int getHouseID() {
         return this.houseID;
-    }
-
-    public void setHouseID(int houseID) {
-        this.houseID = houseID;
     }
 
     public Address getAddress() {
