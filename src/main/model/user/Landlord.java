@@ -1,6 +1,8 @@
-package User;
+package src.main.model.user;
 
 import java.util.ArrayList;
+
+import src.main.model.property.Property;
 
 public class Landlord implements User {
     private String name;
@@ -39,9 +41,8 @@ public class Landlord implements User {
     }
 
     @Override
-    public int getUserType() {
-        // Landlord type is 1
-        return 1;
+    public UserType getUserType() {
+        return UserType.LANDLORD;
     }
     
 }

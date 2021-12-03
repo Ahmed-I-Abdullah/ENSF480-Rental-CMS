@@ -1,4 +1,6 @@
-package User;
+package src.main.model.user;
+
+import src.main.model.property.Property;
 
 public class RegisteredRenter implements Observer, User{
     private String name;
@@ -45,8 +47,7 @@ public class RegisteredRenter implements Observer, User{
     }
 
     @Override
-    public int getUserType() {
-        // User type is 2
-        return 2;
+    public UserType getUserType() {
+        return UserType.RENTER;
     }
 }
