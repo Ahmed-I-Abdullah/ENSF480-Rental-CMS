@@ -20,7 +20,7 @@ public class Property{
         this.description = description;
     }
 
-    public listingState checkState(){
+    public ListingState checkState(){
         return specifications.getState();
     }
 

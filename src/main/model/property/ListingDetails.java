@@ -1,13 +1,13 @@
 package src.main.model.property;
 
 public class ListingDetails {
-    private listingState state;
+    private ListingState state;
     private int numOfBedrooms;
     private String housingType;
     private boolean furnished;
     private String cityQuadrant;
 
-    public ListingDetails(listingState state, int numOfBedrooms, String housingType, boolean furnished, String cityQuadrant) {
+    public ListingDetails(ListingState state, int numOfBedrooms, String housingType, boolean furnished, String cityQuadrant) {
         this.state = state;
         this.numOfBedrooms = numOfBedrooms;
         this.housingType = housingType;
@@ -15,11 +15,11 @@ public class ListingDetails {
         this.cityQuadrant = cityQuadrant;
     }
 
-    public listingState getState() {
+    public ListingState getState() {
         return this.state;
     }
 
-    public void setState(listingState state) {
+    public void setState(ListingState state) {
         this.state = state;
     }
 
