@@ -1,9 +1,8 @@
 package src.main.view;
-//package GUIPackage;
+
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Font;
 import javax.swing.*;
+
 public class MainPage extends Page{
 	protected String [] text;
 	
@@ -118,22 +117,22 @@ public class MainPage extends Page{
 		return false;
 	}
 	
-	public static void main(String [] args){
-	Widget w=null;
-	Page p= new MainPage(w);
-	String [] welcome ={"Hello "};
-	String [] Listings ={"1234 SunHarbor Cresant", "47 Sommervale Drive", "14 North Drive SW Apt. 7", "88 Los Almos Blvd","191 Leninskya Street Apt. 41" };
-	p.draw(welcome);
+// 	public static void main(String [] args){
+// 	Widget w=null;
+// 	Page p= new MainPage(w);
+// 	String [] welcome ={"Hello "};
+// 	String [] Listings ={"1234 SunHarbor Cresant", "47 Sommervale Drive", "14 North Drive SW Apt. 7", "88 Los Almos Blvd","191 Leninskya Street Apt. 41" };
+// 	p.draw(welcome);
 
-	while(p.getSwitchEvent()==0){ 
-		System.out.println("");
-	}
-	if(p.getSwitchEvent()==1){
-		p=new BrowseListingsPage(w);
-		p.draw(Listings);
-	}
-	//System.out.println("click");
-	//System.exit(1);
-}
+// 	while(p.getSwitchEvent()==0){ 
+// 		System.out.println("");
+// 	}
+// 	if(p.getSwitchEvent()==1){
+// 		p=new BrowseListingsPage(w);
+// 		p.draw(Listings);
+// 	}
+// 	//System.out.println("click");
+// 	//System.exit(1);
+// }
 	
 }

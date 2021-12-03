@@ -1,5 +1,6 @@
 package src.main.model.property;
-import src.main.model.user.RegisteredRenter; // when connected package add this
+
+import src.main.model.user.RegisteredRenter;
 import src.main.model.user.Landlord; 
 import java.util.*;
 import javax.mail.*;
@@ -50,9 +51,9 @@ public class Email {
         }
     }
 
-    private Landlord getPropertyOwner(){
-        return interestedIn.getPostedBy();
-    }
+    // private Landlord getPropertyOwner(){
+    //     return interestedIn.getPostedBy();
+    // }
 
     public RegisteredRenter getRenter() {
         return this.renter;
