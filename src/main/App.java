@@ -1,10 +1,12 @@
 package src.main;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import src.main.controller.AdminController;
 import src.main.controller.ControllerManager;
+import src.main.controller.ViewController;
 import src.main.controller.UserController;
 import src.main.model.user.Manager;
 import src.main.model.user.UserType;
@@ -19,24 +21,17 @@ public class App {
   public static void main(String[] args) throws FileNotFoundException {
     ControllerManager.connectDatabase();
     ControllerManager.runSQLScript("./src/tables.sql");
+    ViewController v = new ViewController();
     Widget w = null;
-    Page p = new MainPage(w);
-    String[] welcome = { "Hello " };
-    String[] Listings = {
-      "1234 SunHarbor Cresant",
-      "47 Sommervale Drive",
-      "14 North Drive SW Apt. 7",
-      "88 Los Almos Blvd",
-      "191 Leninskya Street Apt. 41",
-    };
-    p.draw(welcome);
+    Page p = new MainPage(w, v);
+    p.draw();
 
     while (p.getSwitchEvent() == 0) {
       System.out.println("");
     }
     if (p.getSwitchEvent() == 1) {
-      p = new BrowseListingsPage(w);
-      p.draw(Listings);
+      p = new BrowseListingsPage(w, v);
+      p.draw();
     }
 
     // Manager m = new Manager("Ahmed");

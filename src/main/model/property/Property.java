@@ -1,71 +1,108 @@
 package src.main.model.property;
+
 import java.util.*;
 import src.main.model.user.Landlord;
+import src.main.controller.ControllerManager;
 
-public class Property{
-    private int houseID;
-    private Address address;
-    private ListingDetails specifications;
-    private Landlord postedBy;
-    private Date datePosted;
-    private String description;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-    public Property(int houseID, Address address, ListingDetails specifications, Landlord postedBy, Date datePosted, String description) {
-        //connect DB, get house ID, set it here
-        //this.houseID = 
-        this.address = address;
-        this.specifications = specifications;
-        this.postedBy = postedBy;
-        this.datePosted = datePosted;
-        this.description = description;
+public class Property {
+
+  private String houseID;
+  private String postedBy;
+  private Address address;
+  private ListingDetails specifications;
+  private String description;
+
+  public Property(
+    String houseID,
+    Address address,
+    ListingDetails specifications,
+    String postedBy,
+    String description,
+    boolean addToDatabase
+  ) throws SQLException {
+    this.address = address;
+    this.specifications = specifications;
+    this.postedBy = postedBy;
+    this.description = description;
+    if(addToDatabase) {
+        houseID = addPropertyToDatabase();
+    } else {
+        this.houseID = houseID;
     }
+  }
 
-    public ListingState checkState(){
-        return specifications.getState();
-    }
+  private String addPropertyToDatabase() throws SQLException {
+    Connection connection = ControllerManager.getConnection();
 
-    public int getHouseID() {
-        return this.houseID;
-    }
+    String update =
+      "INSERT INTO PROPERTY(ID, Landlord_email, Property_type, Current_state, No_bedrooms, Is_furnished, City_quadrant, Country, Province, Street_address, Postal_code) " +
+      "VALUES(DEFAULT, ?, ?, ?, ?, ?::bit, ?, ?, ?, ?, ?) RETURNING ID;";
 
-    public Address getAddress() {
-        return this.address;
-    }
+      String furnished = "0";
+      if(specifications.getFurnished()) {
+          furnished = "1";
+      }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+    PreparedStatement statment = connection.prepareStatement(update);
+    statment.setString(1, postedBy);
+    statment.setString(2, specifications.getHousingType());
+    statment.setInt(3, specifications.getState().ordinal());
+    statment.setInt(4, specifications.getNumOfBedrooms());
+    statment.setString(5, furnished);
+    statment.setString(6, specifications.getCityQuadrant());
+    statment.setString(7, address.getCountry());
+    statment.setString(8, address.getProvince());
+    statment.setString(9, address.getStreet());
+    statment.setString(10, address.getPostalCode());
 
-    public ListingDetails getSpecifications() {
-        return this.specifications;
-    }
+    ResultSet result = statment.executeQuery();
+    result.next();
+    return result.getString("id");
+  }
 
-    public void setSpecifications(ListingDetails specifications) {
-        this.specifications = specifications;
-    }
+  public ListingState checkState() {
+    return specifications.getState();
+  }
 
-    public Landlord getPostedBy() {
-        return this.postedBy;
-    }
+  public String getHouseID() {
+    return this.houseID;
+  }
 
-    public void setPostedBy(Landlord postedBy) {
-        this.postedBy = postedBy;
-    }
+  public Address getAddress() {
+    return this.address;
+  }
 
-    public Date getDatePosted() {
-        return this.datePosted;
-    }
+  public void setAddress(Address address) {
+    this.address = address;
+  }
 
-    public void setDatePosted(Date datePosted) {
-        this.datePosted = datePosted;
-    }
+  public ListingDetails getSpecifications() {
+    return this.specifications;
+  }
 
-    public String getDescription() {
-        return this.description;
-    }
+  public void setSpecifications(ListingDetails specifications) {
+    this.specifications = specifications;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public String getPostedBy() {
+    return this.postedBy;
+  }
 
+  public void setPostedBy(String postedBy) {
+    this.postedBy = postedBy;
+  }
+
+  public String getDescription() {
+    return this.description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
 }
