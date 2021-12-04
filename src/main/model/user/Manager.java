@@ -4,18 +4,28 @@ import java.util.ArrayList;
 
 public class Manager implements User {
     private String name;
+    private String email;
     private ArrayList<Landlord> landlords;
 
-    public Manager(String name){
+    public Manager(String email, String name){
         setName(name);
+        setEmail(email);
     }
 
-    public String getname(){
+    public String getName() {
         return this.name;
     }
     
-    public void setName(String name){
+    public void setName(String email){
         this.name = name;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+    
+    public void setEmail(String email){
+        this.email = email;
     }
 
     public User accessUser(User user){
@@ -32,7 +42,6 @@ public class Manager implements User {
         return this.landlords.size();
     }
 
-    @Override
     public UserType getUserType(){
         return UserType.MANAGER;
     }

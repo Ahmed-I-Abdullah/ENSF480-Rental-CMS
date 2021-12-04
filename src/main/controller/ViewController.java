@@ -13,7 +13,6 @@ import src.main.model.property.ListingState;
 import src.main.model.property.Property;
 
 public class ViewController {
-
   private ArrayList<Property> allProperties;
   private PostingController postingController;
   private UserController userController;
@@ -69,5 +68,13 @@ public class ViewController {
 
   public ArrayList<Property> getAllProperties() {
       return this.allProperties;
+  }
+
+  public void setUserController(UserController controller) {
+    this.userController = controller;
+  }
+
+  public UserController getUserController() {
+    return this.userController;
   }
 }

@@ -9,7 +9,7 @@ public class Landlord implements User {
     private String email;
     private ArrayList<Property> properties;
 
-    public Landlord(String name, String email){
+    public Landlord(String email, String name){
         setName(name);
         setEmail(email);
     }
@@ -40,7 +40,6 @@ public class Landlord implements User {
         return this.properties.size();
     }
 
-    @Override
     public UserType getUserType() {
         return UserType.LANDLORD;
     }

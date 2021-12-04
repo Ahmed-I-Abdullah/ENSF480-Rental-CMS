@@ -12,7 +12,7 @@ public abstract class Page extends JPanel {
 	protected Font mainText;
 	protected int switchEvent;
 	protected Widget widget;
-	protected ViewController controller;
+	protected static ViewController controller;
 	
 	public Page(ViewController c){
 		titleFont= new Font("Helvetica", Font.BOLD, 35);

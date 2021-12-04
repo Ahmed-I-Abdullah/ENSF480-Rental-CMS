@@ -1,16 +1,19 @@
 package src.main.model.user;
 
 import src.main.model.property.Property;
+import src.main.model.property.ListingDetails;
 
 public class RegisteredRenter implements Observer, User{
     private String name;
     private String email;
     private Subject subject;
+    private boolean isSubscribed;
+    private ListingDetails searchCriteria;
 
-    public RegisteredRenter(String name, String email, Subject subject){
-        setName(name);
+    public RegisteredRenter(String email, String name, ListingDetails criteria){
         setEmail(email);
-        setSubject(subject);
+        setName(name);
+        setSearchCriteria(criteria);
     }
 
     public String getName(){
@@ -25,6 +28,10 @@ public class RegisteredRenter implements Observer, User{
         return this.subject;
     }
 
+    public ListingDetails getSearchCriteria(){
+        return this.searchCriteria;
+    }
+
     public void setName(String name){
         this.name = name;
     }
@@ -37,16 +44,18 @@ public class RegisteredRenter implements Observer, User{
         this.subject = subject;
     }
 
+    public void setSearchCriteria(ListingDetails criteria) {
+        this.searchCriteria = criteria;
+    }
+
     public void emailLandlord(){
 
     }
 
-    @Override
     public void update(Property property) {
 
     }
 
-    @Override
     public UserType getUserType() {
         return UserType.RENTER;
     }

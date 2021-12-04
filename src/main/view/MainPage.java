@@ -2,11 +2,15 @@ package src.main.view;
 
 import java.awt.Graphics;
 import javax.swing.*;
+
 import src.main.controller.ViewController;
+import src.main.controller.UserNotFoundException;
+import src.main.controller.UnAuthorizedException;
 
 public class MainPage extends Page {
-
   String welcomeMessage = "Hello";
+  static String userName = "";
+  static String loginErrorMessage = "";
 
   public MainPage(Widget w, ViewController c) {
     super(c);
@@ -47,7 +51,7 @@ public class MainPage extends Page {
         String username = userN.getText();
         String password = new String(pass.getPassword());
         if (MainPage.login(username, password)) {
-          welcomeMessage += userN.getText();
+          welcomeMessage += " " + userName;
           f.setVisible(false);
           f.getContentPane().remove(this);
           f.getContentPane().remove(pass);
@@ -59,7 +63,7 @@ public class MainPage extends Page {
           f.getContentPane().add(this);
           f.setVisible(true);
         } else {
-          prompt.setText("Please try again");
+          prompt.setText(loginErrorMessage);
           pass.setText("");
           userN.setText("");
         }
@@ -70,7 +74,7 @@ public class MainPage extends Page {
         String username = userN.getText();
         String password = new String(pass.getPassword());
         if (MainPage.login(username, password)) {
-          welcomeMessage += userN.getText();
+          welcomeMessage += " " + userName;
           f.setVisible(false);
           f.getContentPane().remove(this);
           f.getContentPane().remove(pass);
@@ -82,7 +86,7 @@ public class MainPage extends Page {
           f.getContentPane().add(this);
           f.setVisible(true);
         } else {
-          prompt.setText("Please try again");
+          prompt.setText(loginErrorMessage);
           pass.setText("");
           userN.setText("");
         }
@@ -113,12 +117,22 @@ public class MainPage extends Page {
     widget.draw(g);
   }
 
-  public static boolean login(String username, String password) {
-    System.out.println("User name: " + username + "\nPassword is: " + password);
-    //return ViewController.login(username, password);
-    if (username.equals("Bob") && password.equals("Password")) {
-      return true;
-    }
-    return false;
+  public static boolean login(String email, String password) {
+	try {
+		controller.getUserController().logIn(email, password);
+	} catch(UserNotFoundException u) {
+		loginErrorMessage = "User Not Found";
+		return false;
+	} catch(UnAuthorizedException ua) {
+		loginErrorMessage = "Wrong Password";
+		return false;
+	} catch(Exception e) {
+		e.printStackTrace();
+		loginErrorMessage = "Server error, try again.";
+		return false;
+	}
+	
+	userName = controller.getUserController().getAuthenticatedUser().getName();
+	return true;
   }
 }

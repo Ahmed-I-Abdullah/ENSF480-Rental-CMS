@@ -22,6 +22,8 @@ public class App {
     ControllerManager.connectDatabase();
     ControllerManager.runSQLScript("./src/tables.sql");
     ViewController v = new ViewController();
+    UserController u = new UserController();
+    v.setUserController(u);
     Widget w = null;
     Page p = new MainPage(w, v);
     p.draw();

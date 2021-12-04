@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS RENTER
   City_quadrant CHAR(2),
   No_bedrooms INT,
   No_bathrooms INT,
+  Property_type VARCHAR(32),
   PRIMARY KEY(Email),
   FOREIGN KEY (Email) REFERENCES PERSON(Email)
 );
