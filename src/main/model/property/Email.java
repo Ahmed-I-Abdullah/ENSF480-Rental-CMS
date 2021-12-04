@@ -2,10 +2,9 @@ package src.main.model.property;
 
 import src.main.model.user.RegisteredRenter;
 import src.main.model.user.Landlord; 
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-//import javax.activation.*;
+//import java.util.*;
+//import javax.mail.*;
+//import javax.mail.internet.*;
 
 public class Email {
     private RegisteredRenter renter;
@@ -25,7 +24,7 @@ public class Email {
 
     public boolean sendMessage(){
         /* Reference: https://www.tutorialspoint.com/java/java_sending_email.htm */
-        String to = renter.getEmail(); // Recipient's email ID
+        /*String to = renter.getEmail(); // Recipient's email ID
         String from = getPropertyOwner().getEmail();  // Sender's email ID
         String host = "john.example.com"; // Assuming you are sending email from localhost
         Properties properties = System.getProperties(); //virtual.domain.tld
@@ -47,7 +46,8 @@ public class Email {
             mex.printStackTrace();
             System.out.println("Sorry....message failed to send");
             return false;
-        }
+        }*/
+        return false;
     }
 
     private Landlord getPropertyOwner(){

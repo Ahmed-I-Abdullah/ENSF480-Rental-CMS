@@ -62,7 +62,7 @@ public class App {
   }
 
   public static void emailTest(){
-    RegisteredRenter renter = new RegisteredRenter("huda","huda.abbas@ucalgary");
+    RegisteredRenter renter = new RegisteredRenter("huda","huda.abbas@ucalgary",null);
     Landlord landlord = new Landlord("huda","huda.abbas@ucalgary");
     Date date = java.util.Calendar.getInstance().getTime(); //get todays date
     ListingDetails property1 = new ListingDetails(ListingState.ACTIVE, 2, "Apartment", false, "NW");
