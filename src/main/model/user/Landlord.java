@@ -12,6 +12,7 @@ public class Landlord implements User {
     public Landlord(String name, String email){
         setName(name);
         setEmail(email);
+        this.properties = new ArrayList<>();
     }
 
     public String getName(){

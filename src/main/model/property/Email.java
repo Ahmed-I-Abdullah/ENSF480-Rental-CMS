@@ -16,7 +16,7 @@ public class Email {
         this.renter = renter;
         this.interestedIn = interestedIn;
     }
-
+    
     public Email(RegisteredRenter renter, Property interestedIn, String message) {
         this.renter = renter;
         this.interestedIn = interestedIn;
@@ -27,9 +27,8 @@ public class Email {
         /* Reference: https://www.tutorialspoint.com/java/java_sending_email.htm */
         String to = renter.getEmail(); // Recipient's email ID
         String from = getPropertyOwner().getEmail();  // Sender's email ID
-        String host = "localhost"; // Assuming you are sending email from localhost
-        Properties properties = System.getProperties();
-
+        String host = "john.example.com"; // Assuming you are sending email from localhost
+        Properties properties = System.getProperties(); //virtual.domain.tld
         properties.setProperty("mail.smtp.host", host); // Setup mail server        
         Session session = Session.getDefaultInstance(properties); // Get the default Session object.
 
@@ -45,15 +44,15 @@ public class Email {
             System.out.println("Sent message successfully....");
             return true;
         } catch (MessagingException mex) {
-            //mex.printStackTrace();
+            mex.printStackTrace();
             System.out.println("Sorry....message failed to send");
             return false;
         }
     }
 
-    // private Landlord getPropertyOwner(){
-    //     return interestedIn.getPostedBy();
-    // }
+    private Landlord getPropertyOwner(){
+        return interestedIn.getPostedBy();
+    }
 
     public RegisteredRenter getRenter() {
         return this.renter;

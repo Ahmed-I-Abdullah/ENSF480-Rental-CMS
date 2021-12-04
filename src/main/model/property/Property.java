@@ -16,6 +16,7 @@ public class Property{
         this.address = address;
         this.specifications = specifications;
         this.postedBy = postedBy;
+        this.postedBy.addProperty(this);
         this.datePosted = datePosted;
         this.description = description;
     }

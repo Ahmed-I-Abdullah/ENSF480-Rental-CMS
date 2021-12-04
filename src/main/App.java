@@ -6,8 +6,8 @@ import java.util.Date;
 import src.main.controller.AdminController;
 import src.main.controller.ControllerManager;
 import src.main.controller.UserController;
-import src.main.model.user.Manager;
-import src.main.model.user.UserType;
+import src.main.model.property.*;
+import src.main.model.user.*;
 
 import src.main.view.Widget;
 import src.main.view.Page;
@@ -58,5 +58,17 @@ public class App {
     //   e.printStackTrace();
     //   System.exit(-1);
     // }
+     
+  }
+
+  public static void emailTest(){
+    RegisteredRenter renter = new RegisteredRenter("huda","huda.abbas@ucalgary");
+    Landlord landlord = new Landlord("huda","huda.abbas@ucalgary");
+    Date date = java.util.Calendar.getInstance().getTime(); //get todays date
+    ListingDetails property1 = new ListingDetails(ListingState.ACTIVE, 2, "Apartment", false, "NW");
+    Address address1 = new Address("Calgary","AB","Canada","SunHarbor Cresant",154, "T34 5YR");
+    Property property = new Property(1, address1, property1, landlord, date, "Stunning property. Waterfront view");
+    Email email1 = new Email(renter, property, "Can we meet, I'm interested in taking a look!");
+    email1.sendMessage();
   }
 }
