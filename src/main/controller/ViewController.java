@@ -1,24 +1,24 @@
 package src.main.controller;
 
-import java.util.ArrayList;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
+import java.util.ArrayList;
 import src.main.model.property.Address;
 import src.main.model.property.ListingDetails;
 import src.main.model.property.ListingState;
 import src.main.model.property.Property;
 
 public class ViewController {
+
   private ArrayList<Property> allProperties;
   private PostingController postingController;
   private UserController userController;
 
   public ViewController() {
-      allProperties = new ArrayList<Property>();
+    postingController = new PostingController();
+    allProperties = new ArrayList<Property>();
     try {
       Connection connection = ControllerManager.getConnection();
       String propertyQuery = "SELECT * FROM PROPERTY WHERE Current_state=?";
@@ -30,7 +30,7 @@ public class ViewController {
 
       while (result.next()) {
         Address propertyAddress = new Address(
-          "",
+          result.getString("city"),
           result.getString("province"),
           result.getString("country"),
           result.getString("street_address"),
@@ -53,7 +53,7 @@ public class ViewController {
           propertyAddress,
           listingDetails,
           result.getString("landlord_email"),
-          "",
+          result.getString("property_description"),
           false
         );
 
@@ -67,7 +67,7 @@ public class ViewController {
   }
 
   public ArrayList<Property> getAllProperties() {
-      return this.allProperties;
+    return this.allProperties;
   }
 
   public void setUserController(UserController controller) {
@@ -76,5 +76,9 @@ public class ViewController {
 
   public UserController getUserController() {
     return this.userController;
+  }
+
+  public PostingController getPostingController() {
+    return this.postingController;
   }
 }
