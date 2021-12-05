@@ -22,7 +22,7 @@ public class NotificationsPage extends Page {
 			view.addActionListener(e -> {
 				f.setVisible(false);
 				f.getContentPane().removeAll();
-				switchEvent = 5;
+				switchEvent = 6;
 			});
 			f.add(view);
 		}
