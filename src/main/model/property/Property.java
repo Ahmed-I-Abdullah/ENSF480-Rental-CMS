@@ -13,6 +13,7 @@ public class Property {
 
   private String houseID;
   private String postedBy;
+  private String postedByName;
   private Address address;
   private ListingDetails specifications;
   private String description;
@@ -99,6 +100,14 @@ public class Property {
 
   public void setPostedBy(String postedBy) {
     this.postedBy = postedBy;
+  }
+
+  public String getPostedByName() {
+    return this.postedByName;
+  }
+
+  public void setPostedByName(String postedByName) {
+    this.postedByName = postedByName;
   }
 
   public String getDescription() {

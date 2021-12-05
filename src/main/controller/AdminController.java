@@ -2,14 +2,13 @@ package src.main.controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-
-import src.main.model.property.ListingState;
+import src.main.model.property.*;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
 
@@ -42,17 +41,19 @@ public class AdminController extends UserController {
   public void changeFeeAmount(int amount) throws SQLException {
     Connection connection = ControllerManager.getConnection();
 
-    String mostRecentFee = "SELECT * " +
-    "FROM POSTING_FEE p1 " +
-    "WHERE p1.Date_updated = (SELECT MAX(Date_updated) FROM POSTING_FEE p2);";
+    String mostRecentFee =
+      "SELECT * " +
+      "FROM POSTING_FEE p1 " +
+      "WHERE p1.Date_updated = (SELECT MAX(Date_updated) FROM POSTING_FEE p2);";
 
     Statement statment = connection.createStatement();
     ResultSet result = statment.executeQuery(mostRecentFee);
     result.next();
     int previousDuration = result.getInt("duration");
 
-    String amountUpdate = "INSERT INTO POSTING_FEE(ID, Amount, Duration, Date_updated) " + 
-    "VALUES(DEFAULT, ?, ?, NOW());";
+    String amountUpdate =
+      "INSERT INTO POSTING_FEE(ID, Amount, Duration, Date_updated) " +
+      "VALUES(DEFAULT, ?, ?, NOW());";
 
     PreparedStatement pStatment = connection.prepareStatement(amountUpdate);
 
@@ -65,17 +66,19 @@ public class AdminController extends UserController {
   public void changeFeeDuration(int durationMonth) throws SQLException {
     Connection connection = ControllerManager.getConnection();
 
-    String mostRecentFee = "SELECT * " +
-    "FROM POSTING_FEE p1 " +
-    "WHERE p1.Date_updated = (SELECT MAX(Date_updated) FROM POSTING_FEE p2);";
+    String mostRecentFee =
+      "SELECT * " +
+      "FROM POSTING_FEE p1 " +
+      "WHERE p1.Date_updated = (SELECT MAX(Date_updated) FROM POSTING_FEE p2);";
 
     Statement statment = connection.createStatement();
     ResultSet result = statment.executeQuery(mostRecentFee);
     result.next();
     int previousAmount = result.getInt("amount");
 
-    String amountUpdate = "INSERT INTO POSTING_FEE(ID, Amount, Duration, Date_updated) " + 
-    "VALUES(DEFAULT, ?, ?, NOW());";
+    String amountUpdate =
+      "INSERT INTO POSTING_FEE(ID, Amount, Duration, Date_updated) " +
+      "VALUES(DEFAULT, ?, ?, NOW());";
 
     PreparedStatement pStatment = connection.prepareStatement(amountUpdate);
 
@@ -85,9 +88,7 @@ public class AdminController extends UserController {
     pStatment.executeUpdate();
   }
 
-
-
-  private int numListingsInPeriod(String from, String to) throws SQLException {
+  public int numListingsInPeriod(String from, String to) throws SQLException {
     Connection connection = ControllerManager.getConnection();
     String listedQuery =
       "SELECT COUNT(DISTINCT p.Property_id) " +
@@ -95,7 +96,7 @@ public class AdminController extends UserController {
       "Where p.Property_id IN ( " +
       "SELECT p1.Property_id " +
       "FROM PROPERTY_STATE p1 " +
-      "WHERE p1.State_date >= ?::timestamp AND p1.State_date <= ?::timestamp AND p1.State = ?" +
+      "WHERE p1.State_date >= ?::timestamp AND p1.State_date <= ?::timestamp AND p1.State = ? OR p1.state= ?" +
       "EXCEPT " +
       "SELECT p2.Property_id " + // remove cases where property was suspended/cancelled and got re-activated
       "FROM PROPERTY_STATE p2 " +
@@ -107,14 +108,15 @@ public class AdminController extends UserController {
     pStatment.setString(1, from);
     pStatment.setString(2, to);
     pStatment.setInt(3, ListingState.ACTIVE.ordinal());
-    pStatment.setString(4, from);
+    pStatment.setInt(4, ListingState.REGISTERED.ordinal());
+    pStatment.setString(5, from);
 
     ResultSet result = pStatment.executeQuery();
     result.next();
     return result.getInt("count");
   }
 
-  private int numRentedInPeriod(String from, String to) throws SQLException {
+  public int numRentedInPeriod(String from, String to) throws SQLException {
     Connection connection = ControllerManager.getConnection();
     String rentedQuery =
       "SELECT COUNT(DISTINCT p.Property_id) " +
@@ -132,7 +134,7 @@ public class AdminController extends UserController {
     return result.getInt("count");
   }
 
-  private int totalNumActive() throws SQLException {
+  public int totalNumActive() throws SQLException {
     Connection connection = ControllerManager.getConnection();
     String activeQuery =
       "SELECT COUNT(DISTINCT p1.Property_id) " +
@@ -144,5 +146,62 @@ public class AdminController extends UserController {
     ResultSet result = pStatment.executeQuery();
     result.next();
     return result.getInt("count");
+  }
+
+  public ArrayList<Property> getRentedInPeriod(String from, String to) throws SQLException {
+    ArrayList<Property> rentedProperties = new ArrayList<Property>();
+    Connection connection = ControllerManager.getConnection();
+    String listedQuery =
+      "SELECT * " +
+      "FROM PROPERTY_STATE ps, PROPERTY p, PERSON psn " +
+      "Where ps.Property_id IN ( " +
+      "SELECT ps1.Property_id " +
+      "FROM PROPERTY_STATE ps1 " +
+      "WHERE ps1.State_date >= ?::timestamp AND ps1.State_date <= ?::timestamp AND ps1.State = ?" +
+      ") AND ps.property_id = p.ID AND psn.Email = p.Landlord_email;";
+
+    PreparedStatement pStatment = connection.prepareStatement(listedQuery);
+
+    pStatment.setString(1, from);
+    pStatment.setString(2, to);
+    pStatment.setInt(3, ListingState.RENTED.ordinal());
+
+    ResultSet result = pStatment.executeQuery();
+    while (result.next()) {
+      Address propertyAddress = new Address(
+        result.getString("city"),
+        result.getString("province"),
+        result.getString("country"),
+        result.getString("street_address"),
+        result.getString("postal_code")
+      );
+
+      String propertyFurnished = result.getString("is_furnished");
+
+      ListingDetails listingDetails = new ListingDetails(
+        ListingState.values()[result.getInt("current_state")],
+        result.getInt("no_bedrooms"),
+        result.getInt("no_bathrooms"),
+        result.getString("property_type"),
+        propertyFurnished.equals("1"),
+        result.getString("city_quadrant")
+      );
+
+      Property property = new Property(
+        result.getString("id"),
+        propertyAddress,
+        listingDetails,
+        result.getString("landlord_email"),
+        result.getString("property_description"),
+        false
+      );
+
+      property.setPostedByName(result.getString("name"));
+
+      rentedProperties.add(property);
+      System.out.println(property.getHouseID());
+    }
+
+    return rentedProperties;
   }
 }
