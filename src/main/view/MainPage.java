@@ -40,7 +40,7 @@ public class MainPage extends Page{
 			f.getContentPane().removeAll();
 			switchEvent=1;			
 		});
-		
+
 		button.addActionListener(e-> {	
 			String username=userN.getText();
 			String password=new String(pass.getPassword());
@@ -84,6 +84,15 @@ public class MainPage extends Page{
 			}
 		});
 		
+		JButton createListing = new JButton("Add a Property!");
+		createListing.setBounds(100, 220, 150, 50);
+		
+		createListing.addActionListener(e->{
+			f.setVisible(false);
+			f.getContentPane().removeAll();
+			switchEvent=5;			
+		});
+		
 		f.add(userN);
 		f.add(un);
 		f.add(pass);
@@ -91,7 +100,8 @@ public class MainPage extends Page{
 		f.add(button);
 		f.add(prompt);
 		f.add(browse);
-		
+		f.add(createListing);
+
 		f.getContentPane().add(this);
 		f.setVisible(true);
 		
