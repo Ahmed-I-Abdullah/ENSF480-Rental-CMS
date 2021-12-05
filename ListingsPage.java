@@ -6,7 +6,6 @@ import javax.swing.*;
 import src.main.controller.ViewController;
 
 public class ListingsPage extends Page {
-    protected String[] text;
 
     public ListingsPage(Widget w, ViewController c) {
         super(c);
