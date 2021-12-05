@@ -10,12 +10,7 @@ import src.main.controller.ViewController;
 import src.main.controller.UserController;
 import src.main.model.property.*;
 import src.main.model.user.*;
-
-import src.main.view.Widget;
-import src.main.view.Page;
-import src.main.view.MainPage;
-import src.main.view.BrowseListingsPage;
-import src.main.view.ManagerControlPage;
+import src.main.view.*;
 
 public class App {
 
@@ -52,6 +47,13 @@ public class App {
         p.draw();
       }
       while(p.getSwitchEvent()==3){}
+
+      if (p.getSwitchEvent() == 2) {
+        p = new CreateListingsPage(w, v);
+        p.draw();
+      }
+
+      while(p.getSwitchEvent()==2){}
 
       firstDisplay = false;
     }

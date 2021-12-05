@@ -1,14 +1,13 @@
 package src.main.model.property;
 
-import java.util.*;
-import src.main.model.user.Landlord;
-import src.main.controller.ControllerManager;
-
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
+import src.main.controller.ControllerManager;
+import src.main.model.user.Landlord;
 
 public class Property {
 
@@ -25,15 +24,16 @@ public class Property {
     String postedBy,
     String description,
     boolean addToDatabase
-  ) throws SQLException {
+  )
+    throws SQLException {
     this.address = address;
     this.specifications = specifications;
     this.postedBy = postedBy;
     this.description = description;
-    if(addToDatabase) {
-        houseID = addPropertyToDatabase();
+    if (addToDatabase) {
+      houseID = addPropertyToDatabase();
     } else {
-        this.houseID = houseID;
+      this.houseID = houseID;
     }
   }
 
@@ -41,25 +41,28 @@ public class Property {
     Connection connection = ControllerManager.getConnection();
 
     String update =
-      "INSERT INTO PROPERTY(ID, Landlord_email, Property_type, Current_state, No_bedrooms, Is_furnished, City_quadrant, Country, Province, Street_address, Postal_code) " +
-      "VALUES(DEFAULT, ?, ?, ?, ?, ?::bit, ?, ?, ?, ?, ?) RETURNING ID;";
+      "INSERT INTO PROPERTY(ID, Landlord_email, Property_type, Current_state, No_bedrooms,No_bathrooms, Is_furnished, City_quadrant, Country, Province, City, Property_description, Street_address, Postal_code) " +
+      "VALUES(DEFAULT, ?, ?, ?, ?, ?, ?::bit, ?, ?, ?, ?, ?, ?, ?) RETURNING ID;";
 
-      String furnished = "0";
-      if(specifications.getFurnished()) {
-          furnished = "1";
-      }
+    String furnished = "0";
+    if (specifications.getFurnished()) {
+      furnished = "1";
+    }
 
     PreparedStatement statment = connection.prepareStatement(update);
     statment.setString(1, postedBy);
     statment.setString(2, specifications.getHousingType());
     statment.setInt(3, specifications.getState().ordinal());
     statment.setInt(4, specifications.getNumOfBedrooms());
-    statment.setString(5, furnished);
-    statment.setString(6, specifications.getCityQuadrant());
-    statment.setString(7, address.getCountry());
-    statment.setString(8, address.getProvince());
-    statment.setString(9, address.getStreet());
-    statment.setString(10, address.getPostalCode());
+    statment.setInt(5, specifications.getNumOfBathrooms());
+    statment.setString(6, furnished);
+    statment.setString(7, specifications.getCityQuadrant());
+    statment.setString(8, address.getCountry());
+    statment.setString(9, address.getProvince());
+    statment.setString(10, address.getCity());
+    statment.setString(11, description);
+    statment.setString(12, address.getStreet());
+    statment.setString(13, address.getPostalCode());
 
     ResultSet result = statment.executeQuery();
     result.next();

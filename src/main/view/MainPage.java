@@ -80,7 +80,7 @@ public class MainPage extends Page {
     final JButton manage = new JButton("Manage");
     manage.setBounds(100, 220, 100, 50);
 
-    final JButton post = new JButton("Post");
+    final JButton post = new JButton("Post Property");
     post.setBounds(100, 170, 100, 50);
 
     browse.addActionListener(

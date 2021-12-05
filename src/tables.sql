@@ -44,6 +44,8 @@ CREATE TABLE IF NOT EXISTS PROPERTY
   City_quadrant CHAR(2),
   Country VARCHAR(30),
   Province VARCHAR(30),
+  City VARCHAR(30),
+  Property_description VARCHAR,
   Street_address VARCHAR(70),
   Postal_code Varchar(15),
   PRIMARY KEY(ID),
