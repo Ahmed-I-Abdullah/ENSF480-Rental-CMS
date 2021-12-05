@@ -7,23 +7,30 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import src.main.model.property.ListingDetails;
+import src.main.model.property.ListingState;
+import src.main.model.user.Landlord;
+import src.main.model.user.Manager;
+import src.main.model.user.RegisteredRenter;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
 
 public class UserController {
 
-  private User user;
+  private User authenticatedUser;
+
+  public UserController() {}
 
   public UserController(User u) {
-    this.user = u;
+    this.authenticatedUser = u;
   }
 
   public void setUser(User u) {
-    this.user = u;
+    this.authenticatedUser = u;
   }
 
   public User getUser() {
-    return user;
+    return authenticatedUser;
   }
 
   public void signUp(
@@ -64,8 +71,7 @@ public class UserController {
   public void logIn(String email, String password)
     throws UserNotFoundException, UnAuthorizedException, SQLException, NoSuchAlgorithmException {
     Connection connection = ControllerManager.getConnection();
-    String userQuery =
-      "SELECT Email, Hashed_password " + "FROM PERSON p " + "WHERE p.Email = ?";
+    String userQuery = "SELECT * FROM PERSON p WHERE p.Email = ?";
 
     PreparedStatement pStatment = connection.prepareStatement(userQuery);
     pStatment.setString(1, email);
@@ -73,7 +79,7 @@ public class UserController {
     ResultSet result = pStatment.executeQuery();
 
     if (!result.isBeforeFirst()) {
-      throw new UserNotFoundException("user not found in databse.");
+      throw new UserNotFoundException("User not found in databse.");
     }
 
     result.next();
@@ -82,9 +88,74 @@ public class UserController {
     if (!databasePassword.equals(hashedUserPassword)) {
       throw new UnAuthorizedException("Wrong Password.");
     }
+
+    String name = result.getString("name");
+    int integerRole = result.getInt("role");
+    UserType role = UserType.values()[integerRole];
+
+    if (role == UserType.MANAGER) {
+      authenticatedUser = new Manager(email, name);
+      return;
+    }
+
+    if (role == UserType.LANDLORD) {
+      authenticatedUser = new Landlord(email, name);
+      return;
+    }
+
+    String renterQuery = "SELECT * FROM RENTER r WHERE r.Email = ?";
+    pStatment = connection.prepareStatement(renterQuery);
+
+    pStatment.setString(1, email);
+
+    ResultSet renterResult = pStatment.executeQuery();
+
+    if (!renterResult.isBeforeFirst()) {
+      throw new UserNotFoundException("Renter not found in databse.");
+    }
+
+    renterResult.next();
+
+    String propertyFurnished = renterResult.getString("is_furnished");
+
+    ListingDetails userSearchCriteria = new ListingDetails(
+      ListingState.ACTIVE,
+      renterResult.getInt("no_bedrooms"),
+      renterResult.getInt("no_bathrooms"),
+      renterResult.getString("property_type"),
+      "1".equals(propertyFurnished),
+      renterResult.getString("city_quadrant")
+    );
+
+    authenticatedUser = new RegisteredRenter(email, name, userSearchCriteria);
   }
 
-  public String hashPassword(String password) throws NoSuchAlgorithmException {
+  public void setRenterSearchCriteria(
+    int numOfBedrooms,
+    int numofBathrooms,
+    String housingType,
+    boolean furnished,
+    String cityQuadrant
+  ) {
+    RegisteredRenter renter = (RegisteredRenter)authenticatedUser;
+    
+    ListingDetails renterPrefrence = new ListingDetails(
+      ListingState.ACTIVE,
+      numOfBedrooms,
+      numofBathrooms,
+      housingType,
+      furnished,
+      cityQuadrant
+    );
+
+    try {
+      renter.setSearchCriteria(renterPrefrence);
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private String hashPassword(String password) throws NoSuchAlgorithmException {
     StringBuilder hashedPassword = new StringBuilder();
     String salt = "!15wRP/8N:F8*uu5A>?4"; // should probably be in environment variables
     MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -97,5 +168,9 @@ public class UserController {
     }
     System.out.println("Hashed password is: " + hashedPassword.toString());
     return hashedPassword.toString();
+  }
+
+  public User getAuthenticatedUser() {
+    return this.authenticatedUser;
   }
 }

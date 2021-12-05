@@ -1,61 +1,79 @@
 package src.main.model.property;
 
 public class ListingDetails {
-    private ListingState state;
-    private int numOfBedrooms;
-    private String housingType;
-    private boolean furnished;
-    private String cityQuadrant;
 
-    public ListingDetails(ListingState state, int numOfBedrooms, String housingType, boolean furnished, String cityQuadrant) {
-        this.state = state;
-        this.numOfBedrooms = numOfBedrooms;
-        this.housingType = housingType;
-        this.furnished = furnished;
-        this.cityQuadrant = cityQuadrant;
-    }
+  private ListingState state;
+  private int numOfBedrooms;
+  private int numOfBathrooms;
+  private String housingType;
+  private boolean furnished;
+  private String cityQuadrant;
 
-    public ListingState getState() {
-        return this.state;
-    }
+  public ListingDetails(
+    ListingState state,
+    int numOfBedrooms,
+    int numBathrooms,
+    String housingType,
+    boolean furnished,
+    String cityQuadrant
+  ) {
+    this.state = state;
+    this.numOfBedrooms = numOfBedrooms;
+    this.housingType = housingType;
+    this.furnished = furnished;
+    this.cityQuadrant = cityQuadrant;
+    this.numOfBathrooms = numBathrooms;
+  }
 
-    public void setState(ListingState state) {
-        this.state = state;
-    }
+  public ListingState getState() {
+    return this.state;
+  }
 
-    public int getNumOfBedrooms() {
-        return this.numOfBedrooms;
-    }
+  public void setState(ListingState state) {
+    this.state = state;
+  }
 
-    public void setNumOfBedrooms(int numOfBedrooms) {
-        this.numOfBedrooms = numOfBedrooms;
-    }
+  public int getNumOfBedrooms() {
+    return this.numOfBedrooms;
+  }
 
-    public String getHousingType() {
-        return this.housingType;
-    }
+  public int getNumOfBathrooms() {
+    return this.numOfBathrooms;
+  }
 
-    public void setHousingType(String housingType) {
-        this.housingType = housingType;
-    }
+  public void setNumOfBedrooms(int numOfBedrooms) {
+    this.numOfBedrooms = numOfBedrooms;
+  }
 
-    public boolean isFurnished() {
-        return this.furnished;
-    }
+  public void setNumOfBathrooms(int numOfBathrooms) {
+    this.numOfBathrooms = numOfBathrooms;
+  }
 
-    public boolean getFurnished() {
-        return this.furnished;
-    }
+  public String getHousingType() {
+    return this.housingType;
+  }
 
-    public void setFurnished(boolean furnished) {
-        this.furnished = furnished;
-    }
+  public void setHousingType(String housingType) {
+    this.housingType = housingType;
+  }
 
-    public String getCityQuadrant() {
-        return this.cityQuadrant;
-    }
+  public boolean isFurnished() {
+    return this.furnished;
+  }
 
-    public void setCityQuadrant(String cityQuadrant) {
-        this.cityQuadrant = cityQuadrant;
-    }
+  public boolean getFurnished() {
+    return this.furnished;
+  }
+
+  public void setFurnished(boolean furnished) {
+    this.furnished = furnished;
+  }
+
+  public String getCityQuadrant() {
+    return this.cityQuadrant;
+  }
+
+  public void setCityQuadrant(String cityQuadrant) {
+    this.cityQuadrant = cityQuadrant;
+  }
 }

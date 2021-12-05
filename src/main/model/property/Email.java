@@ -50,7 +50,7 @@ public class Email {
         return false;
     }
 
-    private Landlord getPropertyOwner(){
+    private String getPropertyOwner(){
         return interestedIn.getPostedBy();
     }
 

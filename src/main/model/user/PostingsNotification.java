@@ -16,7 +16,6 @@ public class PostingsNotification implements Subject {
         this.observers.remove(o);
     }
 
-    @Override
     public void notifyAllObservers() {
         for (int i = 0; i < observers.size(); i++) {
             observers.get(i).update(latestInsertedProperty);
