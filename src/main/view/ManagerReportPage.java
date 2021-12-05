@@ -11,10 +11,7 @@ import src.main.controller.ViewController;
 import src.main.model.property.Property;
 
 public class ManagerReportPage extends Page {
-
   private String dateErrors = "";
-
-  protected String[] text = { "Ahmed", "1", "191 Leninskya Street Apt. 41" };
 
   public ManagerReportPage(Widget w, ViewController v) {
     super(v);
