@@ -66,10 +66,15 @@ public class ManagerReportPage extends Page {
 
     final JButton submit = new JButton("Submit");
 
-    // JButton back = new JButton("Back");
-    // back.setBounds(5, 10, 75, 50);
-    // back.setLocation(0, 0);
-    // f.add(back);
+    JButton back = new JButton("Back");
+    back.setBounds(0, 0, 75, 50);
+  
+    back.addActionListener(
+    e -> {
+      f.setVisible(false);
+      resetSwitchEvent();
+    }
+    );
 
     final JLabel submissionErrors = new JLabel(dateErrors);
     submissionErrors.setForeground(Color.red);
@@ -204,6 +209,13 @@ public class ManagerReportPage extends Page {
 
     c.gridx = 0;
     c.gridy = 0;
+    f.add(back, c);
+
+    c.weightx = 0.0;
+    c.gridwidth = 1;
+
+    c.gridx = 1;
+    c.gridy = 1;
     f.add(submissionErrors, c);
 
     c.gridx = 0;
