@@ -16,7 +16,7 @@ public class Manager implements User {
         return this.name;
     }
     
-    public void setName(String email){
+    public void setName(String name){
         this.name = name;
     }
 
