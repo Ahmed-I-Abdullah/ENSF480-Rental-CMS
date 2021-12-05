@@ -46,6 +46,9 @@ public class MainPage extends Page{
 		final JButton post = new JButton("Post");
 		post.setBounds(100,170,100,50);
 		
+		final JButton signout= new JButton("Sign out");
+		signout.setBounds(670,200,100,25);
+		
 		browse.addActionListener(e->{
 			f.setVisible(false);
 			f.getContentPane().removeAll();
@@ -105,6 +108,7 @@ public class MainPage extends Page{
 				f.getContentPane().remove(button);
 				f.getContentPane().remove(prompt);
 				f.getContentPane().remove(Sinbutton);
+				f.getContentPane().add(signout);
 				f.getContentPane().add(this);
 				f.setVisible(true);
 				pop.setVisible(false);
@@ -165,6 +169,7 @@ public class MainPage extends Page{
 				f.getContentPane().remove(button);
 				f.getContentPane().remove(prompt);
 				f.getContentPane().remove(Sinbutton);
+				f.getContentPane().add(signout);
 				f.getContentPane().add(this);
 				f.setVisible(true);
 			}else{
@@ -172,6 +177,26 @@ public class MainPage extends Page{
 				pass.setText("");
 				userN.setText("");
 			}
+		});
+		
+		signout.addActionListener(e->{
+				text[0]="Hello";
+				f.setVisible(false);
+				f.getContentPane().remove(this);
+				f.getContentPane().add(pass);
+				f.getContentPane().add(pw);
+				f.getContentPane().add(userN);
+				userN.setText("");
+				pass.setText("");
+				f.getContentPane().add(un);
+				f.getContentPane().add(button);
+				f.getContentPane().add(prompt);
+				f.getContentPane().add(Sinbutton);
+				f.getContentPane().remove(signout);
+				f.getContentPane().add(this);
+				f.setVisible(true);
+			
+			
 		});
 		
 		
