@@ -9,15 +9,15 @@ public abstract class Page extends JPanel {
 	protected Font mainText;
 	protected int switchEvent;
 	protected Widget widget;
+	protected static String user = null;
 	
 	public Page(){
 		titleFont= new Font("Helvetica", Font.BOLD, 35);
 		mainText= new Font("Times New Roman", Font.PLAIN, 16);
-		f = new JFrame();
+		f = new JFrame("Property Rental System");
 		f.setSize(800, 800);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLocationRelativeTo(null);
-		resetSwitchEvent();
 	}
 	
 	public void resetSwitchEvent(){
