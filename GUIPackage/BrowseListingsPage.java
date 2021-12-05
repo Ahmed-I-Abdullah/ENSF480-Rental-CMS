@@ -19,12 +19,14 @@ public class BrowseListingsPage extends Page {
 		JButton back= new JButton("Back");
 		back.setBounds(10,10, 75,50);
 		
+		JButton notifications = new JButton("Notifications");
+		notifications.setBounds(100,150,100,50);
 		
 		JButton filters = new JButton("Filters");
 		filters.setBounds(100,100,100,50);
 		
 		filters.addActionListener(e->{
-			JFrame pop = new JFrame("Select Your Preferances");
+			JFrame pop = new JFrame("Select Your Preferences");
 			pop.setSize(350,350);
 			pop.setLocationRelativeTo(null);
 			pop.setLayout(new GridBagLayout());
@@ -52,9 +54,9 @@ public class BrowseListingsPage extends Page {
 			JTextField type = new JTextField("Type: apartment, townhouse etc.");
 			
 			
-			JTextField minPrice = new JTextField("Min price");
+			// JTextField minPrice = new JTextField("Min price");
 			
-			JTextField maxPrice = new JTextField("Max price");
+			// JTextField maxPrice = new JTextField("Max price");
 			
 			JLabel bedroomsLabel = new JLabel("Number of Bedrooms");
 			JSlider bedrooms = new JSlider(JSlider.HORIZONTAL, 0, 5, 0);
@@ -100,15 +102,15 @@ public class BrowseListingsPage extends Page {
 			
 			
 			
-			c.weightx=0.0;
-			c.gridwidth=1;
-			c.gridx=1;
-			c.gridy=0;
-			pop.add(minPrice, c);
+			// c.weightx=0.0;
+			// c.gridwidth=1;
+			// c.gridx=1;
+			// c.gridy=0;
+			// pop.add(minPrice, c);
 			
-			c.gridx=1;
-			c.gridy=1;
-			pop.add(maxPrice, c);
+			// c.gridx=1;
+			// c.gridy=1;
+			// pop.add(maxPrice, c);
 			
 			c.gridx=0;
 			c.gridy=0;
@@ -188,6 +190,7 @@ public class BrowseListingsPage extends Page {
 		
 		f.add(back);
 		f.add(filters);
+		f.add(notifications);
 		f.getContentPane().add(this);
 		f.setVisible(true);
 	}
