@@ -45,7 +45,7 @@ public class ManagerControlPage extends Page{
 		
 		fees.addActionListener(e->{
 			JFrame pop = new JFrame("Edit Fees");
-			pop.setSize(100,100);
+			pop.setSize(250,250);
 			pop.setLocationRelativeTo(null);
 			pop.setLayout(new GridBagLayout());
 			
@@ -56,8 +56,27 @@ public class ManagerControlPage extends Page{
 			JButton update = new JButton("Update");
 			
 			update.addActionListener(p->{
+				String newFee=price.getText();
+				String newTerm=term.getText();
+				boolean good= true;
 				System.out.println(price.getText() +"\n"+term.getText());
+				try{
+					Double.parseDouble(newFee);
+					Integer.parseInt(newTerm);
+				}catch(Exception z){
+					good=false;
+					JFrame popup= new JFrame("Invalid data entered");
+					popup.setSize(250,250);
+					popup.setLocationRelativeTo(null);
+					JLabel text= new JLabel("Please only enter digits");
+					text.setBounds(150,100,100,30);
+					popup.add(text);
+					popup.setVisible(true);
+				}
+				if(good){
 				//viewController.updateFees(price, term);
+					pop.setVisible(false);
+				}
 			});
 			
 			GridBagConstraints c = new GridBagConstraints();
@@ -74,7 +93,7 @@ public class ManagerControlPage extends Page{
 			pop.add(term);
 			
 			c.gridx=0;
-			c.gridy=1;
+			c.gridy=2;
 			c.weightx=2.0;
 			pop.add(update);
 			pop.setVisible(true);
