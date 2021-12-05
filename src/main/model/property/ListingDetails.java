@@ -12,17 +12,17 @@ public class ListingDetails {
   public ListingDetails(
     ListingState state,
     int numOfBedrooms,
-    int numofBathrooms,
+    int numBathrooms,
     String housingType,
     boolean furnished,
     String cityQuadrant
   ) {
     this.state = state;
     this.numOfBedrooms = numOfBedrooms;
-    this.numOfBathrooms = numOfBathrooms;
     this.housingType = housingType;
     this.furnished = furnished;
     this.cityQuadrant = cityQuadrant;
+    this.numOfBathrooms = numBathrooms;
   }
 
   public ListingState getState() {

@@ -27,13 +27,25 @@ public class App {
     Widget w = null;
     Page p = new MainPage(w, v);
     p.draw();
+    boolean firstDisplay = true;
 
-    while (p.getSwitchEvent() == 0) {
-      System.out.println("");
-    }
-    if (p.getSwitchEvent() == 1) {
-      p = new BrowseListingsPage(w, v);
-      p.draw();
+
+    while(true) {
+      if(p.getSwitchEvent() == 0 && !firstDisplay) {
+        p = new MainPage(w, v);
+        p.draw();
+      }
+      while (p.getSwitchEvent() == 0) {
+        
+      }
+      if (p.getSwitchEvent() == 1) {
+        p = new BrowseListingsPage(w, v);
+        p.draw();
+      }
+      while (p.getSwitchEvent() == 1) {
+        
+      }
+      firstDisplay = false;
     }
 
     // Manager m = new Manager("Ahmed");

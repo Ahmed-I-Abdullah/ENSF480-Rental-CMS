@@ -3,19 +3,17 @@ package src.main.controller;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import src.main.model.property.ListingDetails;
+import src.main.model.property.ListingState;
 import src.main.model.user.Landlord;
 import src.main.model.user.Manager;
 import src.main.model.user.RegisteredRenter;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
-import src.main.model.property.ListingDetails;
-import src.main.model.property.ListingState;
 
 public class UserController {
 
@@ -130,6 +128,31 @@ public class UserController {
     );
 
     authenticatedUser = new RegisteredRenter(email, name, userSearchCriteria);
+  }
+
+  public void setRenterSearchCriteria(
+    int numOfBedrooms,
+    int numofBathrooms,
+    String housingType,
+    boolean furnished,
+    String cityQuadrant
+  ) {
+    RegisteredRenter renter = (RegisteredRenter)authenticatedUser;
+    
+    ListingDetails renterPrefrence = new ListingDetails(
+      ListingState.ACTIVE,
+      numOfBedrooms,
+      numofBathrooms,
+      housingType,
+      furnished,
+      cityQuadrant
+    );
+
+    try {
+      renter.setSearchCriteria(renterPrefrence);
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
   }
 
   private String hashPassword(String password) throws NoSuchAlgorithmException {

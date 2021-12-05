@@ -19,11 +19,11 @@ public class MainPage extends Page {
   }
 
   public void draw() {
-    JLabel prompt = new JLabel("Enter Username and Password");
+    JLabel prompt = new JLabel("Enter Email and Password");
     prompt.setBounds(600, 70, 200, 30);
 
     JTextField userN = new JTextField();
-    JLabel un = new JLabel("Username");
+    JLabel un = new JLabel("Email");
     un.setBounds(600, 100, 80, 30);
     userN.setBounds(670, 100, 100, 30);
 
