@@ -9,10 +9,7 @@ import src.main.controller.UserController;
 import src.main.model.property.*;
 import src.main.model.user.*;
 
-import src.main.view.Widget;
-import src.main.view.Page;
-import src.main.view.MainPage;
-import src.main.view.BrowseListingsPage;
+import src.main.view.*
 
 public class App {
 
@@ -36,6 +33,11 @@ public class App {
     }
     if (p.getSwitchEvent() == 1) {
       p = new BrowseListingsPage(w);
+      p.draw(Listings);
+    }
+
+    if (p.getSwitchEvent() == 6) {
+      p = new ManagerReportPage(w);
       p.draw(Listings);
     }
 
