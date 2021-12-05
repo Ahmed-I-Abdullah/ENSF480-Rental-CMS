@@ -41,12 +41,6 @@ public class App {
       while (p.getSwitchEvent() == 1) {
         
       }
-      
-      if(p.getSwitchEvent()==3){
-        p=new ManagerControlPage(w, v);
-        p.draw();
-      }
-      while(p.getSwitchEvent()==3){}
 
       if (p.getSwitchEvent() == 2) {
         p = new CreateListingsPage(w, v);
@@ -54,9 +48,24 @@ public class App {
       }
 
       while(p.getSwitchEvent()==2){}
+      
+      if(p.getSwitchEvent()==3){
+        p=new ManagerControlPage(w, v);
+        p.draw();
+      }
+      while(p.getSwitchEvent()==3){}
+
+
+      if (p.getSwitchEvent() == 4) {
+        p = new ManagerReportPage(w, v);
+        p.draw();
+      }
+
+      while(p.getSwitchEvent()==4){}
 
       firstDisplay = false;
     }
+
 
     // Manager m = new Manager("Ahmed");
 
