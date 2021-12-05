@@ -9,7 +9,7 @@ import src.main.controller.UserController;
 import src.main.model.property.*;
 import src.main.model.user.*;
 
-import src.main.view.*
+import src.main.view.*;
 
 public class App {
 
@@ -26,6 +26,12 @@ public class App {
       "88 Los Almos Blvd",
       "191 Leninskya Street Apt. 41",
     };
+    String[][] Houses = {
+      {"Ahmed", "1", "191 Leninskya Street Apt. 41"},
+      {"Amir", "2", "1234 SunHarbor Cresant"},
+      {"Adam", "3", "88 Los Almos Blvd"},
+      {"Huda", "3", "191 Leninskya Street Apt. 41"}
+    };
     p.draw(welcome);
 
     while (p.getSwitchEvent() == 0) {
@@ -38,7 +44,7 @@ public class App {
 
     if (p.getSwitchEvent() == 6) {
       p = new ManagerReportPage(w);
-      p.draw(Listings);
+      p.draw(Houses[0]);
     }
 
     // Manager m = new Manager("Ahmed");
