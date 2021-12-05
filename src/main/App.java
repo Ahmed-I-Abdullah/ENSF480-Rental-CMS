@@ -15,6 +15,7 @@ import src.main.view.Widget;
 import src.main.view.Page;
 import src.main.view.MainPage;
 import src.main.view.BrowseListingsPage;
+import src.main.view.ManagerControlPage;
 
 public class App {
 
@@ -45,6 +46,13 @@ public class App {
       while (p.getSwitchEvent() == 1) {
         
       }
+      
+      if(p.getSwitchEvent()==3){
+        p=new ManagerControlPage(w, v);
+        p.draw();
+      }
+      while(p.getSwitchEvent()==3){}
+
       firstDisplay = false;
     }
 

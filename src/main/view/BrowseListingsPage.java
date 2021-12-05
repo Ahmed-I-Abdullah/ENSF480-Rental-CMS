@@ -112,6 +112,7 @@ public class BrowseListingsPage extends Page {
         JLabel quadrantLabel = new JLabel("Quadrant");
         JComboBox<String> quadrant = new JComboBox<String>(quad);
         quadrant.setSelectedIndex(chosenQuadrantIndex);
+        
         JLabel criteriaErrors = new JLabel(searchCriteriaErrors);
         criteriaErrors.setForeground(Color.red);
 

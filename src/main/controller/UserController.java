@@ -66,6 +66,21 @@ public class UserController {
 
       pStatmentTwo.executeUpdate();
     }
+
+    if (userType == UserType.MANAGER) {
+      authenticatedUser = new Manager(email, name);
+      return;
+    }
+
+    if (userType == UserType.LANDLORD) {
+      authenticatedUser = new Landlord(email, name);
+      return;
+    }
+
+    if (userType == UserType.RENTER) {
+      authenticatedUser = new RegisteredRenter(email, name);
+      return;
+    }
   }
 
   public void logIn(String email, String password)
