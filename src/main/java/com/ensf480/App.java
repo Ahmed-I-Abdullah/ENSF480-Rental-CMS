@@ -30,16 +30,16 @@ public class App {
     
     ViewController v = new ViewController();
     Widget w = null;
-    // Page p = new MainPage(w, v);
-    // p.draw();
+    Page p = new MainPage(w, v);
+    p.draw();
 
-    // while (p.getSwitchEvent() == 0) {
-    //   System.out.println("");
-    // }
-    // if (p.getSwitchEvent() == 1) {
-    //   p = new BrowseListingsPage(w, v);
-    //   p.draw();
-    // }
+    while (p.getSwitchEvent() == 0) {
+      System.out.println("");
+    }
+    if (p.getSwitchEvent() == 1) {
+      p = new BrowseListingsPage(w, v);
+      p.draw();
+    }
 
     // Manager m = new Manager("Ahmed");
 

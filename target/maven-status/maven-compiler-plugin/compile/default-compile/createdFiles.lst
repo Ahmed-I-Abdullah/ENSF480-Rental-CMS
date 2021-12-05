@@ -6,7 +6,6 @@ com\ensf480\model\property\ApplicationEmail.class
 com\ensf480\model\user\User.class
 com\ensf480\controller\PostingController.class
 com\ensf480\model\user\Manager.class
-com\ensf480\Example.class
 com\ensf480\model\user\PostingsNotification.class
 com\ensf480\model\user\Observer.class
 com\ensf480\model\property\ListingDetails.class
