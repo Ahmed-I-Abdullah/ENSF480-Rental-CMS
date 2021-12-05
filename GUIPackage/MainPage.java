@@ -49,6 +49,17 @@ public class MainPage extends Page{
 		final JButton signout= new JButton("Sign out");
 		signout.setBounds(670,200,100,25);
 		
+		final JButton notifications = new JButton("Notifications");
+		notifications.setBounds(100,170,100,50);
+		
+		
+		notifications.addActionListener(e->{
+			f.setVisible(false);
+			f.getContentPane().removeAll();
+			switchEvent=5;
+			
+		});
+		
 		browse.addActionListener(e->{
 			f.setVisible(false);
 			f.getContentPane().removeAll();
@@ -109,6 +120,15 @@ public class MainPage extends Page{
 				f.getContentPane().remove(prompt);
 				f.getContentPane().remove(Sinbutton);
 				f.getContentPane().add(signout);
+				if(user.equals("Tim")){
+				f.add(notifications);
+			}
+			if(user.equals("Jim")||user.equals("Bob")){
+				f.add(post);
+				if(user.equals("Bob")){
+					f.add(manage);
+				}
+			}
 				f.getContentPane().add(this);
 				f.setVisible(true);
 				pop.setVisible(false);
@@ -170,6 +190,15 @@ public class MainPage extends Page{
 				f.getContentPane().remove(prompt);
 				f.getContentPane().remove(Sinbutton);
 				f.getContentPane().add(signout);
+				if(user.equals("Tim")){
+				f.add(notifications);
+			}
+			if(user.equals("Jim")||user.equals("Bob")){
+				f.add(post);
+				if(user.equals("Bob")){
+					f.add(manage);
+				}
+			}
 				f.getContentPane().add(this);
 				f.setVisible(true);
 			}else{
@@ -180,7 +209,7 @@ public class MainPage extends Page{
 		});
 		
 		signout.addActionListener(e->{
-				text[0]="Hello";
+				text[0]="Hello ";
 				f.setVisible(false);
 				f.getContentPane().remove(this);
 				f.getContentPane().add(pass);
@@ -193,6 +222,9 @@ public class MainPage extends Page{
 				f.getContentPane().add(prompt);
 				f.getContentPane().add(Sinbutton);
 				f.getContentPane().remove(signout);
+				f.getContentPane().remove(manage);
+				f.getContentPane().remove(post);
+				f.getContentPane().remove(notifications);
 				f.getContentPane().add(this);
 				f.setVisible(true);
 			
@@ -209,6 +241,9 @@ public class MainPage extends Page{
 			f.add(prompt);
 			f.add(Sinbutton);
 		}else{
+			if(user.equals("Tim")){
+				f.add(notifications);
+			}
 			if(user.equals("Jim")||user.equals("Bob")){
 				f.add(post);
 				if(user.equals("Bob")){
