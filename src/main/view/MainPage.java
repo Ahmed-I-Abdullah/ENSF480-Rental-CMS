@@ -83,6 +83,15 @@ public class MainPage extends Page{
 				userN.setText("");
 			}
 		});
+
+		JButton report = new JButton("View Summary Report");
+		report.setBounds(100, 220, 150, 50);
+		
+		report.addActionListener(e->{
+			f.setVisible(false);
+			f.getContentPane().removeAll();
+			switchEvent=6;			
+		});
 		
 		f.add(userN);
 		f.add(un);
@@ -91,6 +100,7 @@ public class MainPage extends Page{
 		f.add(button);
 		f.add(prompt);
 		f.add(browse);
+		f.add(report);
 		
 		f.getContentPane().add(this);
 		f.setVisible(true);
