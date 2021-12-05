@@ -92,6 +92,9 @@ public class BrowseListingsPage extends Page {
     JButton back = new JButton("Back");
     back.setBounds(5, 10, 75, 50);
 
+    final JButton subscriptions = new JButton("Subscriptions");
+    subscriptions.setBounds(650, 10, 100, 50);
+
     JButton filters = new JButton("Set Search Criteria");
     filters.setBounds(40, 100, 145, 50);
 
@@ -282,6 +285,15 @@ public class BrowseListingsPage extends Page {
       }
     );
 
+    subscriptions.addActionListener(
+      e -> {
+        f.setVisible(false);
+        f.removeAll();
+        switchEvent = 5;
+      }
+    );
+
+    f.add(subscriptions);
     f.add(back);
     f.add(filters);
     f.getContentPane().add(this);
@@ -305,3 +317,4 @@ public class BrowseListingsPage extends Page {
     }
   }
 }
+
