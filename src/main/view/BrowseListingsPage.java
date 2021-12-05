@@ -272,6 +272,7 @@ public class BrowseListingsPage extends Page {
               getFormattedAddress(properties.get(z))
             );
           }
+          switchEvent = 6;
         }
       );
       f.add(clickme);
