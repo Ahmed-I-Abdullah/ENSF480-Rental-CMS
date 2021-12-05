@@ -96,11 +96,11 @@ public class AdminController extends UserController {
       "Where p.Property_id IN ( " +
       "SELECT p1.Property_id " +
       "FROM PROPERTY_STATE p1 " +
-      "WHERE p1.State_date >= ?::timestamp AND p1.State_date <= ?::timestamp AND p1.State = ? OR p1.state= ?" +
+      "WHERE p1.State_date >= ?::timestamp AND p1.State_date <= ?::timestamp AND (p1.State = ? OR p1.state= ?) " +
       "EXCEPT " +
       "SELECT p2.Property_id " + // remove cases where property was suspended/cancelled and got re-activated
       "FROM PROPERTY_STATE p2 " +
-      "WHERE p2.State_date < ?::timestamp AND p2.State = 0 " +
+      "WHERE p2.State_date < ?::timestamp AND (p2.State = ? OR p2.State = ?) " +
       ");";
 
     PreparedStatement pStatment = connection.prepareStatement(listedQuery);
@@ -110,6 +110,8 @@ public class AdminController extends UserController {
     pStatment.setInt(3, ListingState.ACTIVE.ordinal());
     pStatment.setInt(4, ListingState.REGISTERED.ordinal());
     pStatment.setString(5, from);
+    pStatment.setInt(6, ListingState.ACTIVE.ordinal());
+    pStatment.setInt(7, ListingState.REGISTERED.ordinal());
 
     ResultSet result = pStatment.executeQuery();
     result.next();
@@ -137,11 +139,12 @@ public class AdminController extends UserController {
   public int totalNumActive() throws SQLException {
     Connection connection = ControllerManager.getConnection();
     String activeQuery =
-      "SELECT COUNT(DISTINCT p1.Property_id) " +
-      "FROM PROPERTY_STATE p1 " +
-      "WHERE State_date = (SELECT MAX(State_date) FROM PROPERTY_STATE p2 WHERE p1.Property_id = p2.Property_id);";
+      "SELECT COUNT(DISTINCT p.ID) " +
+      "FROM PROPERTY p " +
+      "WHERE Current_state = ?;";
 
     PreparedStatement pStatment = connection.prepareStatement(activeQuery);
+    pStatment.setInt(1, ListingState.ACTIVE.ordinal());
 
     ResultSet result = pStatment.executeQuery();
     result.next();
@@ -152,10 +155,10 @@ public class AdminController extends UserController {
     ArrayList<Property> rentedProperties = new ArrayList<Property>();
     Connection connection = ControllerManager.getConnection();
     String listedQuery =
-      "SELECT * " +
+      "SELECT DISTINCT ON (p.ID) * " +
       "FROM PROPERTY_STATE ps, PROPERTY p, PERSON psn " +
       "Where ps.Property_id IN ( " +
-      "SELECT ps1.Property_id " +
+      "SELECT DISTINCT ps1.Property_id " +
       "FROM PROPERTY_STATE ps1 " +
       "WHERE ps1.State_date >= ?::timestamp AND ps1.State_date <= ?::timestamp AND ps1.State = ?" +
       ") AND ps.property_id = p.ID AND psn.Email = p.Landlord_email;";
@@ -168,6 +171,7 @@ public class AdminController extends UserController {
 
     ResultSet result = pStatment.executeQuery();
     while (result.next()) {
+      System.out.println("HHHHHHHHHHHHHHHH");
       Address propertyAddress = new Address(
         result.getString("city"),
         result.getString("province"),
