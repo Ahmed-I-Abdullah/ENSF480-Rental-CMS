@@ -19,8 +19,7 @@ public class BrowseListingsPage extends Page {
 		JButton back= new JButton("Back");
 		back.setBounds(10,10, 75,50);
 		
-		JButton notifications = new JButton("Notifications");
-		notifications.setBounds(100,150,100,50);
+		
 		
 		JButton filters = new JButton("Filters");
 		filters.setBounds(100,100,100,50);
@@ -190,7 +189,7 @@ public class BrowseListingsPage extends Page {
 		
 		f.add(back);
 		f.add(filters);
-		f.add(notifications);
+		//f.add(notifications);
 		f.getContentPane().add(this);
 		f.setVisible(true);
 	}
