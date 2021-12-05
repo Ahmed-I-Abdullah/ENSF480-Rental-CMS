@@ -36,9 +36,9 @@ public class CreateListingsPage extends Page {
 		GridBagConstraints c= new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		
-		final JButton ok = new JButton("OK");
+		final JButton pay = new JButton("Pay $60 for 2 months");
 		
-		JButton save= new JButton("Save");
+		final JButton save= new JButton("Save");
 		
 		String [] select= {"Yes", "No"};
 		
@@ -81,7 +81,7 @@ public class CreateListingsPage extends Page {
 		furnished.setSelectedIndex(1);
 		
 		final JLabel typeLabel = new JLabel("Enter House Type:");
-		final JTextField type = new JTextField("Apartment, attached/detached house, townhouse, etc.");
+		final JTextField type = new JTextField("Apartment, townhouse, etc.");
 
 		final JLabel bedroomsLabel = new JLabel("Number of Bedrooms");
 		final JSlider bedrooms = new JSlider(JSlider.HORIZONTAL, 0, 5, 0);
@@ -96,10 +96,40 @@ public class CreateListingsPage extends Page {
 		bathrooms.setPaintTicks(true);
 		bathrooms.setPaintLabels(true);
 		bathrooms.setFont(mainText);
-		
-		ok.addActionListener(p->{
-			//make it go to payment page!
+
+		JButton back = new JButton("Back");
+		back.setBounds(0, 0, 75, 50);
+
+		back.addActionListener(
+		e -> {
 			f.setVisible(false);
+			resetSwitchEvent();
+		}
+		);
+
+		final JLabel sucess = new JLabel("Your listing is now available for renters to view!");
+
+		pay.addActionListener(p->{
+			//change state from registered to active
+			if(!savePressed) {
+				boolean furnish = false;
+				if(furnished.getSelectedItem().toString() == "Yes"){
+					furnish = true;
+				}
+				ListingDetails listingDetails = new ListingDetails(ListingState.ACTIVE, bedrooms.getValue(),bathrooms.getValue(), type.getText(), furnish, quadrant.getSelectedItem().toString());
+				Address address = new Address(city.getText(),province.getText(),country.getText(),streetNo.getText() + ", " + street.getText(), postalCode.getText());
+				User currentUser = controller.getUserController().getAuthenticatedUser();
+				controller.getPostingController().addPropertyToDatabase(currentUser, address, listingDetails, currentUser.getEmail(), description.getText());
+				savePressed = true;
+				
+			} else{
+				//Add controller!
+				//listingDetails.setState(ListingState.ACTIVE);
+			}
+			
+			c.gridx=1;
+			c.gridy=15;
+			f.add(sucess, c);	
 		});
 		
 		save.addActionListener(p->{
@@ -116,63 +146,67 @@ public class CreateListingsPage extends Page {
 			}
 		});
 		
+		c.gridx=0;
+		c.gridy=0;
+		f.add(back, c);
+
 		c.weightx=0.0;
 		c.gridwidth=1;
 		c.gridx=0;
-		c.gridy=0;
+		c.gridy=1;
 		f.add(addressLabel, c);
 		
 		c.gridx=0;
-		c.gridy=1;
+		c.gridy=2;
 		f.add(label, c);
 
 		c.gridx=1;
-		c.gridy=1;
+		c.gridy=2;
 		f.add(streetNo, c);
 
 		c.gridx=0;
-		c.gridy=2;
+		c.gridy=3;
 		f.add(street, c);
 
 		c.gridx=1;
-		c.gridy=2;
+		c.gridy=3;
 		f.add(postalCode, c);
 
 		c.gridx=0;
-		c.gridy=3;
+		c.gridy=4;
 		f.add(city, c);
 
 		c.gridx=1;
-		c.gridy=3;
+		c.gridy=4;
 		f.add(province, c);
 
 		c.gridx=2;
-		c.gridy=3;
+		c.gridy=4;
 		f.add(country, c);
 		
 		c.gridx=0;
-		c.gridy=4;
+		c.gridy=5;
 		f.add(quadrantLabel, c);
 		
 		c.gridx=1;
-		c.gridy=4;
+		c.gridy=5;
 		f.add(furnishedLabel, c);
 		
 		c.gridx=0;
-		c.gridy=5;
+		c.gridy=6;
 		f.add(quadrant, c);
 		
 		c.gridx=1;
-		c.gridy=5;
+		c.gridy=6;
 		f.add(furnished, c);
 		
 		c.gridx=0;
-		c.gridy=6;
+		c.gridy=7;
 		f.add(typeLabel, c);
 
 		c.gridwidth=2;
 		c.gridx=0;
-		c.gridy=7;
+		c.gridy=8;
 		f.add(type, c);
 		
 		c.gridwidth=1;
@@ -190,13 +224,12 @@ public class CreateListingsPage extends Page {
 		
 		c.gridx=1;
 		c.gridy=14;
-		f.add(ok, c);
+		f.add(pay, c);
 		
-		//if(user!=null){
 		c.gridx=0;
 		c.gridy=14;
 		f.add(save, c);
-		//}
+
 		c.gridwidth=2;
 		c.weightx=0.0;
 		c.gridx=0;
