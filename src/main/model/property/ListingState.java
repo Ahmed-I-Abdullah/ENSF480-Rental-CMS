@@ -5,4 +5,5 @@ public enum ListingState {
     RENTED,
     CANCELLED,
     SUSPENDED,
+    REGISTERED
 }
