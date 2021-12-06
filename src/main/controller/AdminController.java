@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.math.BigDecimal;
 import src.main.model.property.*;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
@@ -38,7 +39,7 @@ public class AdminController extends UserController {
     System.out.println("total active listing is: " + totalNumActive);
   }
 
-  public void changeFeeAmount(int amount) throws SQLException {
+  public void changeFeeAmount(double amount) throws SQLException {
     Connection connection = ControllerManager.getConnection();
 
     String mostRecentFee =
@@ -56,8 +57,12 @@ public class AdminController extends UserController {
       "VALUES(DEFAULT, ?, ?, NOW());";
 
     PreparedStatement pStatment = connection.prepareStatement(amountUpdate);
+    System.out.println("received amount is: " + amount);
 
-    pStatment.setInt(1, amount);
+    BigDecimal decimalAmount = new BigDecimal(Double.toString(amount));
+    System.out.println("big decimal is: " + decimalAmount);
+
+    pStatment.setBigDecimal(1, decimalAmount);
     pStatment.setInt(2, previousDuration);
 
     pStatment.executeUpdate();
