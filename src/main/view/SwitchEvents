@@ -1,0 +1,7 @@
+MainPage switchEvent=0
+BrowseListingsPage switchEvent =1
+PostListings switchEvent = 2
+ManagerControlPage switchEvent=3 
+ManagerPeriodicalPage switchevent =4
+Notificationspage switchEvent=5
+ListingPage switchEvent=6+
