@@ -20,10 +20,13 @@ public class ListingsPage extends Page {
 
     public void draw() {
         JButton back = new JButton("Back");
+        final Property property = properties.get(switchEvent - 6);
 
         try {
             if (controller.getUserController().getAuthenticatedUser().getUserType() != null
-                    && controller.getUserController().getAuthenticatedUser().getUserType() != UserType.RENTER) {
+                    && (controller.getUserController().getAuthenticatedUser().getUserType() == UserType.LANDLORD
+                            && property.getPostedBy() == controller.getUserController().getUser().getName())
+                    || controller.getUserController().getAuthenticatedUser().getUserType() == UserType.MANAGER) {
                 String[] listingStateOptions = { "ACTIVE", "RENTED", "CANCELLED", "SUSPENDED" };
                 JComboBox<String> changeListingState = new JComboBox<String>(listingStateOptions);
                 changeListingState.setBounds(300, 300, 100, 30);
@@ -62,11 +65,13 @@ public class ListingsPage extends Page {
         widget.draw(g);
         widget = new Text(275, 130, "Bathrooms: " + property.getSpecifications().getNumOfBathrooms());
         widget.draw(g);
-        widget = new Text(275, 180, "Furnishing: " + property.getSpecifications().getFurnished());
+        widget = new Text(275, 180, "Furnished: " + property.getSpecifications().getFurnished());
         widget.draw(g);
         try {
             if (controller.getUserController().getAuthenticatedUser().getUserType() != null
-                    && controller.getUserController().getAuthenticatedUser().getUserType() != UserType.RENTER) {
+                    && (controller.getUserController().getAuthenticatedUser().getUserType() == UserType.LANDLORD
+                            && property.getPostedBy() == controller.getUserController().getUser().getName())
+                    || controller.getUserController().getAuthenticatedUser().getUserType() == UserType.MANAGER) {
                 widget = new Text(275, 280, "ListingState: " + property.getSpecifications().getState());
                 widget.draw(g);
             }
