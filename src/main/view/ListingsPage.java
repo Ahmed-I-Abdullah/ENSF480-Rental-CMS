@@ -2,8 +2,11 @@ package src.main.view;
 
 import java.awt.Graphics;
 import javax.swing.*;
+import src.main.model.user.UserType;
 
 import src.main.controller.ViewController;
+import src.main.controller.AdminController;
+import src.main.model.property.*;
 
 public class ListingsPage extends Page {
 
@@ -48,5 +51,23 @@ public class ListingsPage extends Page {
         widget.draw(g);
         widget = new Text(275, 280, "Levels: " + 2);
         widget.draw(g);
+        
+        String id = "2e535bb8-54cd-11ec-8d3e-0afc51b797af";
+        int new_state = 2;
+        //change listing state
+        if (
+        controller.getUserController().getAuthenticatedUser() != null &&
+        (controller.getUserController().getAuthenticatedUser().getUserType() ==
+        UserType.LANDLORD || controller.getUserController().getAuthenticatedUser().getUserType() ==
+        UserType.MANAGER)
+        ) {
+            ListingState current_state = controller.getPostingController().getListingState(id);
+            widget = new Text(275, 330, "Listing State: " + current_state);
+            widget.draw(g);
+            if(ListingState.values()[new_state] != current_state){
+                widget = new Text(275, 370, "New Listing State: " + controller.getPostingController().changeListingState(id, new_state));
+                widget.draw(g);
+            }
+        }
     }
 }
