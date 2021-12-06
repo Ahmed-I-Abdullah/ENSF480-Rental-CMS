@@ -188,4 +188,8 @@ public class UserController {
   public User getAuthenticatedUser() {
     return this.authenticatedUser;
   }
+
+  public void setAuthenticatedUser(User u) {
+    this.authenticatedUser = u;
+  }
 }
