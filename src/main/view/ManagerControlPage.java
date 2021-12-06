@@ -1,13 +1,19 @@
 package src.main.view;
 
 import java.awt.*;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.lang.ModuleLayer.Controller;
 import javax.swing.*;
+import src.main.controller.AdminController;
 import src.main.controller.ViewController;
 
 public class ManagerControlPage extends Page {
+
+  private String currentFee =
+    "Current fee: $" + controller.getPostingController().getFeeAmount();
+  private String currentDuration =
+    "Current duration(month): " +
+    controller.getPostingController().getFeeDuration();
 
   public ManagerControlPage(Widget w, ViewController c) {
     super(c);
@@ -49,9 +55,13 @@ public class ManagerControlPage extends Page {
     fees.addActionListener(
       e -> {
         JFrame pop = new JFrame("Edit Fees");
-        pop.setSize(100, 100);
+        pop.setSize(300, 250);
         pop.setLocationRelativeTo(null);
         pop.setLayout(new GridBagLayout());
+
+        JLabel feeLabel = new JLabel(currentFee);
+
+        JLabel durationLabel = new JLabel(currentDuration);
 
         JTextField price = new JTextField("New Fee");
 
@@ -61,8 +71,39 @@ public class ManagerControlPage extends Page {
 
         update.addActionListener(
           p -> {
+            String newFee = price.getText();
+            String newTerm = term.getText();
+            double numericFee = 0;
+            int numericDuration = 0;
+            boolean good = true;
             System.out.println(price.getText() + "\n" + term.getText());
-            //viewController.updateFees(price, term);
+            try {
+              numericFee = Double.parseDouble(newFee);
+              numericDuration = Integer.parseInt(newTerm);
+            } catch (Exception z) {
+              good = false;
+              JFrame popup = new JFrame("Invalid data entered");
+              popup.setSize(250, 250);
+              popup.setLocationRelativeTo(null);
+              JLabel text = new JLabel("Please only enter digits");
+              text.setBounds(150, 100, 100, 30);
+              popup.add(text);
+              popup.setVisible(true);
+            }
+            if (good) {
+              try {
+                AdminController aController = new AdminController(
+                  controller.getUserController().getAuthenticatedUser()
+                );
+                aController.changeFeeAmount(numericFee);
+                aController.changeFeeDuration(numericDuration);
+                currentFee = "Current fee: $" + numericFee;
+                currentDuration = "Current duration(month): " + numericDuration;
+              } catch (Exception ex) {
+                ex.printStackTrace();
+              }
+              pop.setVisible(false);
+            }
           }
         );
 
@@ -72,16 +113,24 @@ public class ManagerControlPage extends Page {
         c.weightx = 1.0;
         c.gridx = 0;
         c.gridy = 0;
-        pop.add(price);
+        pop.add(feeLabel, c);
 
         c.gridx = 1;
         c.gridy = 0;
-        pop.add(term);
+        pop.add(durationLabel, c);
 
         c.gridx = 0;
         c.gridy = 1;
+        pop.add(price, c);
+
+        c.gridx = 1;
+        c.gridy = 1;
+        pop.add(term, c);
+
+        c.gridx = 0;
+        c.gridy = 4;
         c.weightx = 2.0;
-        pop.add(update);
+        pop.add(update, c);
         pop.setVisible(true);
       }
     );
