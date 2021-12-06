@@ -3,7 +3,13 @@ package src.main.model.property;
 import src.main.model.user.Landlord;
 import src.main.model.property.Property;
 import src.main.model.user.RegisteredRenter;
-import com.sendgrid.*;
+import com.sendgrid.Email;
+import com.sendgrid.Content;
+import com.sendgrid.Mail;
+import com.sendgrid.SendGrid;
+import com.sendgrid.Request;
+import com.sendgrid.Method;
+import com.sendgrid.Response;
 import java.io.IOException;
 
 public class ApplicationEmail {
