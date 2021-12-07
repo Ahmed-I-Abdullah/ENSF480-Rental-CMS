@@ -29,10 +29,10 @@ public class ListingsPage extends Page {
                             && property.getPostedBy() == controller.getUserController().getUser().getName())
                     || controller.getUserController().getAuthenticatedUser().getUserType() == UserType.MANAGER) {
                 final JTextField type = new JTextField(property.getSpecifications().getHousingType());
-                final JTextField bedrooms = new JTextField(property.getSpecifications().getHousingType());
-                final JTextField bathrooms = new JTextField(property.getSpecifications().getHousingType());
-                final JTextField furnished = new JTextField(property.getSpecifications().getHousingType());
-                final JTextField quadrant = new JTextField(property.getSpecifications().getHousingType());
+                final JTextField bedrooms = new JTextField(property.getSpecifications().getBedrooms());
+                final JTextField bathrooms = new JTextField(property.getSpecifications().getBathrooms());
+                final JTextField furnished = new JTextField(property.getSpecifications().getFurnished());
+                final JTextField quadrant = new JTextField(property.getSpecifications().getCityQuadrant());
                 final JButton edit = new JButton("Edit");
 
                 type.setBounds(275, 230, 100, 30);
