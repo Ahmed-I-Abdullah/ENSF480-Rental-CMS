@@ -15,7 +15,7 @@ public class PostingController {
 
   public void payFee() {}
 
-  public void addPropertyToDatabase(
+  public Property addPropertyToDatabase(
     User u,
     Address address,
     ListingDetails specifications,
@@ -23,7 +23,7 @@ public class PostingController {
     String description
   ) {
     Landlord landlord = (Landlord) u;
-    landlord.createProperty("", address, specifications, postedBy, description);
+    return landlord.createProperty("", address, specifications, postedBy, description);
   }
 
   public ListingState getListingState(String id) {
