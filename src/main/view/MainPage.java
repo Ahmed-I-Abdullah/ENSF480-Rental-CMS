@@ -419,6 +419,7 @@ public class MainPage extends Page {
           f.add(manage);
         }
       }
+      f.add(signout);
     }
     f.add(browse);
     f.getContentPane().add(this);
