@@ -23,45 +23,7 @@ public class ListingsPage extends Page {
     public void draw() {
         User currentUser = null;
         try {
-            if (controller.getUserController().getAuthenticatedUser() != null
-                    && (controller.getUserController().getAuthenticatedUser().getUserType() == UserType.LANDLORD
-                            && property.getPostedBy() == controller.getUserController().getUser().getName())
-                    || controller.getUserController().getAuthenticatedUser().getUserType() == UserType.MANAGER) {
-                final JTextField type = new JTextField(property.getSpecifications().getHousingType());
-                final JTextField bedrooms = new JTextField(property.getSpecifications().getNumOfBedrooms());
-                final JTextField bathrooms = new JTextField(property.getSpecifications().getNumOfBathrooms());
-                //needs to be changed
-                final JTextField furnished = new JTextField(property.getSpecifications().getHousingType());
-                final JTextField quadrant = new JTextField(property.getSpecifications().getCityQuadrant());
-                final JButton edit = new JButton("Edit");
-
-                type.setBounds(275, 230, 100, 30);
-                bedrooms.setBounds(275, 80, 100, 30);
-                bathrooms.setBounds(275, 130, 100, 30);
-                furnished.setBounds(275, 180, 100, 30);
-                quadrant.setBounds(275, 230, 100, 30);
-                edit.setBounds(275, 280, 75, 50);
-                edit.addActionListener(e -> {
-                    try {
-                        controller.getCurrentProperty().getSpecifications()
-                                .setNumOfBedrooms(Integer.valueOf(bedrooms.toString()));
-                        controller.getCurrentProperty().getSpecifications()
-                                .setNumOfBathrooms(Integer.valueOf(bathrooms.toString()));
-                        controller.getCurrentProperty().getSpecifications()
-                                .setFurnished(Boolean.valueOf(furnished.toString()));
-                    } catch (Exception ex) {
-                        System.out.println("Wrong data types");
-                    }
-                    controller.getCurrentProperty().getSpecifications().setCityQuadrant(quadrant.toString());
-                });
-                f.add(type);
-                f.add(bedrooms);
-                f.add(bathrooms);
-                f.add(furnished);
-                f.add(quadrant);
-                f.add(edit);
-            }
-
+            currentUser = controller.getUserController().getAuthenticatedUser();
         } catch (Exception e) {
             System.out.println("Not logged in");
         }
