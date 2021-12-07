@@ -145,8 +145,10 @@ public class ManagerControlPage extends Page {
         JTextField search = new JTextField();
 
         JLabel found = new JLabel("Search User");
-
-        JButton delete = new JButton("delete");
+		JLabel name = new JLabel();
+		JLabel email = new JLabel();
+		JLabel role = new JLabel();
+        // JButton delete = new JButton("delete");
 
         final GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -156,11 +158,26 @@ public class ManagerControlPage extends Page {
             System.out.println(search.getText());
             //viewController.searchUsers(search.getText());
             pop.setVisible(false);
-            if (true) { //if the user is found
+			String [] data=controller.getUserController().findUser(search.getText());
+            if (data!=null) { //if the user is found
+				pop.remove(search);
               found.setText("User found!");
               c.gridx = 0;
+              c.gridy = 0;
+			  pop.add(found, c);
+			  name.setText(data[0]);
+			  c.gridx = 0;
+              c.gridy = 1;
+			  pop.add(name, c);
+			  email.setText(data[1]);
+			  c.gridx = 0;
               c.gridy = 2;
-              pop.add(delete, c);
+			  pop.add(email, c);
+			  role.setText(data[2]);
+			  c.gridx = 0;
+              c.gridy = 3;
+			  pop.add(role, c);
+              // pop.add(delete, c);
             } else {
               found.setText("User not found");
             }
@@ -168,12 +185,12 @@ public class ManagerControlPage extends Page {
           }
         );
 
-        delete.addActionListener(
-          p -> {
-            System.out.println("user deleted");
-            //viewController.deleteUser(user);
-          }
-        );
+        // delete.addActionListener(
+          // p -> {
+            // // System.out.println("user deleted");
+            // //viewController.deleteUser(user);
+          // }
+        // );
 
         c.gridx = 0;
         c.gridy = 0;

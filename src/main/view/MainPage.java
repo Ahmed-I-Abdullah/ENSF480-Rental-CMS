@@ -105,13 +105,14 @@ public class MainPage extends Page {
     signout.setBounds(670, 200, 100, 25);
 
     final JButton notifications = new JButton("Notifications");
-    notifications.setBounds(100, 170, 100, 50);
+    notifications.setBounds(700, 80, 100, 50);
 
     notifications.addActionListener(
       e -> {
         f.setVisible(false);
         f.getContentPane().removeAll();
         switchEvent = 5;
+		validate();
       }
     );
 
@@ -120,6 +121,8 @@ public class MainPage extends Page {
         f.setVisible(false);
         f.getContentPane().removeAll();
         switchEvent = 1;
+		f.dispose();
+		f.validate();
       }
     );
 
@@ -128,6 +131,7 @@ public class MainPage extends Page {
         f.setVisible(false);
         f.getContentPane().removeAll();
         switchEvent = 2;
+		validate();
       }
     );
 
@@ -136,6 +140,7 @@ public class MainPage extends Page {
         f.setVisible(false);
         f.getContentPane().removeAll();
         switchEvent = 3;
+		validate();
       }
     );
 

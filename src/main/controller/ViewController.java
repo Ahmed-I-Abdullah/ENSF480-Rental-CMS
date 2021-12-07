@@ -24,8 +24,9 @@ public class ViewController {
       String propertyQuery = "SELECT * FROM PROPERTY WHERE Current_state=?";
 
       PreparedStatement pStatment = connection.prepareStatement(propertyQuery);
-      pStatment.setInt(1, ListingState.ACTIVE.ordinal());
 
+      pStatment.setInt(1, ListingState.ACTIVE.ordinal());
+	  
       ResultSet result = pStatment.executeQuery();
 
       while (result.next()) {

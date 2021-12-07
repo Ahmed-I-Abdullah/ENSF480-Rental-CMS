@@ -257,6 +257,8 @@ public class BrowseListingsPage extends Page {
         f.setVisible(false);
         f.removeAll();
         resetSwitchEvent();
+		f.dispose();
+		f.validate();
       }
     );
 

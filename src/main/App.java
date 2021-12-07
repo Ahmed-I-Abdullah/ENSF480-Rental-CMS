@@ -6,6 +6,7 @@ import src.main.controller.ControllerManager;
 import src.main.controller.UserController;
 import src.main.controller.ViewController;
 import src.main.view.*;
+import javax.swing.*;
 
 public class App {
 
@@ -19,8 +20,11 @@ public class App {
     Page p = new MainPage(w, v);
     p.draw();
     boolean firstDisplay = true;
-
+	
+	int c=0;
     while (true) {
+		System.out.println("run #:"+ c);
+		c++;
       if (p.getSwitchEvent() == 0 && !firstDisplay) {
         p = new MainPage(w, v);
         p.draw();

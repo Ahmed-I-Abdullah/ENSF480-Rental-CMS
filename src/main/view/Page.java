@@ -36,6 +36,10 @@ public abstract class Page extends JPanel {
 		switchEvent=swe;
 	}
 	
+	public JFrame getFrame(){
+		return this.f;
+	}
+	
 	public abstract void paintComponent(Graphics g);
 	
 	public abstract void draw ();
