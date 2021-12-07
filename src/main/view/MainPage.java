@@ -6,10 +6,12 @@ import javax.swing.*;
 import src.main.controller.UnAuthorizedException;
 import src.main.controller.UserNotFoundException;
 import src.main.controller.ViewController;
+import src.main.model.user.RegisteredRenter;
 import src.main.model.user.UserType;
 
 public class MainPage extends Page {
 
+  private boolean isSubscribed = false;
   String welcomeMessage = "Hello";
   static String userName = "";
   static String loginErrorMessage = "";
@@ -23,6 +25,22 @@ public class MainPage extends Page {
     super(c);
     widget = w;
     resetSwitchEvent();
+    if (
+      controller.getUserController().getAuthenticatedUser() != null &&
+      controller.getUserController().getAuthenticatedUser().getUserType() ==
+      UserType.RENTER
+    ) {
+      RegisteredRenter r = (RegisteredRenter) controller
+        .getUserController()
+        .getAuthenticatedUser();
+      isSubscribed = r.getIsSubscribed();
+    }
+    if(controller.getUserController().getAuthenticatedUser() != null) {
+      userName = controller.getUserController().getAuthenticatedUser().getName();
+      if(welcomeMessage.equals("Hello")) {
+        welcomeMessage += " " + userName;
+      }
+    }
   }
 
   private boolean checkRegisterErrors(
@@ -178,13 +196,22 @@ public class MainPage extends Page {
               f.setVisible(true);
               pop.setVisible(false);
               if (
+                controller.getUserController().getAuthenticatedUser() != null &&
                 controller
                   .getUserController()
                   .getAuthenticatedUser()
                   .getUserType() ==
                 UserType.RENTER
               ) {
-                f.add(notifications);
+                RegisteredRenter r = (RegisteredRenter) controller
+                  .getUserController()
+                  .getAuthenticatedUser();
+                isSubscribed = r.getIsSubscribed();
+              }
+              if (isSubscribed) {
+                if (isSubscribed) {
+                  f.add(notifications);
+                }
               }
               if (
                 controller
@@ -267,12 +294,19 @@ public class MainPage extends Page {
           f.setVisible(true);
           f.getContentPane().remove(Sinbutton);
           if (
+            controller.getUserController().getAuthenticatedUser() != null &&
             controller
               .getUserController()
               .getAuthenticatedUser()
               .getUserType() ==
             UserType.RENTER
           ) {
+            RegisteredRenter r = (RegisteredRenter) controller
+              .getUserController()
+              .getAuthenticatedUser();
+            isSubscribed = r.getIsSubscribed();
+          }
+          if (isSubscribed) {
             f.add(notifications);
           }
           if (
@@ -359,9 +393,16 @@ public class MainPage extends Page {
       f.add(Sinbutton);
     } else {
       if (
+        controller.getUserController().getAuthenticatedUser() != null &&
         controller.getUserController().getAuthenticatedUser().getUserType() ==
         UserType.RENTER
       ) {
+        RegisteredRenter r = (RegisteredRenter) controller
+          .getUserController()
+          .getAuthenticatedUser();
+        isSubscribed = r.getIsSubscribed();
+      }
+      if (isSubscribed) {
         f.add(notifications);
       }
       if (
