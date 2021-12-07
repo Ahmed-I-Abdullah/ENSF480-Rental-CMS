@@ -151,7 +151,7 @@ public class CreateListingsPage extends Page {
                 description.getText()
               );
         } else{
-				  controller.getPostingController().changeListingState(addProperty.getHouseID(), ListingState.ACTIVE.ordinal());
+				  controller.getPostingController().changeListingState(addedProperty.getHouseID(), ListingState.ACTIVE.ordinal());
 			  }
         try {
           controller.getPostingController().payFee(addedProperty);

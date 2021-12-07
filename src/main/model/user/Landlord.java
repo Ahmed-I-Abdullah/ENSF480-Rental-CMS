@@ -89,7 +89,6 @@ public class Landlord implements User {
         System.exit(-1);
         return null;
       }
-      return null;
 
   }
 
