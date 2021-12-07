@@ -36,7 +36,7 @@ public class CreateListingsPage extends Page {
 		GridBagConstraints c= new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		
-		final JButton pay = new JButton("Pay $60 for 2 months");
+		final JButton pay = new JButton("Pay $" + controller.getPostingController().getFeeAmount() + " for " + controller.getPostingController().getFeeDuration() + " months");
 		
 		final JButton save= new JButton("Save");
 		
