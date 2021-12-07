@@ -92,6 +92,10 @@ public class Landlord implements User {
 
   }
 
+  public ArrayList<Property> getLandlordProperties() {
+    return this.properties;
+  }
+
   public String getName() {
     return this.name;
   }
