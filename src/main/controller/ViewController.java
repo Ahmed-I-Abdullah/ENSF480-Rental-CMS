@@ -15,6 +15,7 @@ public class ViewController {
   private ArrayList<Property> allProperties;
   private PostingController postingController;
   private UserController userController;
+  private Property currentProperty;
 
   public ViewController() {
     postingController = new PostingController();
@@ -65,6 +66,14 @@ public class ViewController {
       System.exit(-1);
     }
   }
+
+  public void setCurrentProperty(int i){
+	  this.currentProperty=this.allProperties.get(i);
+  }
+  public Property getCurrentProperty(){
+	  return this.currentProperty;
+  }
+
 
   public ArrayList<Property> getAllProperties() {
     return this.allProperties;

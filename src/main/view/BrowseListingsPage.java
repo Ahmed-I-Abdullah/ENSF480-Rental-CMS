@@ -217,12 +217,8 @@ public class BrowseListingsPage extends Page {
       final int p = i;
       clickme.addActionListener(
           e -> {
-            for (int z = 0; z < properties.size(); z++) {
-              if (z == p)
-                System.out.println(
-                    getFormattedAddress(properties.get(z)));
-            }
-            switchEvent = 6 + p;
+            controller.setCurrentProperty(p);
+            switchEvent = 6;
           });
       f.add(clickme);
     }

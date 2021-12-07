@@ -68,12 +68,12 @@ public class App {
       while (p.getSwitchEvent() == 5) {
       }
 
-      if (p.getSwitchEvent() >= 6) {
-        p = new ListingsPage(w, v, p.getSwitchEvent());
+      if (p.getSwitchEvent() == 6) {
+        p = new ListingsPage(w, v);
         p.draw();
       }
 
-      while (p.getSwitchEvent() >= 6) {
+      while (p.getSwitchEvent() == 6) {
       }
 
       firstDisplay = false;
