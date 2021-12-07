@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import javax.swing.*;
 import java.awt.*;
 
+import src.main.model.user.User;
 import src.main.model.user.UserType;
 
 import src.main.controller.ViewController;
@@ -72,71 +73,71 @@ public class ListingsPage extends Page {
 		
 		
         back.addActionListener(
-                e -> {
-                    f.setVisible(false);
-                    f.removeAll();
-					switchEvent=1;
-                    //resetSwitchEvent();
-                });
+        e -> {
+            f.setVisible(false);
+            f.removeAll();
+            switchEvent=1;
+            //resetSwitchEvent();
+        });
 
-        String id =  controller.getCurrentProperty().getHouseID();
-
+        String id = controller.getCurrentProperty().getHouseID();
         JLabel state = new JLabel(controller.getPostingController().getListingState(id).toString());
         state.setBounds(375, 310, 100, 30);
 
-        if (
-        controller.getUserController().getAuthenticatedUser() != null &&
-        (controller.getUserController().getAuthenticatedUser().getUserType() ==
-        UserType.LANDLORD || controller.getUserController().getAuthenticatedUser().getUserType() ==
-        UserType.MANAGER)
-        ) {
-            JButton filters = new JButton("Change Listing State");
-            filters.setBounds(475, 310, 200, 30);
+        JButton filters = new JButton("Change Listing State");
+        filters.setBounds(475, 310, 200, 30);
 
-            filters.addActionListener(
-            e -> {
-                JFrame pop = new JFrame("Select the Listing State");
-                pop.setSize(250, 150);
-                pop.setLocationRelativeTo(null);
-                pop.setLayout(new GridBagLayout());
+        filters.addActionListener(
+        e -> {
+            JFrame pop = new JFrame("Select the Listing State");
+            pop.setSize(250, 150);
+            pop.setLocationRelativeTo(null);
+            pop.setLayout(new GridBagLayout());
 
-                GridBagConstraints c = new GridBagConstraints();
-                c.fill = GridBagConstraints.HORIZONTAL;
+            GridBagConstraints c = new GridBagConstraints();
+            c.fill = GridBagConstraints.HORIZONTAL;
 
-                int chosenState = 0;
-                JComboBox<String> changeListingState = new JComboBox<String>(ListingState.getNames(ListingState.class));
-                changeListingState.setSelectedIndex(chosenState);
+            int chosenState = 0;
+            JComboBox<String> changeListingState = new JComboBox<String>(ListingState.getNames(ListingState.class));
+            changeListingState.setSelectedIndex(chosenState);
 
-                JButton save = new JButton("Save");
+            JButton save = new JButton("Save");
 
-                save.addActionListener(
-                p -> {
-                    ListingState new_state = ListingState.valueOf(changeListingState.getSelectedItem().toString());
-                    controller.getPostingController().changeListingState(id, new_state.ordinal());
-                    state.setText(controller.getPostingController().getListingState(id).toString()); //change listing state on main page
-                    pop.setVisible(false);
-                }
-                );
-
-                c.gridwidth = 1;
-                c.weightx = 0.0;
-                c.gridx = 0;
-                c.gridy = 0;
-                pop.add(changeListingState, c);
-
-                c.gridx = 0;
-                c.gridy = 1;
-                pop.add(save, c);
-
-                pop.setVisible(true);
+            save.addActionListener(
+            p -> {
+                ListingState new_state = ListingState.valueOf(changeListingState.getSelectedItem().toString());
+                controller.getPostingController().changeListingState(id, new_state.ordinal());
+                state.setText(controller.getPostingController().getListingState(id).toString()); //change listing state on main page
+                pop.setVisible(false);
             }
             );
 
-            f.add(filters);
+            c.gridwidth = 1;
+            c.weightx = 0.0;
+            c.gridx = 0;
+            c.gridy = 0;
+            pop.add(changeListingState, c);
+
+            c.gridx = 0;
+            c.gridy = 1;
+            pop.add(save, c);
+
+            pop.setVisible(true);
         }
+        );
+
+        User currentUser = controller.getUserController().getAuthenticatedUser();
+        
+
         f.add(state);
-		if(controller.getUserController().getAuthenticatedUser()!=null){
+		if(currentUser!=null){
 			f.add(email);
+            
+            if ((currentUser.getUserType() == UserType.LANDLORD && controller.getCurrentProperty().getPostedBy().equals(currentUser.getEmail()))  //landlord only views their own postings
+            || currentUser.getUserType() == UserType.MANAGER)
+            {
+                f.add(filters);
+            }
 		}
         f.add(back);
         f.getContentPane().add(this);
