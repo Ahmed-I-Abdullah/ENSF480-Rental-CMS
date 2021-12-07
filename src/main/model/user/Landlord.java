@@ -82,13 +82,14 @@ public class Landlord implements User {
             description,
             true
           );
-          this.properties.add(property); 
-          return property;  
+          this.properties.add(property);
+          return property;
       } catch(Exception e) {
         e.printStackTrace();
         System.exit(-1);
         return null;
       }
+      return null;
 
   }
 

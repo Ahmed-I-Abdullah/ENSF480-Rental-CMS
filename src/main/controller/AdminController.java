@@ -176,7 +176,6 @@ public class AdminController extends UserController {
 
     ResultSet result = pStatment.executeQuery();
     while (result.next()) {
-      System.out.println("HHHHHHHHHHHHHHHH");
       Address propertyAddress = new Address(
         result.getString("city"),
         result.getString("province"),
