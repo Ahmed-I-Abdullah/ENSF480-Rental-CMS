@@ -32,7 +32,7 @@ public class Property {
     this.postedBy = postedBy;
     this.description = description;
     if (addToDatabase) {
-      houseID = addPropertyToDatabase();
+      this.houseID = addPropertyToDatabase();
     } else {
       this.houseID = houseID;
     }

@@ -5,7 +5,6 @@ import javax.swing.*;
 
 import src.main.model.property.ListingDetails;
 import src.main.model.property.ListingState;
-import src.main.model.property.Property;
 import src.main.model.user.User;
 import src.main.controller.ViewController;
 
@@ -24,10 +23,11 @@ public class CreateListingsPage extends Page {
 		"191 Leninskya Street Apt. 41",
 	  };
 	
+	Property new_property;
 	public CreateListingsPage(Widget w, ViewController c){
 		super(c);
 		widget=w;
-		switchEvent=5;
+		switchEvent=2;
 	}
 
 	public void draw(){
@@ -119,17 +119,19 @@ public class CreateListingsPage extends Page {
 				ListingDetails listingDetails = new ListingDetails(ListingState.ACTIVE, bedrooms.getValue(),bathrooms.getValue(), type.getText(), furnish, quadrant.getSelectedItem().toString());
 				Address address = new Address(city.getText(),province.getText(),country.getText(),streetNo.getText() + ", " + street.getText(), postalCode.getText());
 				User currentUser = controller.getUserController().getAuthenticatedUser();
-				controller.getPostingController().addPropertyToDatabase(currentUser, address, listingDetails, currentUser.getEmail(), description.getText());
+				new_property = controller.getPostingController().addPropertyToDatabase(currentUser, address, listingDetails, currentUser.getEmail(), description.getText());
 				savePressed = true;
-				
 			} else{
-				//Add controller!
-				//listingDetails.setState(ListingState.ACTIVE);
+				//System.out.println(new_property.getHouseID());
+				controller.getPostingController().changeListingState(new_property.getHouseID(), ListingState.ACTIVE.ordinal());
 			}
-			
+
 			c.gridx=1;
 			c.gridy=15;
-			f.add(sucess, c);	
+			f.add(sucess, c);
+			
+			f.setVisible(false);
+			resetSwitchEvent();
 		});
 		
 		save.addActionListener(p->{
@@ -141,7 +143,7 @@ public class CreateListingsPage extends Page {
 				ListingDetails listingDetails = new ListingDetails(ListingState.REGISTERED, bedrooms.getValue(),bathrooms.getValue(), type.getText(), furnish, quadrant.getSelectedItem().toString());
 				Address address = new Address(city.getText(),province.getText(),country.getText(),streetNo.getText() + ", " + street.getText(), postalCode.getText());
 				User currentUser = controller.getUserController().getAuthenticatedUser();
-				controller.getPostingController().addPropertyToDatabase(currentUser, address, listingDetails, currentUser.getEmail(), description.getText());
+				new_property = controller.getPostingController().addPropertyToDatabase(currentUser, address, listingDetails, currentUser.getEmail(), description.getText());
 				savePressed = true;
 			}
 		});
