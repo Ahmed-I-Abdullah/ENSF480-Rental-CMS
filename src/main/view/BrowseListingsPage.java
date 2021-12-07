@@ -1,9 +1,7 @@
 package src.main.view;
 
 import java.awt.*;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import javax.swing.*;
 import src.main.controller.ViewController;
