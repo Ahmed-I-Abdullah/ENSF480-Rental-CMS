@@ -68,7 +68,7 @@ public class Landlord implements User {
     }
   }
 
-  public void createProperty(String houseID,
+  public Property createProperty(String houseID,
   Address address,
   ListingDetails specifications,
   String postedBy,
@@ -82,10 +82,12 @@ public class Landlord implements User {
             description,
             true
           );
-          this.properties.add(property);   
+          this.properties.add(property); 
+          return property;  
       } catch(Exception e) {
         e.printStackTrace();
         System.exit(-1);
+        return null;
       }
 
   }
