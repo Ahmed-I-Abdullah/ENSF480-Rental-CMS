@@ -2,7 +2,6 @@ package src.main.view;
 
 import java.awt.*;
 import java.awt.Graphics;
-import java.lang.ModuleLayer.Controller;
 import javax.swing.*;
 import src.main.controller.AdminController;
 import src.main.controller.ViewController;
@@ -154,7 +153,7 @@ public class ManagerControlPage extends Page {
         search.addActionListener(
           p -> {
             System.out.println(search.getText());
-            //viewController.searchUsers(search.getText());
+            //controller.searchUsers(search.getText());
             pop.setVisible(false);
             if (true) { //if the user is found
               found.setText("User found!");

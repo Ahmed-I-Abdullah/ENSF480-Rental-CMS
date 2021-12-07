@@ -6,8 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.BitSet;
-import java.math.RoundingMode;
+
 import src.main.model.property.*;
 import src.main.model.user.Landlord;
 import src.main.model.user.User;
@@ -73,8 +72,8 @@ public class PostingController {
           "WHERE id = '" + id + "';";
 
       PreparedStatement pStatement = connection.prepareStatement(stateOfListing);
-      pStatement.setInt(1, new_state);
-      int i = pStatement.executeUpdate();
+      pStatement.setInt(1,new_state);
+      pStatement.executeUpdate();
       ListingState listingState = ListingState.values()[new_state];
       return listingState;
     } catch (Exception e) {

@@ -61,6 +61,7 @@ public class ControllerManager {
       e.printStackTrace();
       System.exit(-1);
     }
+    fileScanner.close();
   }
 
 

@@ -1,15 +1,11 @@
 package src.main.model.property;
 
-import src.main.model.user.Landlord;
-import src.main.model.property.Property;
-import src.main.model.user.RegisteredRenter;
 import com.sendgrid.Email;
 import com.sendgrid.Content;
 import com.sendgrid.Mail;
 import com.sendgrid.SendGrid;
 import com.sendgrid.Request;
 import com.sendgrid.Method;
-import com.sendgrid.Response;
 import java.io.IOException;
 
 public class ApplicationEmail {
@@ -45,7 +41,7 @@ public class ApplicationEmail {
       request.setMethod(Method.POST);
       request.setEndpoint("mail/send");
       request.setBody(mail.build());
-      Response response = sendGrid.api(request);
+      sendGrid.api(request);
     } catch (IOException e) {
         e.printStackTrace();
       return false;

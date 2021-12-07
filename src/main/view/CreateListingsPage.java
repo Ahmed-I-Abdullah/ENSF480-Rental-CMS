@@ -3,7 +3,6 @@ package src.main.view;
 import java.awt.*;
 import java.awt.Graphics;
 import java.awt.event.*;
-import java.lang.ModuleLayer.Controller;
 import javax.swing.*;
 import src.main.controller.ViewController;
 import src.main.model.property.*;
@@ -61,8 +60,6 @@ public class CreateListingsPage extends Page {
     streetNo.addKeyListener(
       new KeyAdapter() {
         public void keyPressed(KeyEvent ke) {
-          String value = streetNo.getText();
-          //int l = value.length();
 
           if (
             (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') ||
