@@ -13,6 +13,7 @@ import src.main.model.property.Property;
 public class ViewController {
 
   private ArrayList<Property> allProperties;
+  private Property currentProperty;
   private PostingController postingController;
   private UserController userController;
 
@@ -72,6 +73,12 @@ public class ViewController {
 
   public void setUserController(UserController controller) {
     this.userController = controller;
+  }
+  public void setCurrentProperty(int i){
+	  this.currentProperty=this.allProperties.get(i);
+  }
+  public Property getCurrentProperty(){
+	  return this.currentProperty;
   }
 
   public UserController getUserController() {

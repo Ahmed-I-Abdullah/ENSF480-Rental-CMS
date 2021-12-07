@@ -87,6 +87,7 @@ public class Landlord implements User {
       } catch(Exception e) {
         e.printStackTrace();
         System.exit(-1);
+        return null;
       }
       return null;
 

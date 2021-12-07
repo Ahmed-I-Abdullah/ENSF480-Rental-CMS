@@ -9,7 +9,6 @@ import src.main.controller.ViewController;
 import src.main.model.property.*;
 import src.main.model.property.ListingDetails;
 import src.main.model.property.ListingState;
-import src.main.model.property.Property;
 import src.main.model.user.User;
 
 public class CreateListingsPage extends Page {
@@ -151,7 +150,9 @@ public class CreateListingsPage extends Page {
                 currentUser.getEmail(),
                 description.getText()
               );
-        }
+        } else{
+				  controller.getPostingController().changeListingState(addProperty.getHouseID(), ListingState.ACTIVE.ordinal());
+			  }
         try {
           controller.getPostingController().payFee(addedProperty);
           c.gridx = 1;
@@ -172,6 +173,13 @@ public class CreateListingsPage extends Page {
         } catch (Exception ex) {
           ex.printStackTrace();
         }
+        
+        /*c.gridx=1;
+        c.gridy=15;
+        f.add(sucess, c);
+
+        f.setVisible(false);
+        resetSwitchEvent();*/
       }
     );
 
