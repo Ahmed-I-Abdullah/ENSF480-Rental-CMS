@@ -8,12 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import src.main.model.property.ListingDetails;
+import src.main.model.property.Property;
 import src.main.model.property.ListingState;
 import src.main.model.user.Landlord;
 import src.main.model.user.Manager;
 import src.main.model.user.RegisteredRenter;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
+import src.main.model.property.ApplicationEmail;
 
 public class UserController {
 
@@ -192,4 +194,13 @@ public class UserController {
   public void setAuthenticatedUser(User u) {
     this.authenticatedUser = u;
   }
+  public void emailLandlord(Property p, String body){
+	  String subject = "Renter "+ this.authenticatedUser.getName() + "is interested in "+ p.getHouseID();
+	 ApplicationEmail e = new ApplicationEmail(p, subject, body);
+	 e.sendMessage();
+
+	  
+  }
+  
+  
 }

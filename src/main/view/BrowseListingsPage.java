@@ -233,14 +233,17 @@ public class BrowseListingsPage extends Page {
       final int p = i;
       clickme.addActionListener(
         e -> {
-          String id = "";
-          for (int z = 0; z < properties.size(); z++) {
-            if (z == p){ 
-              System.out.println(getFormattedAddress(properties.get(z)));
-              id = properties.get(z).getHouseID();
-            }
-          }
-          System.out.println(id);
+			
+			controller.setCurrentProperty(p);
+          // for (int z = 0; z < properties.size(); z++) {
+            // if (z == p) {
+				// System.out.println(
+              // getFormattedAddress(properties.get(z))
+            // );
+			// }
+          // }
+		  f.setVisible(false);
+		  f.removeAll();
           switchEvent = 6;
         }
       );
