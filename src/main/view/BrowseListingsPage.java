@@ -20,8 +20,6 @@ public class BrowseListingsPage extends Page {
   private String chosenApartmentType = chooseTypeText;
   private int chosenNumBedrooms = 0;
   private int chosenNumBathrooms = 0;
-  private String chosenMinPrice = "Min Price";
-  private String chosenMaxPrice = "Mac Price";
   private int chosenQuadrantIndex = 0;
   private int chosenFurnishedIndex = 0;
 
@@ -51,20 +49,6 @@ public class BrowseListingsPage extends Page {
       searchCriteriaErrors = "Choose property type.";
       return false;
     }
-    try {
-      Double.parseDouble(chosenMinPrice);
-    } catch (Exception e) {
-      searchCriteriaErrors = "Enter a valid Min Price";
-      return false;
-    }
-
-    try {
-      Double.parseDouble(chosenMaxPrice);
-    } catch (Exception e) {
-      searchCriteriaErrors = "Enter a valid Max Price";
-      return false;
-    }
-
     return true;
   }
 
@@ -125,10 +109,6 @@ public class BrowseListingsPage extends Page {
 
         JTextField type = new JTextField(chosenApartmentType);
 
-        JTextField minPrice = new JTextField(chosenMinPrice);
-
-        JTextField maxPrice = new JTextField(chosenMaxPrice);
-
         JLabel bedroomsLabel = new JLabel("Number of Bedrooms");
         JSlider bedrooms = new JSlider(
           JSlider.HORIZONTAL,
@@ -156,8 +136,6 @@ public class BrowseListingsPage extends Page {
         ok.addActionListener(
           p -> {
             chosenApartmentType = type.getText();
-            chosenMinPrice = minPrice.getText();
-            chosenMaxPrice = maxPrice.getText();
             chosenNumBathrooms = bathrooms.getValue();
             chosenNumBedrooms = bedrooms.getValue();
             chosenQuadrantIndex = quadrant.getSelectedIndex();
@@ -173,8 +151,6 @@ public class BrowseListingsPage extends Page {
         save.addActionListener(
           p -> {
             chosenApartmentType = type.getText();
-            chosenMinPrice = minPrice.getText();
-            chosenMaxPrice = maxPrice.getText();
             chosenNumBathrooms = bathrooms.getValue();
             chosenNumBedrooms = bedrooms.getValue();
             chosenQuadrantIndex = quadrant.getSelectedIndex();
@@ -191,16 +167,6 @@ public class BrowseListingsPage extends Page {
         c.gridx = 0;
         c.gridy = 0;
         pop.add(criteriaErrors, c);
-
-        c.weightx = 0.0;
-        c.gridwidth = 1;
-        c.gridx = 1;
-        c.gridy = 2;
-        pop.add(minPrice, c);
-
-        c.gridx = 1;
-        c.gridy = 3;
-        pop.add(maxPrice, c);
 
         c.gridx = 0;
         c.gridy = 2;

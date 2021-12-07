@@ -83,6 +83,20 @@ public class MainPage extends Page {
     final JButton post = new JButton("Post Property");
     post.setBounds(100, 170, 100, 50);
 
+    final JButton signout = new JButton("Sign out");
+    signout.setBounds(670, 200, 100, 25);
+
+    final JButton notifications = new JButton("Notifications");
+    notifications.setBounds(100, 170, 100, 50);
+
+    notifications.addActionListener(
+      e -> {
+        f.setVisible(false);
+        f.getContentPane().removeAll();
+        switchEvent = 5;
+      }
+    );
+
     browse.addActionListener(
       e -> {
         f.setVisible(false);
@@ -141,7 +155,13 @@ public class MainPage extends Page {
                 email.getText(),
                 name.getText(),
                 password.getText()
-              ) && signup(email.getText(), name.getText(), password.getText(), type.getSelectedIndex())
+              ) &&
+              signup(
+                email.getText(),
+                name.getText(),
+                password.getText(),
+                type.getSelectedIndex()
+              )
             ) {
               welcomeMessage += " " + userName;
               f.setVisible(false);
@@ -153,14 +173,36 @@ public class MainPage extends Page {
               f.getContentPane().remove(button);
               f.getContentPane().remove(prompt);
               f.getContentPane().remove(Sinbutton);
+              f.getContentPane().add(signout);
               f.getContentPane().add(this);
               f.setVisible(true);
               pop.setVisible(false);
-              if(controller.getUserController().getAuthenticatedUser().getUserType() == UserType.MANAGER) {
+              if (
+                controller
+                  .getUserController()
+                  .getAuthenticatedUser()
+                  .getUserType() ==
+                UserType.RENTER
+              ) {
+                f.add(notifications);
+              }
+              if (
+                controller
+                  .getUserController()
+                  .getAuthenticatedUser()
+                  .getUserType() ==
+                UserType.MANAGER
+              ) {
                 f.add(post);
                 f.add(manage);
               }
-              if(controller.getUserController().getAuthenticatedUser().getUserType() == UserType.LANDLORD) {
+              if (
+                controller
+                  .getUserController()
+                  .getAuthenticatedUser()
+                  .getUserType() ==
+                UserType.LANDLORD
+              ) {
                 f.add(post);
               }
             } else {
@@ -220,14 +262,36 @@ public class MainPage extends Page {
           f.getContentPane().remove(un);
           f.getContentPane().remove(button);
           f.getContentPane().remove(prompt);
+          f.getContentPane().add(signout);
           f.getContentPane().add(this);
           f.setVisible(true);
           f.getContentPane().remove(Sinbutton);
-          if(controller.getUserController().getAuthenticatedUser().getUserType() == UserType.MANAGER) {
+          if (
+            controller
+              .getUserController()
+              .getAuthenticatedUser()
+              .getUserType() ==
+            UserType.RENTER
+          ) {
+            f.add(notifications);
+          }
+          if (
+            controller
+              .getUserController()
+              .getAuthenticatedUser()
+              .getUserType() ==
+            UserType.MANAGER
+          ) {
             f.add(post);
             f.add(manage);
           }
-          if(controller.getUserController().getAuthenticatedUser().getUserType() == UserType.LANDLORD) {
+          if (
+            controller
+              .getUserController()
+              .getAuthenticatedUser()
+              .getUserType() ==
+            UserType.LANDLORD
+          ) {
             f.add(post);
           }
         } else {
@@ -237,6 +301,30 @@ public class MainPage extends Page {
         }
       }
     );
+    signout.addActionListener(
+      e -> {
+        welcomeMessage = "Hello ";
+        controller.getUserController().setAuthenticatedUser(null);
+        f.setVisible(false);
+        f.getContentPane().remove(this);
+        f.getContentPane().add(pass);
+        f.getContentPane().add(pw);
+        f.getContentPane().add(userN);
+        userN.setText("");
+        pass.setText("");
+        f.getContentPane().add(un);
+        f.getContentPane().add(button);
+        f.getContentPane().add(prompt);
+        f.getContentPane().add(Sinbutton);
+        f.getContentPane().remove(signout);
+        f.getContentPane().remove(manage);
+        f.getContentPane().remove(post);
+        f.getContentPane().remove(notifications);
+        f.getContentPane().add(this);
+        f.setVisible(true);
+      }
+    );
+
     pass.addActionListener(
       e -> {
         String username = userN.getText();
@@ -270,6 +358,12 @@ public class MainPage extends Page {
       f.add(prompt);
       f.add(Sinbutton);
     } else {
+      if (
+        controller.getUserController().getAuthenticatedUser().getUserType() ==
+        UserType.RENTER
+      ) {
+        f.add(notifications);
+      }
       if (
         controller.getUserController().getAuthenticatedUser().getUserType() ==
         UserType.MANAGER ||
@@ -331,9 +425,7 @@ public class MainPage extends Page {
       uType = UserType.LANDLORD;
     }
     try {
-      controller
-        .getUserController()
-        .signUp(email, name, password, uType);
+      controller.getUserController().signUp(email, name, password, uType);
     } catch (Exception ex) {
       ex.printStackTrace();
       registerErrors = "Email already used.";

@@ -17,7 +17,6 @@ public class ListingsPage extends Page {
         switchEvent = 6;
     }
 
-    @Override
     public void draw() {
         JButton back = new JButton("Back");
         back.setBounds(100, 50, 75, 50);
