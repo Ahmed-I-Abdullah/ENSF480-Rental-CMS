@@ -32,7 +32,7 @@ public class Property {
     this.postedBy = postedBy;
     this.description = description;
     if (addToDatabase) {
-      houseID = addPropertyToDatabase();
+      this.houseID = addPropertyToDatabase();
     } else {
       this.houseID = houseID;
     }
@@ -116,5 +116,18 @@ public class Property {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public void updateState(ListingState newState) throws SQLException {
+    Connection connection = ControllerManager.getConnection();
+    String updatePropertyState = "UPDATE PROPERTY " +
+    "SET Current_state = ? " +
+    "WHERE ID = ?::uuid;";
+
+    PreparedStatement pStatement = connection.prepareStatement(updatePropertyState);
+    pStatement.setInt(1, newState.ordinal());
+    pStatement.setString(2, houseID);
+
+    pStatement.executeUpdate();
   }
 }

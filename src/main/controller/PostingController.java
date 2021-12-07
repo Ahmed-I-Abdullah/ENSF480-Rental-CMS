@@ -15,9 +15,25 @@ public class PostingController {
 
   public PostingController() {}
 
-  public void payFee() {}
+  public void payFee(Property p) throws SQLException {
+    p.updateState(ListingState.ACTIVE);
 
-  public void addPropertyToDatabase(
+    String feeID = getFeeID();
+
+    Connection connection = ControllerManager.getConnection();
+    String updatePropertyFee = "INSERT INTO PAID_BY(Landlord_email, Fee_id, Property_id, Start_date, Num_periods) " +
+    "VALUES(?, ?::uuid, ?::uuid, DEFAULT, ?)";
+
+    PreparedStatement pStatement = connection.prepareStatement(updatePropertyFee);
+    pStatement.setString(1, p.getPostedBy());
+    pStatement.setString(2, feeID);
+    pStatement.setString(3, p.getHouseID());
+    pStatement.setInt(4, 1);
+
+    pStatement.executeUpdate();
+  }
+
+  public Property addPropertyToDatabase(
     User u,
     Address address,
     ListingDetails specifications,
@@ -25,7 +41,7 @@ public class PostingController {
     String description
   ) {
     Landlord landlord = (Landlord) u;
-    landlord.createProperty("", address, specifications, postedBy, description);
+    return landlord.createProperty("", address, specifications, postedBy, description);
   }
 
   public double getFeeAmount() {
@@ -65,6 +81,26 @@ public class PostingController {
     } catch (Exception e) {
       e.printStackTrace();
       return -1;
+    }
+  }
+
+
+  public String getFeeID() {
+    try {
+      Connection connection = ControllerManager.getConnection();
+
+      String mostRecentFee =
+        "SELECT * " +
+        "FROM POSTING_FEE p1 " +
+        "WHERE p1.Date_updated = (SELECT MAX(Date_updated) FROM POSTING_FEE p2);";
+
+      Statement statment = connection.createStatement();
+      ResultSet result = statment.executeQuery(mostRecentFee);
+      result.next();
+      return result.getString("id");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "";
     }
   }
 }
