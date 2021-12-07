@@ -170,16 +170,12 @@ public class CreateListingsPage extends Page {
           bathrooms.setEnabled(false);
           furnished.setEnabled(false);
           postalCode.setEnabled(false);
+          /*f.setVisible(false);
+          resetSwitchEvent();*/
         } catch (Exception ex) {
           ex.printStackTrace();
         }
-        
-        /*c.gridx=1;
-        c.gridy=15;
-        f.add(sucess, c);
 
-        f.setVisible(false);
-        resetSwitchEvent();*/
       }
     );
 
