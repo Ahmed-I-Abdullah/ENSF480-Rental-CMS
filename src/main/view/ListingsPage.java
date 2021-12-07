@@ -29,10 +29,10 @@ public class ListingsPage extends Page {
                             && property.getPostedBy() == controller.getUserController().getUser().getName())
                     || controller.getUserController().getAuthenticatedUser().getUserType() == UserType.MANAGER) {
                 final JTextField type = new JTextField(property.getSpecifications().getHousingType());
-                final JTextField bedrooms = new JTextField(property.getSpecifications().getHousingType());
-                final JTextField bathrooms = new JTextField(property.getSpecifications().getHousingType());
-                final JTextField furnished = new JTextField(property.getSpecifications().getHousingType());
-                final JTextField quadrant = new JTextField(property.getSpecifications().getHousingType());
+                final JTextField bedrooms = new JTextField(String.valueOf(property.getSpecifications().getNumOfBedrooms()));
+                final JTextField bathrooms = new JTextField(String.valueOf(property.getSpecifications().getNumOfBathrooms()));
+                final JTextField furnished = new JTextField(String.valueOf((property.getSpecifications().getFurnished())));
+                final JTextField quadrant = new JTextField(property.getSpecifications().getCityQuadrant());
                 final JButton edit = new JButton("Edit");
 
                 type.setBounds(275, 230, 100, 30);
@@ -42,8 +42,6 @@ public class ListingsPage extends Page {
                 quadrant.setBounds(275, 230, 100, 30);
                 edit.setBounds(275, 280, 75, 50);
                 edit.addActionListener(e -> {
-                    controller.getCurrentProperty().getSpecifications()
-                            .setState((ListingState) changeListingState.getSelectedItem());
                     try {
                         controller.getCurrentProperty().getSpecifications()
                                 .setNumOfBedrooms(Integer.valueOf(bedrooms.toString()));
