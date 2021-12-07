@@ -22,12 +22,24 @@ public class RegisteredRenter implements Observer, User {
   public RegisteredRenter(String email, String name) {
     setEmail(email);
     setName(name);
+    try {
+      setSubscribtionState();
+    } catch (Exception e) {
+      e.printStackTrace();
+      isSubscribed = false;
+    }
   }
 
   public RegisteredRenter(String email, String name, ListingDetails criteria) {
     setEmail(email);
     setName(name);
     this.searchCriteria = criteria;
+    try {
+      setSubscribtionState();
+    } catch (Exception e) {
+      e.printStackTrace();
+      isSubscribed = false;
+    }
   }
 
   public String getName() {
@@ -61,6 +73,7 @@ public class RegisteredRenter implements Observer, User {
   public void setSearchCriteria(ListingDetails criteria)
     throws SQLException, UserNotFoundException {
     this.searchCriteria = criteria;
+    this.isSubscribed = true;
 
     Connection connection = ControllerManager.getConnection();
 
@@ -77,7 +90,7 @@ public class RegisteredRenter implements Observer, User {
 
     String updateRenter =
       "UPDATE RENTER " +
-      "SET Is_furnished=?::bit, City_quadrant=?, No_bedrooms=?, No_bathrooms=?, Property_type=? " +
+      "SET Is_furnished = ?::bit, City_quadrant = ?, No_bedrooms = ?, No_bathrooms = ?, Property_type = ?, Is_subscribed = ?::bit " +
       "WHERE Email = ?;";
 
     PreparedStatement pStatmentTwo = connection.prepareStatement(updateRenter);
@@ -92,9 +105,25 @@ public class RegisteredRenter implements Observer, User {
     pStatmentTwo.setInt(3, criteria.getNumOfBedrooms());
     pStatmentTwo.setInt(4, criteria.getNumOfBathrooms());
     pStatmentTwo.setString(5, criteria.getHousingType());
-    pStatmentTwo.setString(6, email);
+    pStatmentTwo.setString(6, "1");
+    pStatmentTwo.setString(7, email);
 
     pStatmentTwo.executeUpdate();
+  }
+
+  public void unsubscribe() throws SQLException {
+    this.isSubscribed = false;
+    Connection connection = ControllerManager.getConnection();
+
+    String updateSubscribe =
+      "UPDATE RENTER " + "SET Is_subscribed = ?::bit " + "WHERE Email = ?;";
+
+    PreparedStatement pStatment = connection.prepareStatement(updateSubscribe);
+
+    pStatment.setString(1, "0");
+    pStatment.setString(2, email);
+
+    pStatment.executeUpdate();
   }
 
   public void setViewedNotificationTime() throws SQLException {
@@ -110,6 +139,32 @@ public class RegisteredRenter implements Observer, User {
     pStatment.setString(1, email);
 
     pStatment.executeUpdate();
+  }
+
+  public void setSubscribtionState() throws SQLException {
+    Connection connection = ControllerManager.getConnection();
+
+    String getSubscribe =
+      "SELECT Is_subscribed " + "From RENTER " + "WHERE Email = ?";
+
+    PreparedStatement pStatment = connection.prepareStatement(getSubscribe);
+
+    pStatment.setString(1, email);
+
+    ResultSet result = pStatment.executeQuery();
+    result.next();
+    String subscribedString = result.getString("is_subscribed");
+    this.isSubscribed = subscribedString.equals("1");
+  }
+
+  public boolean getIsSubscribed() {
+    try {
+      setSubscribtionState();
+    } catch (Exception e) {
+      e.printStackTrace();
+      isSubscribed = false;
+    }
+    return isSubscribed;
   }
 
   public ArrayList<Property> getNotifications() {

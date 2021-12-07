@@ -9,9 +9,10 @@ import javax.swing.*;
 import src.main.controller.ViewController;
 import src.main.model.property.Property;
 import src.main.model.user.UserType;
+import src.main.model.user.RegisteredRenter;
 
 public class BrowseListingsPage extends Page {
-
+  private boolean isSubscribed = false;
   private static final String[] quad = { "NW", "SW", "SE", "NE" };
   private static final String[] select = { "Yes", "No" };
   private static final String chooseTypeText =
@@ -27,6 +28,11 @@ public class BrowseListingsPage extends Page {
     super(c);
     widget = w;
     switchEvent = 1;
+    if(controller.getUserController().getAuthenticatedUser() != null &&
+    controller.getUserController().getAuthenticatedUser().getUserType() == UserType.RENTER) {
+      RegisteredRenter r = (RegisteredRenter)controller.getUserController().getAuthenticatedUser();
+      isSubscribed = r.getIsSubscribed();
+    }
   }
 
   public String getFormattedAddress(Property property) {
@@ -76,8 +82,8 @@ public class BrowseListingsPage extends Page {
     JButton back = new JButton("Back");
     back.setBounds(5, 10, 75, 50);
 
-    final JButton subscriptions = new JButton("Subscriptions");
-    subscriptions.setBounds(650, 10, 100, 50);
+    final JButton subscriptions = new JButton("Unsubscribe");
+    subscriptions.setBounds(630, 10, 140, 50);
 
     JButton filters = new JButton("Set Search Criteria");
     filters.setBounds(40, 100, 145, 50);
@@ -99,7 +105,7 @@ public class BrowseListingsPage extends Page {
         JLabel quadrantLabel = new JLabel("Quadrant");
         JComboBox<String> quadrant = new JComboBox<String>(quad);
         quadrant.setSelectedIndex(chosenQuadrantIndex);
-        
+
         JLabel criteriaErrors = new JLabel(searchCriteriaErrors);
         criteriaErrors.setForeground(Color.red);
 
@@ -158,6 +164,8 @@ public class BrowseListingsPage extends Page {
             if (checkSearchErrors()) {
               pop.setVisible(false);
               setUserCritera();
+              f.add(subscriptions);
+              f.repaint();
             } else {
               criteriaErrors.setText(searchCriteriaErrors);
             }
@@ -254,13 +262,25 @@ public class BrowseListingsPage extends Page {
 
     subscriptions.addActionListener(
       e -> {
-        f.setVisible(false);
-        f.removeAll();
-        switchEvent = 5;
+        RegisteredRenter r = (RegisteredRenter)controller.getUserController().getAuthenticatedUser();
+        try {
+          r.unsubscribe();
+          f.remove(subscriptions);
+          f.repaint();
+        } catch(Exception ex) {
+          ex.printStackTrace();
+        }
       }
     );
 
-    f.add(subscriptions);
+    if (
+      controller.getUserController().getAuthenticatedUser() != null &&
+      controller.getUserController().getAuthenticatedUser().getUserType() == UserType.RENTER
+    ) {
+      if(isSubscribed) {
+        f.add(subscriptions);
+      }
+    }
     f.add(back);
     f.add(filters);
     f.getContentPane().add(this);
@@ -284,4 +304,3 @@ public class BrowseListingsPage extends Page {
     }
   }
 }
-
