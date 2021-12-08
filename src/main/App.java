@@ -28,41 +28,41 @@ public class App {
         p = new MainPage(w, v);
         p.draw();
       }
-      while (p.getSwitchEvent() == 0) {}
+      while (p.getSwitchEvent() == 0) {System.out.println("");}
       if (p.getSwitchEvent() == 1) {
         p = new BrowseListingsPage(w, v);
         p.draw();
-        while (p.getSwitchEvent() == 1) {}
+        while (p.getSwitchEvent() == 1) {System.out.println("");}
       }
 
       if (p.getSwitchEvent() == 2) {
         p = new CreateListingsPage(w, v);
         p.draw();
-        while (p.getSwitchEvent() == 2) {}
+        while (p.getSwitchEvent() == 2) {System.out.println("");}
       }
 
       if (p.getSwitchEvent() == 3) {
         p = new ManagerControlPage(w, v);
         p.draw();
-        while (p.getSwitchEvent() == 3) {}
+        while (p.getSwitchEvent() == 3) {System.out.println("");}
       }
 
       if (p.getSwitchEvent() == 4) {
         p = new ManagerReportPage(w, v);
         p.draw();
-        while (p.getSwitchEvent() == 4) {}
+        while (p.getSwitchEvent() == 4) {System.out.println("");}
       }
 
       if (p.getSwitchEvent() == 5) {
         p = new NotificationsPage(w, v);
         p.draw();
-        while (p.getSwitchEvent() == 5) {}
+        while (p.getSwitchEvent() == 5) {System.out.println("");}
       }
 
       if (p.getSwitchEvent() == 6) {
         p = new ListingsPage(w, v);
         p.draw();
-        while (p.getSwitchEvent() == 6) {}
+        while (p.getSwitchEvent() == 6) {System.out.println("");}
       }
 
       firstDisplay = false;

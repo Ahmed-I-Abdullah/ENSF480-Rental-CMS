@@ -202,5 +202,36 @@ public class UserController {
 	  
   }
   
+    public String [] findUser(String email){
+	try{
+	 Connection connection = ControllerManager.getConnection();
+	String userQuery = "SELECT * FROM PERSON p WHERE p.Email = ?";
+    PreparedStatement pStatment = connection.prepareStatement(userQuery);
+    pStatment.setString(1, email);
+	ResultSet res = pStatment.executeQuery();
+	if (!res.isBeforeFirst()) {
+      return null;
+    }
+	 res.next();
+	 String name = res.getString("name");
+	 UserType type = UserType.values()[res.getInt("role")];
+	 String role="";
+	 if(type==UserType.RENTER){
+		 role="Renter";
+	 }else if(type==UserType.MANAGER){
+		 role="Manager";
+	 }else if(type==UserType.LANDLORD){
+		 role="Landlord";
+	 }
+	 
+	 String [] result={name, email, role};
+	 return result;
+	}catch(Exception e){
+		System.exit(1);
+	}
+	return null;
+  }
+  
+  
   
 }
