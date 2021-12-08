@@ -35,9 +35,10 @@ public class MainPage extends Page {
         .getAuthenticatedUser();
       isSubscribed = r.getIsSubscribed();
     }
-    if(controller.getUserController().getAuthenticatedUser() != null) {
-      userName = controller.getUserController().getAuthenticatedUser().getName();
-      if(welcomeMessage.equals("Hello")) {
+    if (controller.getUserController().getAuthenticatedUser() != null) {
+      userName =
+        controller.getUserController().getAuthenticatedUser().getName();
+      if (welcomeMessage.equals("Hello")) {
         welcomeMessage += " " + userName;
       }
     }
@@ -401,9 +402,9 @@ public class MainPage extends Page {
           .getUserController()
           .getAuthenticatedUser();
         isSubscribed = r.getIsSubscribed();
-      }
-      if (isSubscribed) {
-        f.add(notifications);
+        if (isSubscribed) {
+          f.add(notifications);
+        }
       }
       if (
         controller.getUserController().getAuthenticatedUser().getUserType() ==

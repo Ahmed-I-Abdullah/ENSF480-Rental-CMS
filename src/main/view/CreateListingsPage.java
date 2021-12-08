@@ -18,7 +18,7 @@ public class CreateListingsPage extends Page {
   public CreateListingsPage(Widget w, ViewController c) {
     super(c);
     widget = w;
-    switchEvent = 5;
+    switchEvent = 2;
   }
 
   public void draw() {
