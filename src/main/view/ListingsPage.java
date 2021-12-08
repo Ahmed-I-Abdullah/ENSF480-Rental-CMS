@@ -415,7 +415,6 @@ a function to draw all action listening components on the page
 			f.repaint();
           }
         );
-
         c.gridwidth = 1;
         c.weightx = 0.0;
         c.gridx = 0;
@@ -429,11 +428,11 @@ a function to draw all action listening components on the page
         pop.setVisible(true);
       }
     );
-
     f.add(state);
     if (currentUser != null) {
+		if(currentUser.getUserType()!=UserType.LANDLORD){
       f.add(email);
-
+		}
       if (
         (
           currentUser.getUserType() == UserType.LANDLORD &&
@@ -441,7 +440,8 @@ a function to draw all action listening components on the page
             .getCurrentProperty()
             .getPostedBy()
             .equals(currentUser.getEmail())
-        ) || // landlord only
+         && (controller.getCurrentProperty().checkState()!=ListingState.SUSPENDED 
+		 && controller.getCurrentProperty().checkState()!=ListingState.REGISTERED) )|| // landlord only
         // views their own
         // postings
         currentUser.getUserType() ==

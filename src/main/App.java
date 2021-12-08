@@ -28,10 +28,7 @@ public class App {
     p.draw();
     boolean firstDisplay = true;
 
-    int c = 0;
     while (true) {
-      System.out.println("run #:" + c);
-      c++;
       if (p.getSwitchEvent() == 0 && !firstDisplay) {
         p = new MainPage(w, v);
         p.draw();
