@@ -7,15 +7,23 @@ import src.main.controller.ViewController;
 import src.main.model.property.*;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
-
+/**
+Page for displaying a property, ViewController reference contains a reference to a Property object that is used to display information
+*/
 public class ListingsPage extends Page {
-
+/**
+Constructor for ListingsPage
+@param w Widget reference used to draw components
+@param c ViewController reference to allow communication between view and model
+*/
   public ListingsPage(Widget w, ViewController c) {
     super(c);
     widget = w;
     switchEvent = 6;
   }
-
+/**
+a function to draw all action listening components on the page
+*/
   public void draw() {
     User currentUser = null;
     try {
@@ -446,7 +454,10 @@ public class ListingsPage extends Page {
     f.getContentPane().add(this);
     f.setVisible(true);
   }
-
+/**
+a function to draw all non-action listening components on the page
+@param g Graphics object reference passed in from JPanel calling
+*/
   public void paintComponent(Graphics g) {
     widget = new Text(300, 40, "LISTING DETAILS");
     g.setFont(titleFont);

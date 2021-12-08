@@ -8,10 +8,18 @@ import src.main.model.property.Property;
 import src.main.model.user.RegisteredRenter;
 import src.main.model.user.UserType;
 
+/**
+Page that shows a registered renter's notifications for their search criteria
+*/
 public class NotificationsPage extends Page {
 
   private ArrayList<Property> notificationProperties;
 
+/**
+constructor for Notifications Page, gets list of properies a registered renter may be interested in based on their search critera
+@param w Widget reference passed in, used to draw non listening components
+@param c ViewController reference passed in, used to communicate with the rest of the system 
+*/
   public NotificationsPage(Widget w, ViewController c) {
     super(c);
     widget = w;
@@ -32,7 +40,11 @@ public class NotificationsPage extends Page {
       }
     }
   }
-
+/**
+a function to get a formatted address from a property
+@param property the property to get the address from
+@return a formatted String address 
+*/
   public String getFormattedAddress(Property property) {
     return (
       property.getAddress().getStreet() +
@@ -46,7 +58,9 @@ public class NotificationsPage extends Page {
       property.getAddress().getCountry()
     );
   }
-
+/**
+a function to draw all action listening components on the page
+*/
   public void draw() {
     JButton back = new JButton("Back");
     back.setBounds(5, 10, 75, 50);
@@ -79,7 +93,10 @@ public class NotificationsPage extends Page {
     f.getContentPane().add(this);
     f.setVisible(true);
   }
-
+/**
+a function to draw all non-action listening components on the page
+@param g Graphics object reference passed in from JPanel calling
+*/
   public void paintComponent(Graphics g) {
     widget = new Text(230, 40, "SUBSCRIBED LISTINGS");
     g.setFont(titleFont);

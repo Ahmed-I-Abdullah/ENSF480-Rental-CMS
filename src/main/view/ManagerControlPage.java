@@ -5,7 +5,9 @@ import java.awt.Graphics;
 import javax.swing.*;
 import src.main.controller.AdminController;
 import src.main.controller.ViewController;
-
+/**
+Page that displays a panel that a manager can access to see user information, and edit fees
+*/
 public class ManagerControlPage extends Page {
 
   private String currentFee =
@@ -14,12 +16,19 @@ public class ManagerControlPage extends Page {
     "Current duration(month): " +
     controller.getPostingController().getFeeDuration();
 
+/**
+Constructor for the ManagerControlPage
+@param w Widget reference used to draw components
+@param c ViewController referenece used to connect the view to the model
+*/
   public ManagerControlPage(Widget w, ViewController c) {
     super(c);
     this.widget = w;
     switchEvent = 3;
   }
-
+/**
+a function to draw all action listening components on the page
+*/
   public void draw() {
     JButton back = new JButton("Back");
     back.setBounds(10, 10, 75, 50);
@@ -218,7 +227,10 @@ public class ManagerControlPage extends Page {
     f.getContentPane().add(this);
     f.setVisible(true);
   }
-
+/**
+a function to draw all non-action listening components on the page
+@param g Graphics object reference passed in from JPanel calling
+*/
   public void paintComponent(Graphics g) {
     widget = new Text(230, 40, "MANAGER CONTROL");
     g.setFont(titleFont);

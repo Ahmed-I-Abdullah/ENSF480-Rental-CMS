@@ -8,7 +8,13 @@ import src.main.controller.UserNotFoundException;
 import src.main.controller.ViewController;
 import src.main.model.user.RegisteredRenter;
 import src.main.model.user.UserType;
-
+/**
+Main page user sees on program start, shows different options based on user type,
+allows sign in and registering, based on user type shows different buttons i.e.
+browse listings
+post property
+manage
+*/
 public class MainPage extends Page {
 
   private boolean isSubscribed = false;
@@ -21,6 +27,11 @@ public class MainPage extends Page {
   static String passwordPlaceHolder = "Password";
   static String namePlaceHolder = "Name";
 
+/**
+Constructor for MainPage
+@param w Widget reference used to draw components
+@param c ViewController reference used to connect the view to the model 
+*/
   public MainPage(Widget w, ViewController c) {
     super(c);
     widget = w;
@@ -42,7 +53,12 @@ public class MainPage extends Page {
       }
     }
   }
-
+/**
+Helper function to check user input fields for formatting errors during registration
+@param inputEmail user inputted email
+@param inputName user inputted name
+@param inputPassword user inputted password
+*/
   private boolean checkRegisterErrors(
     String inputEmail,
     String inputName,
@@ -71,7 +87,9 @@ public class MainPage extends Page {
 
     return true;
   }
-
+/**
+a function to draw all action listening components on the page
+*/
   public void draw() {
     final JLabel prompt = new JLabel("Enter Email and Password");
     prompt.setBounds(600, 70, 200, 30);
@@ -425,7 +443,10 @@ public class MainPage extends Page {
     f.getContentPane().add(this);
     f.setVisible(true);
   }
-
+/**
+a function to draw all non-action listening components on the page
+@param g Graphics object reference passed in from JPanel calling
+*/
   public void paintComponent(Graphics g) {
     widget = new Text(230, 40, "RENT A PLACE");
     g.setFont(titleFont);
@@ -436,7 +457,12 @@ public class MainPage extends Page {
     widget = new Text(300, 100, welcomeMessage);
     widget.draw(g);
   }
-
+/**
+login helper function, connects between controller and user input
+@param email user inputted email
+@param password user inputted password 
+@return true if user is authenticated, false otherwise
+*/
   public static boolean login(String email, String password) {
     try {
       controller.getUserController().logIn(email, password);
@@ -455,7 +481,14 @@ public class MainPage extends Page {
     userName = controller.getUserController().getAuthenticatedUser().getName();
     return true;
   }
-
+/**
+sign up helper function, connects user input to controller
+@param email user inputted email
+@param name user inputted name
+@param password user inputted password
+ @param usertypeIndex the user's requested type, landlord or renter (no option to create a manager)
+ @return true if the user's account was created successfully, false if email is already in use
+*/
   public static boolean signup(
     String email,
     String name,

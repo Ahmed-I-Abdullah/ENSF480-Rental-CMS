@@ -9,18 +9,26 @@ import src.main.model.property.*;
 import src.main.model.property.ListingDetails;
 import src.main.model.property.ListingState;
 import src.main.model.user.User;
-
+/**
+Page for allowing landlords to create a new listing
+*/
 public class CreateListingsPage extends Page {
 
   private Property addedProperty;
   private boolean savePressed = false;
-
+/**
+Constructor for CreateListingsPage
+@param w Widget reference used to draw components
+@param c ViewController reference to allow communication between view and model
+*/
   public CreateListingsPage(Widget w, ViewController c) {
     super(c);
     widget = w;
     switchEvent = 5;
   }
-
+/**
+a function to draw all action listening components on the page
+*/
   public void draw() {
     f.setLayout(new GridBagLayout());
 
@@ -332,7 +340,10 @@ public class CreateListingsPage extends Page {
     f.setVisible(true);
     f.getContentPane().add(this);
   }
-
+/**
+a function to draw all non-action listening components on the page
+@param g Graphics object reference passed in from JPanel calling
+*/
   public void paintComponent(Graphics g) {
     widget = new Text(230, 40, "Register your property:");
     g.setFont(titleFont);

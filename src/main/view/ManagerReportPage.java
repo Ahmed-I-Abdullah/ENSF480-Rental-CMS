@@ -9,16 +9,28 @@ import javax.swing.*;
 import src.main.controller.AdminController;
 import src.main.controller.ViewController;
 import src.main.model.property.Property;
-
+/**
+the Manager's periodical page from a given range fo dates. 
+*/
 public class ManagerReportPage extends Page {
   private String dateErrors = "";
 
+
+/**
+Constructor for the ManagerReportPage
+@param w Widget reference used to draw components
+@param v ViewController reference used to enable communication between model and view
+*/
   public ManagerReportPage(Widget w, ViewController v) {
     super(v);
     widget = w;
     switchEvent = 4;
   }
-
+/**
+Helper function to check weather and entered date is correct
+@param inputDate user entered string for date
+@return true if date is formatted correctly, false otherwise
+*/
   private boolean checkDate(String inputDate) {
     dateErrors = "";
     String dateRegex = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
@@ -31,7 +43,11 @@ public class ManagerReportPage extends Page {
     }
     return true;
   }
-
+/**
+helper function to get a formatted String array from a property
+@param p Property object to extract a String from 
+@return String array of relevant information from property
+*/
   private String[] getFormattedProperty(Property p) {
     String[] info= new String[3];
     info[0] = p.getPostedByName();
@@ -48,7 +64,9 @@ public class ManagerReportPage extends Page {
 
       return info;
   }
-
+/**
+a function to draw all action listening components on the page
+*/
   public void draw() {
     f.setLayout(new GridBagLayout());
 
@@ -243,7 +261,10 @@ public class ManagerReportPage extends Page {
     f.setVisible(true);
     f.getContentPane().add(this);
   }
-
+/**
+a function to draw all non-action listening components on the page, not utilized for this Page
+@param g Graphics object reference passed in from JPanel calling
+*/
   public void paintComponent(Graphics g) {
     // widget.draw(g);
   }

@@ -10,7 +10,13 @@ import src.main.model.property.Property;
 import src.main.model.user.UserType;
 import src.main.model.user.RegisteredRenter;
 
-
+/**
+Page that displays listings, the number and type of listing depend on user.
+renters whether registered or not only see active listings
+registered renters can also see only listings that match their criteria 
+landlords only see their properties, regardless of their status
+managers see all the properties in the database
+*/
 public class BrowseListingsPage extends Page {
   private boolean useFiltered;
   private boolean isSubscribed = false;
@@ -25,7 +31,11 @@ public class BrowseListingsPage extends Page {
   private int chosenNumBathrooms = 0;
   private int chosenQuadrantIndex = 0;
   private int chosenFurnishedIndex = 0;
-
+/**
+Constructor for BrowseListingsPage
+@param w Widget reference that is used to draw componenets
+@param c ViewController reference that connects view to model
+*/
   public BrowseListingsPage(Widget w, ViewController c) {
     super(c);
     widget = w;
@@ -38,7 +48,11 @@ public class BrowseListingsPage extends Page {
     properties = controller.getAllProperties();
     useFiltered = false;
   }
-
+/**
+function to get a formatted address from a Property object
+@param property Property reference to obtain address from
+@return formatted String of property's Address
+*/
   public String getFormattedAddress(Property property) {
     return (
       property.getAddress().getStreet() +
@@ -52,7 +66,11 @@ public class BrowseListingsPage extends Page {
       property.getAddress().getCountry()
     );
   }
-
+/**
+helper function for check for errors in User input searchCriteriaErrors
+i.e checking for entering "green" in the property type
+@return true if no errors in exist, false otherwise
+*/
   public boolean checkSearchErrors() {
     searchCriteriaErrors = "";
     if (chosenApartmentType.equals(chooseTypeText)) {
@@ -61,7 +79,9 @@ public class BrowseListingsPage extends Page {
     }
     return true;
   }
-
+/**
+private helper function to connect database to view, updates user's entered search criteria in database
+*/
   private void setUserCritera() {
     if (
       controller.getUserController().getAuthenticatedUser() == null ||
@@ -81,14 +101,20 @@ public class BrowseListingsPage extends Page {
         quad[chosenQuadrantIndex]
       );
   }
-
+/**
+a function to draw all action listening components on the page
+*/
   public void draw() {
     f = new Scroller();
     f.setVisible(true);
   }
-
+/**
+Class within BrowseListingsPage, that enalbe scrolling within the BrowseListingsPage
+*/
   public class Scroller extends JFrame {
-
+	  /**
+	  Constructor for Scroller, does all the drawing
+	  */
     public Scroller() throws HeadlessException {
         final JPanel panel = new JPanel();
         JLabel title = new JLabel("BROWSE LISTINGS");
@@ -327,6 +353,10 @@ public class BrowseListingsPage extends Page {
         setVisible(true);
     }
   }
+  /**
+a function to draw all non-action listening components on the page
+@param g Graphics object reference passed in from JPanel calling
+*/
   public void paintComponent(Graphics g) {
     widget = new Text(230, 40, "BROWSE LISTINGS");
     g.setFont(titleFont);
