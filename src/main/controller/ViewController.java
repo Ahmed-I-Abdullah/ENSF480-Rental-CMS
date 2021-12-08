@@ -10,12 +10,15 @@ import src.main.model.property.ListingState;
 import src.main.model.property.Property;
 import src.main.model.user.Landlord;
 import src.main.model.user.UserType;
+import src.main.model.user.RegisteredRenter;
 
 public class ViewController {
 
   private ArrayList<Property> allProperties;
   private ArrayList<Property> filteredProperties;
+  private ArrayList<Property> renterNotifications;
   private boolean useFilter;
+  private boolean useNotifications;
   private Property currentProperty;
   private PostingController postingController;
   private UserController userController;
@@ -24,6 +27,7 @@ public class ViewController {
     postingController = new PostingController();
     allProperties = new ArrayList<Property>();
     filteredProperties = new ArrayList<Property>();
+    renterNotifications = new ArrayList<Property>();
   }
 
   public ArrayList<Property> getAllProperties() {
@@ -134,6 +138,7 @@ public class ViewController {
       this.allProperties = l.getLandlordProperties();
     }
     useFilter = false;
+    useNotifications = false;
     return this.allProperties;
   }
 
@@ -327,7 +332,22 @@ public class ViewController {
       }
     }
     useFilter = true;
+    useNotifications = false;
     return this.filteredProperties;
+  }
+
+  public boolean getUseNotification() {
+    return this.useNotifications;
+  }
+
+  public ArrayList<Property> getRenterNotifications(RegisteredRenter r) {
+    if(renterNotifications.size() == 0) {
+      this.renterNotifications = r.getNotifications();
+    }
+    useNotifications = true;
+    useFilter = false;
+
+    return this.renterNotifications;
   }
 
   public void setUserController(UserController controller) {
@@ -337,6 +357,8 @@ public class ViewController {
   public void setCurrentProperty(int i) {
     if (useFilter) {
       this.currentProperty = this.filteredProperties.get(i);
+    } else if(useNotifications) {
+      this.currentProperty = this.renterNotifications.get(i);
     } else {
       this.currentProperty = this.allProperties.get(i);
     }

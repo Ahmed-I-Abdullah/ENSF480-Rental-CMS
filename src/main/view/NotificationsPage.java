@@ -23,7 +23,8 @@ public class NotificationsPage extends Page {
       RegisteredRenter registeredRenter = (RegisteredRenter) controller
         .getUserController()
         .getAuthenticatedUser();
-      notificationProperties = registeredRenter.getNotifications();
+      notificationProperties =
+        controller.getRenterNotifications(registeredRenter);
       try {
         registeredRenter.setViewedNotificationTime();
       } catch (Exception ex) {
@@ -56,11 +57,9 @@ public class NotificationsPage extends Page {
       final int p = i;
       clickme.addActionListener(
         e -> {
-          for (int z = 0; z < notificationProperties.size(); z++) {
-            if (z == p) System.out.println(
-              getFormattedAddress(notificationProperties.get(z))
-            );
-          }
+          controller.setCurrentProperty(p);
+          f.setVisible(false);
+          f.removeAll();
           switchEvent = 6;
         }
       );
