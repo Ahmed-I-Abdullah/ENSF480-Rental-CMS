@@ -19,9 +19,12 @@ public class RegisteredRenter implements Observer, User {
   private boolean isSubscribed;
   private ListingDetails searchCriteria;
 
+  // Constructor
   public RegisteredRenter(String email, String name) {
     setEmail(email);
     setName(name);
+    
+    // if subscribed, set subscription state
     try {
       setSubscribtionState();
     } catch (Exception e) {
@@ -30,6 +33,7 @@ public class RegisteredRenter implements Observer, User {
     }
   }
 
+  // Constructor, assigns, search criteria
   public RegisteredRenter(String email, String name, ListingDetails criteria) {
     setEmail(email);
     setName(name);
@@ -42,39 +46,49 @@ public class RegisteredRenter implements Observer, User {
     }
   }
 
+  // name getter
   public String getName() {
     return this.name;
   }
 
+  // email getter
   public String getEmail() {
     return this.email;
   }
 
+  // subject getter
   public Subject getSubject() {
     return this.subject;
   }
 
+  // search criteria getter
   public ListingDetails getSearchCriteria() {
     return this.searchCriteria;
   }
 
+  // name setter
   public void setName(String name) {
     this.name = name;
   }
 
+  // email setter
   public void setEmail(String email) {
     this.email = email;
   }
 
+  // subject setter
   public void setSubject(Subject subject) {
     this.subject = subject;
   }
 
+  // Promises: set search criteria of this registered renter, subscribes renter to specified criteria
+  // Requires: desired property specification criteria
   public void setSearchCriteria(ListingDetails criteria)
     throws SQLException, UserNotFoundException {
     this.searchCriteria = criteria;
     this.isSubscribed = true;
 
+    // connect to db
     Connection connection = ControllerManager.getConnection();
 
     String userQuery = "SELECT * FROM RENTER r WHERE r.Email = ?";
@@ -84,10 +98,12 @@ public class RegisteredRenter implements Observer, User {
 
     ResultSet result = pStatment.executeQuery();
 
+    // Error check if user has not been added to db
     if (!result.isBeforeFirst()) {
       throw new UserNotFoundException("User not found in databse.");
     }
 
+    // update search criteria in db
     String updateRenter =
       "UPDATE RENTER " +
       "SET Is_furnished = ?::bit, City_quadrant = ?, No_bedrooms = ?, No_bathrooms = ?, Property_type = ?, Is_subscribed = ?::bit " +
@@ -111,10 +127,12 @@ public class RegisteredRenter implements Observer, User {
     pStatmentTwo.executeUpdate();
   }
 
+  // Promises: unsubscribe this renter from current search criteria
   public void unsubscribe() throws SQLException {
     this.isSubscribed = false;
     Connection connection = ControllerManager.getConnection();
 
+    // update subscription state in db
     String updateSubscribe =
       "UPDATE RENTER " + "SET Is_subscribed = ?::bit " + "WHERE Email = ?;";
 
@@ -126,6 +144,7 @@ public class RegisteredRenter implements Observer, User {
     pStatment.executeUpdate();
   }
 
+  // Promises: set time when renter viewed last subscribed property
   public void setViewedNotificationTime() throws SQLException {
     Connection connection = ControllerManager.getConnection();
 
@@ -141,6 +160,7 @@ public class RegisteredRenter implements Observer, User {
     pStatment.executeUpdate();
   }
 
+  // Promises: set renter subscription state in db
   public void setSubscribtionState() throws SQLException {
     Connection connection = ControllerManager.getConnection();
 
@@ -157,6 +177,7 @@ public class RegisteredRenter implements Observer, User {
     this.isSubscribed = subscribedString.equals("1");
   }
 
+  // isSubcribed getter
   public boolean getIsSubscribed() {
     try {
       setSubscribtionState();
@@ -167,8 +188,10 @@ public class RegisteredRenter implements Observer, User {
     return isSubscribed;
   }
 
+  // Promises: return properties which user is subscribed to 
   public ArrayList<Property> getNotifications() {
     ArrayList<Property> notificationsProperties = new ArrayList<Property>();
+    // read all subscriber properties from db
     try {
       Connection connection = ControllerManager.getConnection();
       String notificationsQuery =
@@ -233,8 +256,10 @@ public class RegisteredRenter implements Observer, User {
     return notificationsProperties;
   }
 
+  // notify renter of any property addition/change
   public void update(Property property) {}
 
+  // Promises: return user type which is RENTER
   public UserType getUserType() {
     return UserType.RENTER;
   }
