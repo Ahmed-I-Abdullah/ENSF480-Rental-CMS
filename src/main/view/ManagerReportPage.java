@@ -38,7 +38,7 @@ public class ManagerReportPage extends Page {
     info[1] = p.getHouseID();
     info[2] =
       p.getAddress().getStreet() +
-      ", " +
+      " " +
       p.getAddress().getCity() +
       ", " +
       p.getAddress().getProvince() +
