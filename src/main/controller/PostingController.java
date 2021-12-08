@@ -68,11 +68,12 @@ public class PostingController {
       Connection connection = ControllerManager.getConnection();
 
       String stateOfListing = "UPDATE property " +
-          "SET current_state = ?" +
-          "WHERE id = '" + id + "';";
+          "SET current_state = ? " +
+          "WHERE ID = ?::uuid;";
 
       PreparedStatement pStatement = connection.prepareStatement(stateOfListing);
       pStatement.setInt(1,new_state);
+      pStatement.setString(2, id);
       pStatement.executeUpdate();
       ListingState listingState = ListingState.values()[new_state];
       return listingState;
@@ -87,12 +88,13 @@ public class PostingController {
       Connection connection = ControllerManager.getConnection();
 
       String quadrantOfListing = "UPDATE property " +
-          "SET City_quadrant= ?" +
-          "WHERE id = '" + id + "';";
+          "SET City_quadrant= ? " +
+          "WHERE ID = ?::uuid;";
 
       PreparedStatement pStatement = connection.prepareStatement(quadrantOfListing);
       pStatement.setString(1, new_quadrant);
-      int i = pStatement.executeUpdate();
+      pStatement.setString(2, id);
+      pStatement.executeUpdate();
       String listingQuadrant = new_quadrant;
       return listingQuadrant;
     } catch (Exception e) {
@@ -106,12 +108,13 @@ public class PostingController {
       Connection connection = ControllerManager.getConnection();
 
       String bedroomsOfListing = "UPDATE property " +
-          "SET No_bedrooms= ?" +
-          "WHERE id = '" + id + "';";
+          "SET No_bedrooms= ? " +
+          "WHERE ID = ?::uuid;";
 
       PreparedStatement pStatement = connection.prepareStatement(bedroomsOfListing);
       pStatement.setInt(1, new_bedrooms);
-      int i = pStatement.executeUpdate();
+      pStatement.setString(2, id);
+      pStatement.executeUpdate();
       int listingBedrooms = new_bedrooms;
       return listingBedrooms;
     } catch (Exception e) {
@@ -125,12 +128,13 @@ public class PostingController {
       Connection connection = ControllerManager.getConnection();
 
       String bathroomsOfListing = "UPDATE property " +
-          "SET No_bathrooms= ?" +
-          "WHERE id = '" + id + "';";
+          "SET No_bathrooms = ? " +
+          "WHERE ID = ?::uuid;";
 
       PreparedStatement pStatement = connection.prepareStatement(bathroomsOfListing);
       pStatement.setInt(1, new_bathrooms);
-      int i = pStatement.executeUpdate();
+      pStatement.setString(2, id);
+      pStatement.executeUpdate();
       int listingBathrooms = new_bathrooms;
       return listingBathrooms;
     } catch (Exception e) {
@@ -145,11 +149,12 @@ public class PostingController {
 
       String typeOfListing = "UPDATE property " +
           "SET Property_type= ?" +
-          "WHERE id = '" + id + "';";
+          "WHERE ID = ?::uuid;";
 
       PreparedStatement pStatement = connection.prepareStatement(typeOfListing);
       pStatement.setString(1, new_type);
-      int i = pStatement.executeUpdate();
+      pStatement.setString(2, id);
+      pStatement.executeUpdate();
       String listingtype = new_type;
       return listingtype;
     } catch (Exception e) {
@@ -161,14 +166,19 @@ public class PostingController {
   public Boolean changeListingFurnishing(String id, Boolean new_furnishing) {
     try {
       Connection connection = ControllerManager.getConnection();
+      String furnished = "1";
+      if(!new_furnishing) {
+        furnished = "0";
+      }
 
       String furnishingOfListing = "UPDATE property " +
-          "SET Is_furnished= ?" +
-          "WHERE id = '" + id + "';";
+          "SET Is_furnished = ?::bit " +
+          "WHERE ID = ?::uuid;";
 
       PreparedStatement pStatement = connection.prepareStatement(furnishingOfListing);
-      pStatement.setBoolean(1, new_furnishing);
-      int i = pStatement.executeUpdate();
+      pStatement.setString(1, furnished);
+      pStatement.setString(2, id);
+      pStatement.executeUpdate();
       Boolean listingFurnishing = new_furnishing;
       return listingFurnishing;
     } catch (Exception e) {
