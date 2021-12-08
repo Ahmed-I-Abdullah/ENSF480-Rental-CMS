@@ -267,10 +267,15 @@ public class ListingsPage extends Page {
                     GridBagConstraints c = new GridBagConstraints();
                     c.fill = GridBagConstraints.HORIZONTAL;
 
-                    int chosenState = 0;
-                    JComboBox<String> changeListingState = new JComboBox<String>(
-                            ListingState.getNames(ListingState.class));
-                    changeListingState.setSelectedIndex(chosenState);
+            //int chosenState = 0;
+            JComboBox<String> changeListingState;
+            if(controller.getUserController().getAuthenticatedUser().getUserType() == UserType.MANAGER){
+               changeListingState = new JComboBox<String>(ListingState.getNames(ListingState.class)); //all listing states available
+            } else{
+                String[] renterState = {ListingState.ACTIVE.toString(), ListingState.RENTED.toString(), ListingState.CANCELLED.toString()};
+                changeListingState = new JComboBox<String>(renterState);
+            }
+            //changeListingState.setSelectedIndex(chosenState);
 
                     JButton save = new JButton("Save");
 
