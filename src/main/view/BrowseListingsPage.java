@@ -10,8 +10,11 @@ import src.main.model.property.Property;
 import src.main.model.user.UserType;
 import src.main.model.user.RegisteredRenter;
 
+
 public class BrowseListingsPage extends Page {
+  private boolean useFiltered;
   private boolean isSubscribed = false;
+  private ArrayList<Property> properties;
   private static final String[] quad = { "NW", "SW", "SE", "NE" };
   private static final String[] select = { "Yes", "No" };
   private static final String chooseTypeText =
@@ -32,6 +35,8 @@ public class BrowseListingsPage extends Page {
       RegisteredRenter r = (RegisteredRenter)controller.getUserController().getAuthenticatedUser();
       isSubscribed = r.getIsSubscribed();
     }
+    properties = controller.getAllProperties();
+    useFiltered = false;
   }
 
   public String getFormattedAddress(Property property) {
@@ -90,7 +95,6 @@ public class BrowseListingsPage extends Page {
         title.setFont(new Font("Helvetica", Font.BOLD, 35));
         title.setBounds(240,0,400,50);
         panel.add(title);
-        final ArrayList<Property> properties = controller.getAllProperties();
         for (int i = 0; i < properties.size(); i++) {
           JLabel address = new JLabel(getFormattedAddress(properties.get(i)));
           address.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -133,7 +137,7 @@ public class BrowseListingsPage extends Page {
 
             JButton ok = new JButton("OK");
 
-            JButton save = new JButton("Save");
+            JButton save = new JButton("Save & Subscribe");
 
             JLabel quadrantLabel = new JLabel("Quadrant");
             JComboBox<String> quadrant = new JComboBox<String>(quad);
@@ -181,6 +185,17 @@ public class BrowseListingsPage extends Page {
                 chosenFurnishedIndex = furnished.getSelectedIndex();
                 if (checkSearchErrors()) {
                   pop.setVisible(false);
+                  properties =
+                controller.getFilteredProperties(
+                  chosenApartmentType,
+                  quad[chosenQuadrantIndex],
+                  chosenFurnishedIndex == 0 ? true : false,
+                  chosenNumBedrooms,
+                  chosenNumBathrooms
+                );
+              f.getContentPane().removeAll();
+              f.setVisible(false);
+              draw();
                 } else {
                   criteriaErrors.setText(searchCriteriaErrors);
                 }

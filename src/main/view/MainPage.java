@@ -401,9 +401,9 @@ public class MainPage extends Page {
           .getUserController()
           .getAuthenticatedUser();
         isSubscribed = r.getIsSubscribed();
-        if (isSubscribed) {
-          f.add(notifications);
-        }
+      }
+      if (isSubscribed) {
+        f.add(notifications);
       }
       if (
         controller.getUserController().getAuthenticatedUser().getUserType() ==
