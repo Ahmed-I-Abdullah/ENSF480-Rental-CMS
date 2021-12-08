@@ -103,24 +103,22 @@ public class Landlord implements User {
     return this.properties;
   }
   
-  // Promises: return name of this landlord
+  // name getter
   public String getName() {
     return this.name;
   }
   
-  // Promises: return email of this email
+  // email getter
   public String getEmail() {
     return this.email;
   }
   
-  // Promises: set this landlord's email
-  // Requires: new email address
+  // email setter
   public void setEmail(String email) {
     this.email = email;
   }
   
-  // Promises: set this landlord's name
-  // Requires: new name
+  // name setter
   public void setName(String name) {
     this.name = name;
   }
