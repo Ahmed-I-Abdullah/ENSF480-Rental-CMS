@@ -46,9 +46,10 @@ Constructor for MainPage
         .getAuthenticatedUser();
       isSubscribed = r.getIsSubscribed();
     }
-    if(controller.getUserController().getAuthenticatedUser() != null) {
-      userName = controller.getUserController().getAuthenticatedUser().getName();
-      if(welcomeMessage.equals("Hello")) {
+    if (controller.getUserController().getAuthenticatedUser() != null) {
+      userName =
+        controller.getUserController().getAuthenticatedUser().getName();
+      if (welcomeMessage.equals("Hello")) {
         welcomeMessage += " " + userName;
       }
     }
@@ -419,9 +420,9 @@ a function to draw all action listening components on the page
           .getUserController()
           .getAuthenticatedUser();
         isSubscribed = r.getIsSubscribed();
-      }
-      if (isSubscribed) {
-        f.add(notifications);
+        if (isSubscribed) {
+          f.add(notifications);
+        }
       }
       if (
         controller.getUserController().getAuthenticatedUser().getUserType() ==

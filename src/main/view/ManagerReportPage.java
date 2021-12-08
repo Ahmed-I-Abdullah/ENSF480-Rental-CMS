@@ -54,7 +54,7 @@ helper function to get a formatted String array from a property
     info[1] = p.getHouseID();
     info[2] =
       p.getAddress().getStreet() +
-      ", " +
+      " " +
       p.getAddress().getCity() +
       ", " +
       p.getAddress().getProvince() +

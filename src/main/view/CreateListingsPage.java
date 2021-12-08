@@ -24,7 +24,7 @@ Constructor for CreateListingsPage
   public CreateListingsPage(Widget w, ViewController c) {
     super(c);
     widget = w;
-    switchEvent = 5;
+    switchEvent = 2;
   }
 /**
 a function to draw all action listening components on the page

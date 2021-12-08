@@ -15,6 +15,8 @@ public class Property {
   private ListingDetails specifications;
   private String description;
 
+  //PROMISES: creates Property object
+  //REQUIRES: the houseID, address property, more details about the property, the email of the owner, further descriptions, whether the property should be added to the db
   public Property(
     String houseID,
     Address address,
@@ -29,12 +31,13 @@ public class Property {
     this.postedBy = postedBy;
     this.description = description;
     if (addToDatabase) {
-      this.houseID = addPropertyToDatabase();
+      this.houseID = addPropertyToDatabase(); //id generated from database
     } else {
-      this.houseID = houseID;
+      this.houseID = houseID; //user can set the house id
     }
   }
 
+  //PROMISES: inserts the property into the database and returns the id generated from the database
   private String addPropertyToDatabase() throws SQLException {
     Connection connection = ControllerManager.getConnection();
 
@@ -43,7 +46,7 @@ public class Property {
       "VALUES(DEFAULT, ?, ?, ?, ?, ?, ?::bit, ?, ?, ?, ?, ?, ?, ?) RETURNING ID;";
 
     String furnished = "0";
-    if (specifications.getFurnished()) {
+    if (specifications.getFurnished()) { //if furnished is true set it to 1 in the database
       furnished = "1";
     }
 
@@ -67,54 +70,73 @@ public class Property {
     return result.getString("id");
   }
 
+  //PROMISES: returns the ListingState of the current property through the ListingDetails class
   public ListingState checkState() {
     return specifications.getState();
   }
 
+  //PROMISES: returns the id of the property (either database or user generated)
   public String getHouseID() {
     return this.houseID;
   }
 
+  //PROMISES: returns the address of the property (includes street, postal code, city, province, country)
   public Address getAddress() {
     return this.address;
   }
 
+  //PROMISES: sets the address of the property
+  //REQUIRES: the address of the property
   public void setAddress(Address address) {
     this.address = address;
   }
 
+  //PROMISES: returns more details about the property (city quadrant, number of bathrooms and bedrooms etc.)
   public ListingDetails getSpecifications() {
     return this.specifications;
   }
 
+  //PROMSIES: sets further details about the property
+  //REQUIRES: the city quadrant, number of bedrooms and bathrooms, housing type, listing state, if its furnished
   public void setSpecifications(ListingDetails specifications) {
     this.specifications = specifications;
   }
 
+  //PROMSIES: returns the email of the landlord that posted the property
   public String getPostedBy() {
     return this.postedBy;
   }
 
+  //PROMISES: sets the owners email
+  //REQUIRES: the landlords emails
   public void setPostedBy(String postedBy) {
     this.postedBy = postedBy;
   }
 
+  //PROMISES: gets the landlords names
   public String getPostedByName() {
     return this.postedByName;
   }
 
+  //PROMISES: sets the landlords name
+  //REQUIRES: the name of the propertys owner
   public void setPostedByName(String postedByName) {
     this.postedByName = postedByName;
   }
 
+  //PROMSIES: gets the description about the property
   public String getDescription() {
     return this.description;
   }
 
+  //PROMSIES: sets the description about the property
+  //REQUIRES: the propertys description y(optional)
   public void setDescription(String description) {
     this.description = description;
   }
 
+  //PROMISES: updates the state of the current property in the database
+  //REQUIRES: the new state for the property
   public void updateState(ListingState newState) throws SQLException {
     Connection connection = ControllerManager.getConnection();
     String updatePropertyState = "UPDATE PROPERTY " +

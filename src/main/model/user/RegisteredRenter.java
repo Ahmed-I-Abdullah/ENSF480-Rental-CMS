@@ -96,7 +96,7 @@ public class RegisteredRenter implements Observer, User {
     PreparedStatement pStatmentTwo = connection.prepareStatement(updateRenter);
 
     String furnished = "1";
-    if (!criteria.isFurnished()) {
+    if (!criteria.getFurnished()) {
       furnished = "0";
     }
 

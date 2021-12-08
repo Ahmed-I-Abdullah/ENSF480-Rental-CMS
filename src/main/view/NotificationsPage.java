@@ -48,9 +48,9 @@ a function to get a formatted address from a property
   public String getFormattedAddress(Property property) {
     return (
       property.getAddress().getStreet() +
-      ", " +
+      " " +
       property.getSpecifications().getCityQuadrant() +
-      ", " +
+      " " +
       property.getAddress().getCity() +
       ", " +
       property.getAddress().getProvince() +
