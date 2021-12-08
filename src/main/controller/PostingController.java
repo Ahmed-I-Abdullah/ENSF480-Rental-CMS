@@ -92,7 +92,7 @@ public class PostingController {
 
       PreparedStatement pStatement = connection.prepareStatement(quadrantOfListing);
       pStatement.setString(1, new_quadrant);
-      int i = pStatement.executeUpdate();
+      pStatement.executeUpdate();
       String listingQuadrant = new_quadrant;
       return listingQuadrant;
     } catch (Exception e) {
@@ -111,7 +111,7 @@ public class PostingController {
 
       PreparedStatement pStatement = connection.prepareStatement(bedroomsOfListing);
       pStatement.setInt(1, new_bedrooms);
-      int i = pStatement.executeUpdate();
+      pStatement.executeUpdate();
       int listingBedrooms = new_bedrooms;
       return listingBedrooms;
     } catch (Exception e) {
@@ -130,7 +130,7 @@ public class PostingController {
 
       PreparedStatement pStatement = connection.prepareStatement(bathroomsOfListing);
       pStatement.setInt(1, new_bathrooms);
-      int i = pStatement.executeUpdate();
+      pStatement.executeUpdate();
       int listingBathrooms = new_bathrooms;
       return listingBathrooms;
     } catch (Exception e) {
@@ -149,7 +149,7 @@ public class PostingController {
 
       PreparedStatement pStatement = connection.prepareStatement(typeOfListing);
       pStatement.setString(1, new_type);
-      int i = pStatement.executeUpdate();
+      pStatement.executeUpdate();
       String listingtype = new_type;
       return listingtype;
     } catch (Exception e) {
@@ -168,7 +168,7 @@ public class PostingController {
 
       PreparedStatement pStatement = connection.prepareStatement(furnishingOfListing);
       pStatement.setBoolean(1, new_furnishing);
-      int i = pStatement.executeUpdate();
+      pStatement.executeUpdate();
       Boolean listingFurnishing = new_furnishing;
       return listingFurnishing;
     } catch (Exception e) {
