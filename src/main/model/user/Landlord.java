@@ -15,11 +15,14 @@ public class Landlord implements User {
   private String name;
   private String email;
   private ArrayList<Property> properties;
-
+  
+  // Constructor
   public Landlord(String email, String name) {
     setName(name);
     setEmail(email);
     this.properties = new ArrayList<Property>();
+    
+    // Connect to DB
     try {
       Connection connection = ControllerManager.getConnection();
       String propertyQuery = "SELECT * FROM PROPERTY WHERE Landlord_email=?";
@@ -28,7 +31,8 @@ public class Landlord implements User {
       pStatment.setString(1, email);
 
       ResultSet result = pStatment.executeQuery();
-
+      
+      // Read in all properties belonging to this landlord, and add them to properties array
       while (result.next()) {
         Address propertyAddress = new Address(
           result.getString("city"),
@@ -67,7 +71,9 @@ public class Landlord implements User {
       System.exit(-1);
     }
   }
-
+  
+  // Promises: return created property
+  // Requires: houseID, address, specifications, landlord who posted th property
   public Property createProperty(String houseID,
   Address address,
   ListingDetails specifications,
@@ -91,37 +97,49 @@ public class Landlord implements User {
       }
 
   }
-
+  
+  // Promises: return all porperties owned by this landlord
   public ArrayList<Property> getLandlordProperties() {
     return this.properties;
   }
-
+  
+  // Promises: return name of this landlord
   public String getName() {
     return this.name;
   }
-
+  
+  // Promises: return email of this email
   public String getEmail() {
     return this.email;
   }
-
+  
+  // Promises: set this landlord's email
+  // Requires: new email address
   public void setEmail(String email) {
     this.email = email;
   }
-
+  
+  // Promises: set this landlord's name
+  // Requires: new name
   public void setName(String name) {
     this.name = name;
   }
-
+  
+  // Promises: add porperty to this landlord's properties array
+  // Requires: property to be added
   public int addProperty(Property property) {
     this.properties.add(property);
     return this.properties.size();
   }
-
+  
+  // Promises: remove property from this landlord's properties array
+  // Requires: property to be removed
   public int removeProperty(Property property) {
     this.properties.add(property);
     return this.properties.size();
   }
-
+  
+  // Promises: return type of user, which is LANDLORD
   public UserType getUserType() {
     return UserType.LANDLORD;
   }
