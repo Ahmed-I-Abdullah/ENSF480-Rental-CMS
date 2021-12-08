@@ -301,40 +301,40 @@ a function to draw all action listening components on the page
 
     c.gridwidth = 1;
     c.gridx = 0;
-    c.gridy = 8;
+    c.gridy = 9;
     f.add(bedroomsLabel, c);
 
     c.gridx = 0;
-    c.gridy = 10;
+    c.gridy = 11;
     f.add(bathroomsLabel, c);
 
     c.gridx = 0;
-    c.gridy = 12;
+    c.gridy = 13;
     f.add(descriptionLabel, c);
 
     c.gridx = 1;
-    c.gridy = 14;
+    c.gridy = 15;
     f.add(pay, c);
 
     c.gridx = 0;
-    c.gridy = 14;
+    c.gridy = 15;
     f.add(save, c);
 
     c.gridwidth = 2;
     c.weightx = 0.0;
     c.gridx = 0;
-    c.gridy = 9;
+    c.gridy = 10;
     f.add(bedrooms, c);
 
     c.gridwidth = 2;
     c.gridx = 0;
-    c.gridy = 11;
+    c.gridy = 12;
     f.add(bathrooms, c);
 
     c.gridwidth = 2;
     c.weightx = 1.0;
     c.gridx = 0;
-    c.gridy = 13;
+    c.gridy = 14;
     f.add(description, c);
 
     f.setVisible(true);
