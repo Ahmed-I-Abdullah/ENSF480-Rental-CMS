@@ -1,15 +1,15 @@
 package src.main.view;
 
 import java.awt.*;
-import java.awt.Graphics;
-import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
-import java.util.ResourceBundle.Control;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import src.main.controller.ViewController;
 import src.main.model.property.Property;
-import src.main.model.user.RegisteredRenter;
 import src.main.model.user.UserType;
+import src.main.model.user.RegisteredRenter;
+
 
 public class BrowseListingsPage extends Page {
   private boolean useFiltered;
@@ -30,14 +30,9 @@ public class BrowseListingsPage extends Page {
     super(c);
     widget = w;
     switchEvent = 1;
-    if (
-      controller.getUserController().getAuthenticatedUser() != null &&
-      controller.getUserController().getAuthenticatedUser().getUserType() ==
-      UserType.RENTER
-    ) {
-      RegisteredRenter r = (RegisteredRenter) controller
-        .getUserController()
-        .getAuthenticatedUser();
+    if(controller.getUserController().getAuthenticatedUser() != null &&
+    controller.getUserController().getAuthenticatedUser().getUserType() == UserType.RENTER) {
+      RegisteredRenter r = (RegisteredRenter)controller.getUserController().getAuthenticatedUser();
       isSubscribed = r.getIsSubscribed();
     }
     properties = controller.getAllProperties();
@@ -47,9 +42,9 @@ public class BrowseListingsPage extends Page {
   public String getFormattedAddress(Property property) {
     return (
       property.getAddress().getStreet() +
-      ", " +
+      " " +
       property.getSpecifications().getCityQuadrant() +
-      ", " +
+      " " +
       property.getAddress().getCity() +
       ", " +
       property.getAddress().getProvince() +
@@ -88,77 +83,109 @@ public class BrowseListingsPage extends Page {
   }
 
   public void draw() {
-    System.out.println("properties size: " + properties.size());
-    JButton back = new JButton("Back");
-    back.setBounds(5, 10, 75, 50);
+    f = new Scroller();
+    f.setVisible(true);
+  }
 
-    final JButton subscriptions = new JButton("Unsubscribe");
-    subscriptions.setBounds(630, 10, 140, 50);
+  public class Scroller extends JFrame {
 
-    JButton filters = new JButton("Set Search Criteria");
-    filters.setBounds(40, 100, 145, 50);
+    public Scroller() throws HeadlessException {
+        final JPanel panel = new JPanel();
+        JLabel title = new JLabel("BROWSE LISTINGS");
+        title.setFont(new Font("Helvetica", Font.BOLD, 35));
+        title.setBounds(240,0,400,50);
+        panel.add(title);
+        for (int i = 0; i < properties.size(); i++) {
+          JLabel address = new JLabel(getFormattedAddress(properties.get(i)));
+          address.setFont(new Font("Serif", Font.PLAIN, 20));
+          address.setBounds(195, 50 + (i * 50), 420, 50);
+          address.setBorder(LineBorder.createBlackLineBorder());
+          panel.add(address);
 
-    filters.addActionListener(
-      e -> {
-        JFrame pop = new JFrame("Select Your Preferences");
-        pop.setSize(350, 350);
-        pop.setLocationRelativeTo(null);
-        pop.setLayout(new GridBagLayout());
+          JButton clickme = new JButton("View");
+          clickme.setBounds(620, 50 + (i * 50), 75, 50);
+          final int p = i;
+          clickme.addActionListener(
+            e -> {
+              controller.setCurrentProperty(p);
+              f.setVisible(false);
+              f.removeAll();
+              switchEvent = 6;
+            }
+          );
+          panel.add(clickme);
+        }
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        JButton back = new JButton("Back");
+        back.setBounds(5, 10, 75, 50);
 
-        JButton ok = new JButton("OK");
+        final JButton subscriptions = new JButton("Unsubscribe");
+        subscriptions.setBounds(40, 150, 145, 50);
 
-        JButton save = new JButton("Save & Subscribe");
+        JButton filters = new JButton("Set Search Criteria");
+        filters.setBounds(40, 100, 145, 50);
 
-        JLabel quadrantLabel = new JLabel("Quadrant");
-        JComboBox<String> quadrant = new JComboBox<String>(quad);
-        quadrant.setSelectedIndex(chosenQuadrantIndex);
+        filters.addActionListener(
+          e -> {
+            JFrame pop = new JFrame("Select Your Preferences");
+            pop.setSize(350, 350);
+            pop.setLocationRelativeTo(null);
+            pop.setLayout(new GridBagLayout());
 
-        JLabel criteriaErrors = new JLabel(searchCriteriaErrors);
-        criteriaErrors.setForeground(Color.red);
+            GridBagConstraints c = new GridBagConstraints();
+            c.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel furnishedLabel = new JLabel("Furnished");
-        JComboBox<String> furnished = new JComboBox<String>(select);
-        furnished.setSelectedIndex(chosenFurnishedIndex);
+            JButton ok = new JButton("OK");
 
-        JTextField type = new JTextField(chosenApartmentType);
+            JButton save = new JButton("Save & Subscribe");
 
-        JLabel bedroomsLabel = new JLabel("Number of Bedrooms");
-        JSlider bedrooms = new JSlider(
-          JSlider.HORIZONTAL,
-          0,
-          5,
-          chosenNumBedrooms
-        );
-        bedrooms.setMajorTickSpacing(1);
-        bedrooms.setPaintTicks(true);
-        bedrooms.setPaintLabels(true);
-        bedrooms.setFont(mainText);
+            JLabel quadrantLabel = new JLabel("Quadrant");
+            JComboBox<String> quadrant = new JComboBox<String>(quad);
+            quadrant.setSelectedIndex(chosenQuadrantIndex);
 
-        JLabel bathroomsLabel = new JLabel("Number of Bathrooms");
-        JSlider bathrooms = new JSlider(
-          JSlider.HORIZONTAL,
-          0,
-          5,
-          chosenNumBathrooms
-        );
-        bathrooms.setMajorTickSpacing(1);
-        bathrooms.setPaintTicks(true);
-        bathrooms.setPaintLabels(true);
-        bathrooms.setFont(mainText);
+            JLabel criteriaErrors = new JLabel(searchCriteriaErrors);
+            criteriaErrors.setForeground(Color.red);
 
-        ok.addActionListener(
-          p -> {
-            chosenApartmentType = type.getText();
-            chosenNumBathrooms = bathrooms.getValue();
-            chosenNumBedrooms = bedrooms.getValue();
-            chosenQuadrantIndex = quadrant.getSelectedIndex();
-            chosenFurnishedIndex = furnished.getSelectedIndex();
-            if (checkSearchErrors()) {
-              pop.setVisible(false);
-              properties =
+            JLabel furnishedLabel = new JLabel("Furnished");
+            JComboBox<String> furnished = new JComboBox<String>(select);
+            furnished.setSelectedIndex(chosenFurnishedIndex);
+
+            JTextField type = new JTextField(chosenApartmentType);
+
+            JLabel bedroomsLabel = new JLabel("Number of Bedrooms");
+            JSlider bedrooms = new JSlider(
+              JSlider.HORIZONTAL,
+              0,
+              5,
+              chosenNumBedrooms
+            );
+            bedrooms.setMajorTickSpacing(1);
+            bedrooms.setPaintTicks(true);
+            bedrooms.setPaintLabels(true);
+            bedrooms.setFont(mainText);
+
+            JLabel bathroomsLabel = new JLabel("Number of Bathrooms");
+            JSlider bathrooms = new JSlider(
+              JSlider.HORIZONTAL,
+              0,
+              5,
+              chosenNumBathrooms
+            );
+            bathrooms.setMajorTickSpacing(1);
+            bathrooms.setPaintTicks(true);
+            bathrooms.setPaintLabels(true);
+            bathrooms.setFont(mainText);
+
+            ok.addActionListener(
+              p -> {
+                chosenApartmentType = type.getText();
+                chosenNumBathrooms = bathrooms.getValue();
+                chosenNumBedrooms = bedrooms.getValue();
+                chosenQuadrantIndex = quadrant.getSelectedIndex();
+                chosenFurnishedIndex = furnished.getSelectedIndex();
+                if (checkSearchErrors()) {
+                  pop.setVisible(false);
+                  properties =
                 controller.getFilteredProperties(
                   chosenApartmentType,
                   quad[chosenQuadrantIndex],
@@ -167,159 +194,144 @@ public class BrowseListingsPage extends Page {
                   chosenNumBathrooms
                 );
               f.getContentPane().removeAll();
-              f.repaint();
+              f.setVisible(false);
               draw();
-            } else {
-              criteriaErrors.setText(searchCriteriaErrors);
+                } else {
+                  criteriaErrors.setText(searchCriteriaErrors);
+                }
+              }
+            );
+
+            save.addActionListener(
+              p -> {
+                chosenApartmentType = type.getText();
+                chosenNumBathrooms = bathrooms.getValue();
+                chosenNumBedrooms = bedrooms.getValue();
+                chosenQuadrantIndex = quadrant.getSelectedIndex();
+                chosenFurnishedIndex = furnished.getSelectedIndex();
+                if (checkSearchErrors()) {
+                  pop.setVisible(false);
+                  setUserCritera();
+                  panel.add(subscriptions);
+                  panel.repaint();
+                } else {
+                  criteriaErrors.setText(searchCriteriaErrors);
+                }
+              }
+            );
+
+            c.gridx = 0;
+            c.gridy = 0;
+            pop.add(criteriaErrors, c);
+
+            c.gridx = 0;
+            c.gridy = 2;
+            pop.add(type, c);
+
+            c.gridx = 0;
+            c.gridy = 4;
+            pop.add(quadrantLabel, c);
+
+            c.gridx = 1;
+            c.gridy = 4;
+            pop.add(furnishedLabel, c);
+
+            c.gridx = 0;
+            c.gridy = 5;
+            pop.add(quadrant, c);
+
+            c.gridx = 1;
+            c.gridy = 5;
+            pop.add(furnished, c);
+
+            c.gridx = 0;
+            c.gridy = 6;
+            pop.add(bedroomsLabel, c);
+
+            c.gridx = 0;
+            c.gridy = 8;
+            pop.add(bathroomsLabel, c);
+
+            c.gridx = 1;
+            c.gridy = 10;
+            pop.add(ok, c);
+
+            if (
+              controller.getUserController().getAuthenticatedUser() != null &&
+              controller.getUserController().getAuthenticatedUser().getUserType() ==
+              UserType.RENTER
+            ) {
+              c.gridx = 0;
+              c.gridy = 10;
+              pop.add(save, c);
             }
+            c.gridwidth = 2;
+            c.weightx = 0.0;
+            c.gridx = 0;
+            c.gridy = 7;
+            pop.add(bedrooms, c);
+
+            c.gridwidth = 2;
+            c.weightx = 0.0;
+            c.gridx = 0;
+            c.gridy = 9;
+            pop.add(bathrooms, c);
+
+            pop.setVisible(true);
           }
         );
 
-        save.addActionListener(
-          p -> {
-            chosenApartmentType = type.getText();
-            chosenNumBathrooms = bathrooms.getValue();
-            chosenNumBedrooms = bedrooms.getValue();
-            chosenQuadrantIndex = quadrant.getSelectedIndex();
-            chosenFurnishedIndex = furnished.getSelectedIndex();
-            if (checkSearchErrors()) {
-              pop.setVisible(false);
-              setUserCritera();
-              f.add(subscriptions);
-              f.repaint();
-            } else {
-              criteriaErrors.setText(searchCriteriaErrors);
-            }
+        back.addActionListener(
+          e -> {
+            f.setVisible(false);
+            f.removeAll();
+            resetSwitchEvent();
           }
         );
 
-        c.gridx = 0;
-        c.gridy = 0;
-        pop.add(criteriaErrors, c);
-
-        c.gridx = 0;
-        c.gridy = 2;
-        pop.add(type, c);
-
-        c.gridx = 0;
-        c.gridy = 4;
-        pop.add(quadrantLabel, c);
-
-        c.gridx = 1;
-        c.gridy = 4;
-        pop.add(furnishedLabel, c);
-
-        c.gridx = 0;
-        c.gridy = 5;
-        pop.add(quadrant, c);
-
-        c.gridx = 1;
-        c.gridy = 5;
-        pop.add(furnished, c);
-
-        c.gridx = 0;
-        c.gridy = 6;
-        pop.add(bedroomsLabel, c);
-
-        c.gridx = 0;
-        c.gridy = 8;
-        pop.add(bathroomsLabel, c);
-
-        c.gridx = 1;
-        c.gridy = 10;
-        pop.add(ok, c);
+        subscriptions.addActionListener(
+          e -> {
+            RegisteredRenter r = (RegisteredRenter)controller.getUserController().getAuthenticatedUser();
+            try {
+              r.unsubscribe();
+              panel.remove(subscriptions);
+              panel.repaint();
+            } catch(Exception ex) {
+              ex.printStackTrace();
+            }
+          }
+        );
 
         if (
           controller.getUserController().getAuthenticatedUser() != null &&
-          controller.getUserController().getAuthenticatedUser().getUserType() ==
-          UserType.RENTER
+          controller.getUserController().getAuthenticatedUser().getUserType() == UserType.RENTER
         ) {
-          c.gridx = 0;
-          c.gridy = 10;
-          pop.add(save, c);
+          if(isSubscribed) {
+            panel.add(subscriptions);
+          }
         }
-        c.gridwidth = 2;
-        c.weightx = 0.0;
-        c.gridx = 0;
-        c.gridy = 7;
-        pop.add(bedrooms, c);
+    
+        panel.add(back);
+        panel.add(filters);
+        //panel.setBorder(BorderFactory.createLineBorder(Color.red));
+        panel.setLayout(null);
+        panel.setPreferredSize(new Dimension(750, 80 + properties.size()*50));
 
-        c.gridwidth = 2;
-        c.weightx = 0.0;
-        c.gridx = 0;
-        c.gridy = 9;
-        pop.add(bathrooms, c);
+        final JScrollPane scroll = new JScrollPane(panel);
 
-        pop.setVisible(true);
-      }
-    );
-
-    for (int i = 0; i < properties.size(); i++) {
-      JButton clickme = new JButton("View");
-      clickme.setBounds(540, 50 + (i * 50), 75, 50);
-      final int p = i;
-      clickme.addActionListener(
-        e -> {
-          controller.setCurrentProperty(p);
-          f.setVisible(false);
-          f.removeAll();
-          switchEvent = 6;
-        }
-      );
-      f.add(clickme);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setLayout(new BorderLayout());
+        add(scroll); //, BorderLayout.CENTER
+        setLocationRelativeTo(null);
+        setSize(800, 800);
+        setVisible(true);
     }
-
-    back.addActionListener(
-      e -> {
-        f.setVisible(false);
-        f.removeAll();
-        resetSwitchEvent();
-      }
-    );
-
-    subscriptions.addActionListener(
-      e -> {
-        RegisteredRenter r = (RegisteredRenter) controller
-          .getUserController()
-          .getAuthenticatedUser();
-        try {
-          r.unsubscribe();
-          f.remove(subscriptions);
-          f.repaint();
-        } catch (Exception ex) {
-          ex.printStackTrace();
-        }
-      }
-    );
-
-    if (
-      controller.getUserController().getAuthenticatedUser() != null &&
-      controller.getUserController().getAuthenticatedUser().getUserType() ==
-      UserType.RENTER
-    ) {
-      if (isSubscribed) {
-        f.add(subscriptions);
-      }
-    }
-    f.add(back);
-    f.add(filters);
-    f.getContentPane().add(this);
-    f.setVisible(true);
   }
-
   public void paintComponent(Graphics g) {
     widget = new Text(230, 40, "BROWSE LISTINGS");
     g.setFont(titleFont);
     widget.draw(g);
     widget = new Border(widget, 0, 0, 785, 762, 10);
     widget.draw(g);
-    g.setFont(mainText);
-    for (int i = 0; i < properties.size(); i++) {
-      widget = new Border(widget, 190, 50 + (i * 50), 350, 50, 5);
-      widget.draw(g);
-      widget =
-        new Text(195, 80 + (i * 50), getFormattedAddress(properties.get(i)));
-      widget.draw(g);
-    }
   }
 }
