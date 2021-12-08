@@ -2,15 +2,19 @@ package src.main.view;
 
 import java.awt.*;
 import java.awt.Graphics;
+import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
+import java.util.ResourceBundle.Control;
 import javax.swing.*;
 import src.main.controller.ViewController;
 import src.main.model.property.Property;
-import src.main.model.user.UserType;
 import src.main.model.user.RegisteredRenter;
+import src.main.model.user.UserType;
 
 public class BrowseListingsPage extends Page {
+  private boolean useFiltered;
   private boolean isSubscribed = false;
+  private ArrayList<Property> properties;
   private static final String[] quad = { "NW", "SW", "SE", "NE" };
   private static final String[] select = { "Yes", "No" };
   private static final String chooseTypeText =
@@ -26,11 +30,18 @@ public class BrowseListingsPage extends Page {
     super(c);
     widget = w;
     switchEvent = 1;
-    if(controller.getUserController().getAuthenticatedUser() != null &&
-    controller.getUserController().getAuthenticatedUser().getUserType() == UserType.RENTER) {
-      RegisteredRenter r = (RegisteredRenter)controller.getUserController().getAuthenticatedUser();
+    if (
+      controller.getUserController().getAuthenticatedUser() != null &&
+      controller.getUserController().getAuthenticatedUser().getUserType() ==
+      UserType.RENTER
+    ) {
+      RegisteredRenter r = (RegisteredRenter) controller
+        .getUserController()
+        .getAuthenticatedUser();
       isSubscribed = r.getIsSubscribed();
     }
+    properties = controller.getAllProperties();
+    useFiltered = false;
   }
 
   public String getFormattedAddress(Property property) {
@@ -77,6 +88,7 @@ public class BrowseListingsPage extends Page {
   }
 
   public void draw() {
+    System.out.println("properties size: " + properties.size());
     JButton back = new JButton("Back");
     back.setBounds(5, 10, 75, 50);
 
@@ -98,7 +110,7 @@ public class BrowseListingsPage extends Page {
 
         JButton ok = new JButton("OK");
 
-        JButton save = new JButton("Save");
+        JButton save = new JButton("Save & Subscribe");
 
         JLabel quadrantLabel = new JLabel("Quadrant");
         JComboBox<String> quadrant = new JComboBox<String>(quad);
@@ -146,6 +158,17 @@ public class BrowseListingsPage extends Page {
             chosenFurnishedIndex = furnished.getSelectedIndex();
             if (checkSearchErrors()) {
               pop.setVisible(false);
+              properties =
+                controller.getFilteredProperties(
+                  chosenApartmentType,
+                  quad[chosenQuadrantIndex],
+                  chosenFurnishedIndex == 0 ? true : false,
+                  chosenNumBedrooms,
+                  chosenNumBathrooms
+                );
+              f.getContentPane().removeAll();
+              f.repaint();
+              draw();
             } else {
               criteriaErrors.setText(searchCriteriaErrors);
             }
@@ -231,25 +254,15 @@ public class BrowseListingsPage extends Page {
       }
     );
 
-    final ArrayList<Property> properties = controller.getAllProperties();
-
     for (int i = 0; i < properties.size(); i++) {
       JButton clickme = new JButton("View");
       clickme.setBounds(540, 50 + (i * 50), 75, 50);
       final int p = i;
       clickme.addActionListener(
         e -> {
-			
-			controller.setCurrentProperty(p);
-          // for (int z = 0; z < properties.size(); z++) {
-            // if (z == p) {
-				// System.out.println(
-              // getFormattedAddress(properties.get(z))
-            // );
-			// }
-          // }
-		  f.setVisible(false);
-		  f.removeAll();
+          controller.setCurrentProperty(p);
+          f.setVisible(false);
+          f.removeAll();
           switchEvent = 6;
         }
       );
@@ -266,12 +279,14 @@ public class BrowseListingsPage extends Page {
 
     subscriptions.addActionListener(
       e -> {
-        RegisteredRenter r = (RegisteredRenter)controller.getUserController().getAuthenticatedUser();
+        RegisteredRenter r = (RegisteredRenter) controller
+          .getUserController()
+          .getAuthenticatedUser();
         try {
           r.unsubscribe();
           f.remove(subscriptions);
           f.repaint();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
           ex.printStackTrace();
         }
       }
@@ -279,9 +294,10 @@ public class BrowseListingsPage extends Page {
 
     if (
       controller.getUserController().getAuthenticatedUser() != null &&
-      controller.getUserController().getAuthenticatedUser().getUserType() == UserType.RENTER
+      controller.getUserController().getAuthenticatedUser().getUserType() ==
+      UserType.RENTER
     ) {
-      if(isSubscribed) {
+      if (isSubscribed) {
         f.add(subscriptions);
       }
     }
@@ -298,7 +314,6 @@ public class BrowseListingsPage extends Page {
     widget = new Border(widget, 0, 0, 785, 762, 10);
     widget.draw(g);
     g.setFont(mainText);
-    final ArrayList<Property> properties = controller.getAllProperties();
     for (int i = 0; i < properties.size(); i++) {
       widget = new Border(widget, 190, 50 + (i * 50), 350, 50, 5);
       widget.draw(g);
