@@ -8,12 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import src.main.model.property.ListingDetails;
+import src.main.model.property.Property;
 import src.main.model.property.ListingState;
 import src.main.model.user.Landlord;
 import src.main.model.user.Manager;
 import src.main.model.user.RegisteredRenter;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
+import src.main.model.property.ApplicationEmail;
 
 public class UserController {
 
@@ -192,8 +194,6 @@ public class UserController {
   public void setAuthenticatedUser(User u) {
     this.authenticatedUser = u;
   }
-<<<<<<< Updated upstream
-=======
   public void emailLandlord(Property p, String body){
 	  String subject = "Renter "+ this.authenticatedUser.getName() + "is interested in "+ p.getHouseID();
 	 ApplicationEmail e = new ApplicationEmail(p, subject, body);
@@ -201,35 +201,6 @@ public class UserController {
 
 	  
   }
-  public String [] findUser(String email){
-	try{
-	 Connection connection = ControllerManager.getConnection();
-	String userQuery = "SELECT * FROM PERSON p WHERE p.Email = ?";
-    PreparedStatement pStatment = connection.prepareStatement(userQuery);
-    pStatment.setString(1, email);
-	ResultSet res = pStatment.executeQuery();
-	if (!res.isBeforeFirst()) {
-      return null;
-    }
-	 res.next();
-	 String name = res.getString("name");
-	 UserType type = UserType.values()[res.getInt("role")];
-	 String role="";
-	 if(type==UserType.RENTER){
-		 role="Renter";
-	 }else if(type==UserType.MANAGER){
-		 role="Manager";
-	 }else if(type==UserType.LANDLORD){
-		 role="Landlord";
-	 }
-	 
-	 String [] result={name, email, role};
-	 return result;
-	}catch(Exception e){
-		System.exit(1);
-	}
-	return null;
-  }
   
->>>>>>> Stashed changes
+  
 }

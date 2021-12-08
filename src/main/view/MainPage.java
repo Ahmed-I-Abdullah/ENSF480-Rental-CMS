@@ -87,32 +87,31 @@ public class MainPage extends Page {
     pass.setBounds(670, 150, 100, 30);
 
     final JButton button = new JButton("Sign in");
-    button.setBounds(670, 200, 70, 25);
+    button.setBounds(670, 200, 100, 25);
 
     final JButton Sinbutton = new JButton("Register");
     Sinbutton.setBounds(670, 225, 100, 25);
 
     final JButton browse = new JButton("Browse");
-    browse.setBounds(100, 120, 100, 50);
+    browse.setBounds(100, 120, 150, 50);
 
     final JButton manage = new JButton("Manage");
-    manage.setBounds(100, 220, 100, 50);
+    manage.setBounds(100, 220, 150, 50);
 
     final JButton post = new JButton("Post Property");
-    post.setBounds(100, 170, 100, 50);
+    post.setBounds(100, 170, 150, 50);
 
     final JButton signout = new JButton("Sign out");
     signout.setBounds(670, 200, 100, 25);
 
     final JButton notifications = new JButton("Notifications");
-    notifications.setBounds(700, 80, 100, 50);
+    notifications.setBounds(100, 170, 150, 50);
 
     notifications.addActionListener(
       e -> {
         f.setVisible(false);
         f.getContentPane().removeAll();
         switchEvent = 5;
-		validate();
       }
     );
 
@@ -121,8 +120,6 @@ public class MainPage extends Page {
         f.setVisible(false);
         f.getContentPane().removeAll();
         switchEvent = 1;
-		f.dispose();
-		f.validate();
       }
     );
 
@@ -131,7 +128,6 @@ public class MainPage extends Page {
         f.setVisible(false);
         f.getContentPane().removeAll();
         switchEvent = 2;
-		validate();
       }
     );
 
@@ -140,7 +136,6 @@ public class MainPage extends Page {
         f.setVisible(false);
         f.getContentPane().removeAll();
         switchEvent = 3;
-		validate();
       }
     );
 
@@ -310,9 +305,9 @@ public class MainPage extends Page {
               .getUserController()
               .getAuthenticatedUser();
             isSubscribed = r.getIsSubscribed();
-          }
-          if (isSubscribed) {
-            f.add(notifications);
+            if (isSubscribed) {
+              f.add(notifications);
+            }
           }
           if (
             controller
@@ -424,6 +419,7 @@ public class MainPage extends Page {
           f.add(manage);
         }
       }
+      f.add(signout);
     }
     f.add(browse);
     f.getContentPane().add(this);
