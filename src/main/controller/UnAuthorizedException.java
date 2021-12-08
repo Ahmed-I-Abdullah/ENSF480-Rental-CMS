@@ -1,7 +1,12 @@
 package src.main.controller;
 
 public class UnAuthorizedException extends Exception {
-	public UnAuthorizedException(String message){
-		super(message);
+
+  /**
+   * Exception constructor
+   * @param message String representing error message
+   */
+  public UnAuthorizedException(String message) {
+    super(message);
   }
 }

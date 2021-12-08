@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class ControllerManager {
@@ -20,6 +20,10 @@ public class ControllerManager {
   private static final String DB_PORT = "5432";
   private static Connection databaseConnection;
 
+  /**
+   * Establishes connection with remote database and
+   * stores Connection instance
+   */
   public static void connectDatabase() {
     try {
       String url = String.format(
@@ -38,10 +42,18 @@ public class ControllerManager {
     }
   }
 
+  /**
+   * Gets the database connection instance
+   * @return A Connection object to the remote database
+   */
   public static Connection getConnection() {
     return databaseConnection;
   }
 
+  /**
+   * Executes a given sql file on the remote database
+   * @param filePath String representing the path of the sql file
+   */
   public static void runSQLScript(String filePath)
     throws FileNotFoundException {
     File inputFile = new File(filePath);
@@ -64,15 +76,19 @@ public class ControllerManager {
     fileScanner.close();
   }
 
-
+  /**
+   * Executes a given sql query on the remote database
+   * @param filePath String representing query
+   * @throws SQLException
+   */
   public static void executeQuery(String query) throws SQLException {
     try {
-        Statement statement = databaseConnection.createStatement();
-        statement.execute(query);
-        statement.close();
-      } catch (Exception e) {
-        e.printStackTrace();
-        System.exit(-1);
-      }
+      Statement statement = databaseConnection.createStatement();
+      statement.execute(query);
+      statement.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.exit(-1);
+    }
   }
 }

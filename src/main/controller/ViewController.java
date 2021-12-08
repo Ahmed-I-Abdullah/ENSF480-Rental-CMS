@@ -9,8 +9,8 @@ import src.main.model.property.ListingDetails;
 import src.main.model.property.ListingState;
 import src.main.model.property.Property;
 import src.main.model.user.Landlord;
-import src.main.model.user.UserType;
 import src.main.model.user.RegisteredRenter;
+import src.main.model.user.UserType;
 
 public class ViewController {
 
@@ -23,6 +23,9 @@ public class ViewController {
   private PostingController postingController;
   private UserController userController;
 
+  /**
+   * Default constructor
+   */
   public ViewController() {
     postingController = new PostingController();
     allProperties = new ArrayList<Property>();
@@ -30,6 +33,10 @@ public class ViewController {
     renterNotifications = new ArrayList<Property>();
   }
 
+  /**
+   * return properties from the database according to user type
+   * @return ArrayList of property objects
+   */
   public ArrayList<Property> getAllProperties() {
     if (
       userController.getAuthenticatedUser() == null ||
@@ -142,6 +149,15 @@ public class ViewController {
     return this.allProperties;
   }
 
+  /**
+   * return properties from the database according to user type and specified filters
+   * @param type String representing the property's type
+   * @param quadrant String representing the property's city quadrant
+   * @param isFurnished Boolean representing if the property is furnished
+   * @param numBedrooms int representing the property's number of bedrooms
+   * @param numBathrooms int representing the property's number of bathrooms
+   * @return ArrayList of property objects
+   */
   public ArrayList<Property> getFilteredProperties(
     String type,
     String quadrant,
@@ -336,12 +352,21 @@ public class ViewController {
     return this.filteredProperties;
   }
 
+  /**
+   * indicates if notifications page is being used
+   * @return Boolean representing notifications state
+   */
   public boolean getUseNotification() {
     return this.useNotifications;
   }
 
+  /**
+   * gets renter notifications
+   * @param r RegisteredRenter to get the notifications for
+   * @return ArrayList of Property objects
+   */
   public ArrayList<Property> getRenterNotifications(RegisteredRenter r) {
-    if(renterNotifications.size() == 0) {
+    if (renterNotifications.size() == 0) {
       this.renterNotifications = r.getNotifications();
     }
     useNotifications = true;
@@ -350,28 +375,48 @@ public class ViewController {
     return this.renterNotifications;
   }
 
+  /**
+   * sets UserContoller
+   * @param controller UserController to be set
+   */
   public void setUserController(UserController controller) {
     this.userController = controller;
   }
 
+  /**
+   * sets property to be seen in singlelisting page
+   * @param i index of property in ArrayList of properties
+   */
   public void setCurrentProperty(int i) {
     if (useFilter) {
       this.currentProperty = this.filteredProperties.get(i);
-    } else if(useNotifications) {
+    } else if (useNotifications) {
       this.currentProperty = this.renterNotifications.get(i);
     } else {
       this.currentProperty = this.allProperties.get(i);
     }
   }
 
+  /**
+   * return property to be seen in singlelisting page
+   * @return Property to be displayed
+   */
   public Property getCurrentProperty() {
     return this.currentProperty;
   }
 
+  /**
+   * return userController
+   * @return UserController of the current logged in user
+   */
   public UserController getUserController() {
     return this.userController;
   }
 
+  /**
+   * return postingController
+   * @return postingControllers
+   */
   public PostingController getPostingController() {
     return this.postingController;
   }
