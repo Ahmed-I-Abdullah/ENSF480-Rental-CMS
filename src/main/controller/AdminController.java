@@ -1,5 +1,6 @@
 package src.main.controller;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +9,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.math.BigDecimal;
 import src.main.model.property.*;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
@@ -19,6 +19,11 @@ public class AdminController extends UserController {
     "yyyy-MM-dd"
   );
 
+  /**
+   * A constructor, checks user authorization and creates
+   * an AdminController Object
+   * @param u User that will use the Admin Controller
+   */
   public AdminController(User u) throws UnAuthorizedException {
     super(u);
     if (u.getUserType() != UserType.MANAGER) {
@@ -26,19 +31,11 @@ public class AdminController extends UserController {
     }
   }
 
-  public void generateReport(Date startDate, Date endDate) throws SQLException {
-    String from = dateFormatter.format(startDate);
-    String to = dateFormatter.format(endDate);
-
-    int numListings = numListingsInPeriod(from, to);
-    int numRented = numRentedInPeriod(from, to);
-    int totalNumActive = totalNumActive();
-
-    System.out.println("listings added in period: " + numListings);
-    System.out.println("rents in period: " + numRented);
-    System.out.println("total active listing is: " + totalNumActive);
-  }
-
+  /**
+   * Changes the amount of fee to post a property in the database
+   * @param amount double representing the new fee
+   * @throws SQLException
+   */
   public void changeFeeAmount(double amount) throws SQLException {
     Connection connection = ControllerManager.getConnection();
 
@@ -68,6 +65,11 @@ public class AdminController extends UserController {
     pStatment.executeUpdate();
   }
 
+  /**
+   * Changes the duration of fee to post a property in the database
+   * @param amount double int representing the new duration
+   * @throws SQLException
+   */
   public void changeFeeDuration(int durationMonth) throws SQLException {
     Connection connection = ControllerManager.getConnection();
 
@@ -93,6 +95,13 @@ public class AdminController extends UserController {
     pStatment.executeUpdate();
   }
 
+  /**
+   * Gets number of listings registered in a specific period
+   * @param from String representing the start date in format yyyy-MM-dd
+   * @param to String representing the end date in format yyyy-MM-dd
+   * @return An int representing the number of listed properties
+   * @throws SQLException
+   */
   public int numListingsInPeriod(String from, String to) throws SQLException {
     Connection connection = ControllerManager.getConnection();
     String listedQuery =
@@ -123,6 +132,13 @@ public class AdminController extends UserController {
     return result.getInt("count");
   }
 
+  /**
+   * Gets number of rented properties in a specific period
+   * @param from String representing the start date in format yyyy-MM-dd
+   * @param to String representing the end date in format yyyy-MM-dd
+   * @return An int representing the number of rented properties
+   * @throws SQLException
+   */
   public int numRentedInPeriod(String from, String to) throws SQLException {
     Connection connection = ControllerManager.getConnection();
     String rentedQuery =
@@ -141,6 +157,11 @@ public class AdminController extends UserController {
     return result.getInt("count");
   }
 
+  /**
+   * Gets total number of currently active properties
+   * @return An int representing the number of active properties
+   * @throws SQLException
+   */
   public int totalNumActive() throws SQLException {
     Connection connection = ControllerManager.getConnection();
     String activeQuery =
@@ -156,7 +177,15 @@ public class AdminController extends UserController {
     return result.getInt("count");
   }
 
-  public ArrayList<Property> getRentedInPeriod(String from, String to) throws SQLException {
+  /**
+   * Gets rented properties in a specific period
+   * @param from String representing the start date in format yyyy-MM-dd
+   * @param to String representing the end date in format yyyy-MM-dd
+   * @return An ArrayList containing the rented properties
+   * @throws SQLException
+   */
+  public ArrayList<Property> getRentedInPeriod(String from, String to)
+    throws SQLException {
     ArrayList<Property> rentedProperties = new ArrayList<Property>();
     Connection connection = ControllerManager.getConnection();
     String listedQuery =
