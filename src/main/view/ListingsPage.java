@@ -232,6 +232,7 @@ public class ListingsPage extends Page {
                 )
               );
               pop.setVisible(false);
+			  f.repaint();
             }
           );
 
@@ -403,6 +404,7 @@ public class ListingsPage extends Page {
             // //
             // listing
             pop.setVisible(false);
+			f.repaint();
           }
         );
 
