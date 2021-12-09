@@ -63,8 +63,6 @@ public class Landlord implements User {
         );
 
         properties.add(property);
-        System.out.println(property.getHouseID());
-        System.out.println(email);
       }
     } catch (Exception e) {
       e.printStackTrace();

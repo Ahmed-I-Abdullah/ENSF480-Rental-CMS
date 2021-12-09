@@ -10,7 +10,7 @@ import src.main.controller.AdminController;
 import src.main.controller.ViewController;
 import src.main.model.property.Property;
 /**
-the Manager's periodical page from a given range fo dates. 
+the Manager's periodical page from a given range of dates. 
 */
 public class ManagerReportPage extends Page {
   private String dateErrors = "";

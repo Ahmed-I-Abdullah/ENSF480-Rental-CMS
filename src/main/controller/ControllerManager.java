@@ -35,7 +35,7 @@ public class ControllerManager {
       );
       databaseConnection =
         DriverManager.getConnection(url, DB_USER, DB_PASSWORD);
-      System.out.println("Connection to database successful");
+        System.out.println("Connection to database successful");
     } catch (Exception e) {
       e.printStackTrace();
       System.exit(-1);
