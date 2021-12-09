@@ -84,7 +84,6 @@ a function to draw all action listening components on the page
             double numericFee = 0;
             int numericDuration = 0;
             boolean good = true;
-            System.out.println(price.getText() + "\n" + term.getText());
             try {
               numericFee = Double.parseDouble(newFee);
               numericDuration = Integer.parseInt(newTerm);
@@ -163,42 +162,36 @@ a function to draw all action listening components on the page
 
         search.addActionListener(
           p -> {
-            System.out.println(search.getText());
-            //controller.searchUsers(search.getText());
             pop.setVisible(false);
-			String [] data=controller.getUserController().findUser(search.getText());
+			      String [] data=controller.getUserController().findUser(search.getText());
             if (data!=null) { //if the user is found
-				pop.remove(search);
+              pop.remove(search);
               found.setText("User found!");
+
               c.gridx = 0;
               c.gridy = 0;
-			  pop.add(found, c);
-			  name.setText(data[0]);
-			  c.gridx = 0;
+              pop.add(found, c);
+
+              name.setText(data[0]);
+              c.gridx = 0;
               c.gridy = 1;
-			  pop.add(name, c);
-			  email.setText(data[1]);
-			  c.gridx = 0;
+              pop.add(name, c);
+
+              email.setText(data[1]);
+              c.gridx = 0;
               c.gridy = 2;
-			  pop.add(email, c);
-			  role.setText(data[2]);
-			  c.gridx = 0;
+              pop.add(email, c);
+
+              role.setText(data[2]);
+              c.gridx = 0;
               c.gridy = 3;
-			  pop.add(role, c);
-              // pop.add(delete, c);
+              pop.add(role, c);
             } else {
               found.setText("User not found");
             }
             pop.setVisible(true);
           }
         );
-
-        // delete.addActionListener(
-          // p -> {
-            // // System.out.println("user deleted");
-            // //viewController.deleteUser(user);
-          // }
-        // );
 
         c.gridx = 0;
         c.gridy = 0;
