@@ -81,8 +81,15 @@ public class ViewController {
             result.getString("property_description"),
             false
           );
-
-          localProperties.add(property);
+          if (!postingController.propertyPayValid(property.getHouseID())) {
+            try {
+              property.updateState(ListingState.REGISTERED);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          } else {
+            localProperties.add(property);
+          }
         }
         this.allProperties = localProperties;
       } catch (Exception e) {

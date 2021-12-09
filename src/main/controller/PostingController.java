@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import src.main.model.property.*;
 import src.main.model.user.Landlord;
 import src.main.model.user.User;
@@ -66,6 +68,38 @@ public class PostingController {
       postedBy,
       description
     );
+  }
+
+   /**
+   * check if property pay is not expired
+   * @param id ID of the property to check
+   * @return Boolean indicating if pay is valid
+   */
+  public boolean propertyPayValid(String id) throws SQLException {
+    Connection connection = ControllerManager.getConnection();
+
+    String payQuery =
+      "SELECT * " +
+      "FROM PAID_BY p1 " +
+      "WHERE p1.Start_date = (SELECT MAX(p2.Start_date) FROM PAID_BY p2 WHERE p2.Property_id = ?::uuid) " +
+      "AND p1.Property_id = ?::uuid;";
+
+    PreparedStatement pStatement = connection.prepareStatement(payQuery);
+    pStatement.setString(1, id);
+    pStatement.setString(2, id);
+    ResultSet result = pStatement.executeQuery();
+    if (!result.isBeforeFirst()) {
+      return false;
+    }
+    result.next();
+    Timestamp payTimeStamp = result.getTimestamp("start_date");
+    int numMonths = result.getInt("Num_periods");
+
+    LocalDateTime payDate = payTimeStamp.toLocalDateTime();
+    if (payDate.plusMonths((long) numMonths).isBefore(LocalDateTime.now())) {
+      return false;
+    }
+    return true;
   }
 
   /**
