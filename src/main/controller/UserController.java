@@ -231,7 +231,6 @@ public class UserController {
         Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1)
       );
     }
-    System.out.println("Hashed password is: " + hashedPassword.toString());
     return hashedPassword.toString();
   }
 

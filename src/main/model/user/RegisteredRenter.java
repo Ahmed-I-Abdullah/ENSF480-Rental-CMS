@@ -247,7 +247,6 @@ public class RegisteredRenter implements Observer, User {
         );
 
         notificationsProperties.add(property);
-        System.out.println(property.getHouseID());
       }
     } catch (Exception e) {
       e.printStackTrace();

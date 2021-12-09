@@ -54,10 +54,8 @@ public class AdminController extends UserController {
       "VALUES(DEFAULT, ?, ?, NOW());";
 
     PreparedStatement pStatment = connection.prepareStatement(amountUpdate);
-    System.out.println("received amount is: " + amount);
 
     BigDecimal decimalAmount = new BigDecimal(Double.toString(amount));
-    System.out.println("big decimal is: " + decimalAmount);
 
     pStatment.setBigDecimal(1, decimalAmount);
     pStatment.setInt(2, previousDuration);
@@ -236,7 +234,6 @@ public class AdminController extends UserController {
       property.setPostedByName(result.getString("name"));
 
       rentedProperties.add(property);
-      System.out.println(property.getHouseID());
     }
 
     return rentedProperties;
