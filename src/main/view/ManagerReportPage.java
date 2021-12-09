@@ -120,10 +120,12 @@ a function to draw all action listening components on the page
           try {
             adminController = new AdminController(controller.getUserController().getAuthenticatedUser());
           } catch(Exception ex) {
-              ex.printStackTrace();
-              dateErrors = "UnAuthorized";
-              return;
+            ex.printStackTrace();
+            dateErrors = "UnAuthorized";
+            return;
           }
+
+          f.remove(submit);
 
           int numListed = 0;
           int numRented = 0;
@@ -210,14 +212,6 @@ a function to draw all action listening components on the page
         }
       }
     );
-
-    // back.addActionListener(
-    // e -> {
-    // f.setVisible(false);
-    // f.removeAll();
-    // setSwitchEvent(3);
-    // }
-    // );
 
     c.weightx = 0.0;
     c.gridwidth = 1;

@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import src.main.model.property.*;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
