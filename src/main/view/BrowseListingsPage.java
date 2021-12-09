@@ -13,9 +13,9 @@ import src.main.model.user.RegisteredRenter;
 /**
 Page that displays listings, the number and type of listing depend on user.
 renters whether registered or not only see active listings
-registered renters can also see only listings that match their criteria 
+registered renters can also choose see only listings that match their criteria 
 landlords only see their properties, regardless of their status
-managers see all the properties in the database
+managers see all the properties in the database, regardless of state
 */
 public class BrowseListingsPage extends Page {
   private boolean useFiltered;
@@ -109,7 +109,7 @@ a function to draw all action listening components on the page
     f.setVisible(true);
   }
 /**
-Class within BrowseListingsPage, that enalbe scrolling within the BrowseListingsPage
+Class within BrowseListingsPage, that enables scrolling within the BrowseListingsPage
 */
   public class Scroller extends JFrame {
 	  /**
