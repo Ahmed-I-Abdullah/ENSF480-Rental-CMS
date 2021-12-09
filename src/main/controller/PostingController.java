@@ -29,19 +29,53 @@ public class PostingController {
     String feeID = getFeeID();
 
     Connection connection = ControllerManager.getConnection();
-    String updatePropertyFee =
-      "INSERT INTO PAID_BY(Landlord_email, Fee_id, Property_id, Start_date, Num_periods) " +
-      "VALUES(?, ?::uuid, ?::uuid, DEFAULT, ?)";
+    String feeQuery =
+      "SELECT * " +
+      "FROM PAID_BY " +
+      "WHERE Landlord_email = ? AND Fee_id = ?::uuid AND Property_id = ?::uuid";
 
-    PreparedStatement pStatement = connection.prepareStatement(
-      updatePropertyFee
-    );
+    PreparedStatement pStatement = connection.prepareStatement(feeQuery);
     pStatement.setString(1, p.getPostedBy());
     pStatement.setString(2, feeID);
     pStatement.setString(3, p.getHouseID());
-    pStatement.setInt(4, 1);
 
-    pStatement.executeUpdate();
+    ResultSet result = pStatement.executeQuery();
+
+    if (!result.isBeforeFirst()) {
+      String updatePropertyFee =
+        "INSERT INTO PAID_BY(Landlord_email, Fee_id, Property_id, Start_date, Num_periods) " +
+        "VALUES(?, ?::uuid, ?::uuid, DEFAULT, ?)";
+
+      PreparedStatement pStatement2 = connection.prepareStatement(
+        updatePropertyFee
+      );
+      pStatement2.setString(1, p.getPostedBy());
+      pStatement2.setString(2, feeID);
+      pStatement2.setString(3, p.getHouseID());
+      pStatement2.setInt(4, 1);
+
+      pStatement2.executeUpdate();
+    } else {
+      result.next();
+      Timestamp payTimeStamp = result.getTimestamp("start_date");
+      int numMonths = result.getInt("Num_periods");
+      LocalDateTime payDate = payTimeStamp.toLocalDateTime();
+      if (payDate.plusMonths((long) numMonths).isBefore(LocalDateTime.now())) {
+        String updatePaidPeriod =
+          "UPDATE PAID_BY " +
+          "SET Num_periods = ? " +
+          "WHERE Landlord_email = ? AND Fee_id = ?::uuid AND Property_id = ?::uuid";
+
+        PreparedStatement pStatement3 = connection.prepareStatement(
+          updatePaidPeriod
+        );
+        pStatement3.setString(1, p.getPostedBy());
+        pStatement3.setString(2, feeID);
+        pStatement3.setString(3, p.getHouseID());
+
+        pStatement3.executeUpdate();
+      }
+    }
   }
 
   /**
@@ -70,7 +104,7 @@ public class PostingController {
     );
   }
 
-   /**
+  /**
    * check if property pay is not expired
    * @param id ID of the property to check
    * @return Boolean indicating if pay is valid

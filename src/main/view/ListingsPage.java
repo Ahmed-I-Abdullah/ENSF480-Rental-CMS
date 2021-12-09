@@ -7,11 +7,13 @@ import src.main.controller.ViewController;
 import src.main.model.property.*;
 import src.main.model.user.User;
 import src.main.model.user.UserType;
+
 /**
 Page for displaying a property, ViewController reference contains a reference to a Property object that is used to display information
 */
 public class ListingsPage extends Page {
-/**
+
+  /**
 Constructor for ListingsPage
 @param w Widget reference used to draw components
 @param c ViewController reference to allow communication between view and model
@@ -21,7 +23,8 @@ Constructor for ListingsPage
     widget = w;
     switchEvent = 6;
   }
-/**
+
+  /**
 a function to draw all action listening components on the page
 */
   public void draw() {
@@ -67,8 +70,7 @@ a function to draw all action listening components on the page
     f.add(listingtype);
 
     JButton back = new JButton("Back");
-	
-	
+
     if (
       currentUser != null &&
       (
@@ -82,7 +84,6 @@ a function to draw all action listening components on the page
         currentUser.getUserType() == UserType.MANAGER
       )
     ) {
-
       final JButton edit = new JButton("Edit");
 
       edit.setBounds(175, 280, 75, 50);
@@ -243,7 +244,7 @@ a function to draw all action listening components on the page
                 )
               );
               pop.setVisible(false);
-			  f.repaint();
+              f.repaint();
             }
           );
 
@@ -367,171 +368,183 @@ a function to draw all action listening components on the page
       controller.getPostingController().getListingState(id).toString()
     );
     state.setBounds(375, 310, 100, 30);
-	
-	final JButton filters = new JButton("Change Listing State");
+
+    final JButton filters = new JButton("Change Listing State");
     filters.setBounds(475, 310, 200, 30);
-	
-	final JButton pay = new JButton("Pay");
-	pay.setBounds(475, 310, 200, 30);
-	
-	if(controller.getUserController().getAuthenticatedUser() != null
-	&&currentUser.getUserType() == UserType.LANDLORD
-		&&controller.getCurrentProperty().checkState()==ListingState.REGISTERED){
-			pay.addActionListener(e->{
-				JFrame pop = new JFrame("Pay");
-				pop.setSize(250,150);
-				pop.setLocationRelativeTo(null);
-				pop.setLayout(new GridBagLayout());
-				
-				 GridBagConstraints c = new GridBagConstraints();
-				c.fill = GridBagConstraints.HORIZONTAL;
-				
-				JLabel info = new JLabel (
-				String.format(
-				"Pay $%s for %s months",
-				controller.getPostingController().getFeeAmount(),
-				controller.getPostingController().getFeeDuration()
-				));
-				JButton ok = new JButton ("OK");
-				JButton cancel = new JButton("Cancel");
-				
-				ok.addActionListener(p->{
-					try{
-					controller.getPostingController().payFee(controller.getCurrentProperty());
-					pop.setVisible(false);
-					f.remove(pay);
-					f.repaint();
-					}catch(Exception exp){
-						System.exit(1);
-					}
-					
-				});
-				
-				cancel.addActionListener(p->{
-					pop.setVisible(false);
-					
-				});
-				c.weightx=2;
-				c.gridx=0;
-				c.gridy=0;
-				pop.add(info, c);
-				
-				c.weightx=1;
-				c.gridx=0;
-				c.gridy=1;
-				pop.add(ok,c);
-				
-				c.gridx=1;
-				c.gridy=1;
-				pop.add(cancel,c);
-				pop.setVisible(true);
-				
-			});
-			
-			
-			
-		}else{
-	
-	
-	
 
-    
+    final JButton pay = new JButton("Pay");
+    pay.setBounds(475, 310, 200, 30);
 
-    filters.addActionListener(
-      e -> {
-        JFrame pop = new JFrame("Select the Listing State");
-        pop.setSize(250, 150);
-        pop.setLocationRelativeTo(null);
-        pop.setLayout(new GridBagLayout());
+    if (
+      controller.getUserController().getAuthenticatedUser() != null &&
+      currentUser.getUserType() == UserType.LANDLORD &&
+      controller.getCurrentProperty().checkState() == ListingState.REGISTERED
+    ) {
+      pay.addActionListener(
+        e -> {
+          JFrame pop = new JFrame("Pay");
+          pop.setSize(250, 150);
+          pop.setLocationRelativeTo(null);
+          pop.setLayout(new GridBagLayout());
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+          GridBagConstraints c = new GridBagConstraints();
+          c.fill = GridBagConstraints.HORIZONTAL;
 
-        //int chosenState = 0;
-        JComboBox<String> changeListingState;
-        if (
-          controller.getUserController().getAuthenticatedUser().getUserType() ==
-          UserType.MANAGER
-        ) {
-          changeListingState =
-            new JComboBox<String>(ListingState.getNames(ListingState.class)); //all listing states available
-        } else {
-          String[] renterState = {
-            ListingState.ACTIVE.toString(),
-            ListingState.RENTED.toString(),
-            ListingState.CANCELLED.toString(),
-          };
-          changeListingState = new JComboBox<String>(renterState);
+          JLabel info = new JLabel(
+            String.format(
+              "Pay $%s for %s months",
+              controller.getPostingController().getFeeAmount(),
+              controller.getPostingController().getFeeDuration()
+            )
+          );
+          JButton ok = new JButton("OK");
+          JButton cancel = new JButton("Cancel");
+
+          ok.addActionListener(
+            p -> {
+              try {
+                controller
+                  .getPostingController()
+                  .payFee(controller.getCurrentProperty());
+                pop.setVisible(false);
+                f.remove(pay);
+                state.setText(ListingState.ACTIVE.toString());
+                f.repaint();
+              } catch (Exception exp) {
+                exp.printStackTrace();
+                System.exit(1);
+              }
+            }
+          );
+
+          cancel.addActionListener(
+            p -> {
+              pop.setVisible(false);
+            }
+          );
+          c.weightx = 2;
+          c.gridx = 0;
+          c.gridy = 0;
+          pop.add(info, c);
+
+          c.weightx = 1;
+          c.gridx = 0;
+          c.gridy = 1;
+          pop.add(ok, c);
+
+          c.gridx = 1;
+          c.gridy = 1;
+          pop.add(cancel, c);
+          pop.setVisible(true);
         }
-        //changeListingState.setSelectedIndex(chosenState);
+      );
+    } else {
+      filters.addActionListener(
+        e -> {
+          JFrame pop = new JFrame("Select the Listing State");
+          pop.setSize(250, 150);
+          pop.setLocationRelativeTo(null);
+          pop.setLayout(new GridBagLayout());
 
-        JButton save = new JButton("Save");
+          GridBagConstraints c = new GridBagConstraints();
+          c.fill = GridBagConstraints.HORIZONTAL;
 
-        save.addActionListener(
-          p -> {
-            ListingState new_state = ListingState.valueOf(
-              changeListingState.getSelectedItem().toString()
-            );
+          //int chosenState = 0;
+          JComboBox<String> changeListingState;
+          if (
             controller
-              .getPostingController()
-              .changeListingState(id, new_state.ordinal());
-            state.setText(
-              controller.getPostingController().getListingState(id).toString()
-            ); // change
-            // //
-            // listing
-            pop.setVisible(false);
-			f.repaint();
+              .getUserController()
+              .getAuthenticatedUser()
+              .getUserType() ==
+            UserType.MANAGER
+          ) {
+            changeListingState =
+              new JComboBox<String>(ListingState.getNames(ListingState.class)); //all listing states available
+          } else {
+            String[] renterState = {
+              ListingState.ACTIVE.toString(),
+              ListingState.RENTED.toString(),
+              ListingState.CANCELLED.toString(),
+            };
+            changeListingState = new JComboBox<String>(renterState);
           }
-        );
-        c.gridwidth = 1;
-        c.weightx = 0.0;
-        c.gridx = 0;
-        c.gridy = 0;
-        pop.add(changeListingState, c);
+          //changeListingState.setSelectedIndex(chosenState);
 
-        c.gridx = 0;
-        c.gridy = 1;
-        pop.add(save, c);
+          JButton save = new JButton("Save");
 
-        pop.setVisible(true);
-      }
-	  );
-		}
+          save.addActionListener(
+            p -> {
+              ListingState new_state = ListingState.valueOf(
+                changeListingState.getSelectedItem().toString()
+              );
+              controller
+                .getPostingController()
+                .changeListingState(id, new_state.ordinal());
+              state.setText(
+                controller.getPostingController().getListingState(id).toString()
+              ); // change
+              // //
+              // listing
+              pop.setVisible(false);
+              f.repaint();
+            }
+          );
+          c.gridwidth = 1;
+          c.weightx = 0.0;
+          c.gridx = 0;
+          c.gridy = 0;
+          pop.add(changeListingState, c);
+
+          c.gridx = 0;
+          c.gridy = 1;
+          pop.add(save, c);
+
+          pop.setVisible(true);
+        }
+      );
+    }
     f.add(state);
     if (currentUser != null) {
-		if(currentUser.getUserType()!=UserType.LANDLORD){
-      f.add(email);
-		}
+      if (currentUser.getUserType() != UserType.LANDLORD) {
+        f.add(email);
+      }
       if (
         (
           currentUser.getUserType() == UserType.LANDLORD &&
           controller
             .getCurrentProperty()
             .getPostedBy()
-            .equals(currentUser.getEmail())
-         && (controller.getCurrentProperty().checkState()!=ListingState.SUSPENDED 
-		 && controller.getCurrentProperty().checkState()!=ListingState.REGISTERED) )|| // landlord only
+            .equals(currentUser.getEmail()) &&
+          (
+            controller.getCurrentProperty().checkState() !=
+            ListingState.SUSPENDED &&
+            controller.getCurrentProperty().checkState() !=
+            ListingState.REGISTERED
+          )
+        ) || // landlord only
         // views their own
         // postings
         currentUser.getUserType() ==
         UserType.MANAGER
       ) {
         f.add(filters);
-      }else if(currentUser.getUserType() == UserType.LANDLORD &&
-          controller
-            .getCurrentProperty()
-            .getPostedBy()
-            .equals(currentUser.getEmail())
-		 && controller.getCurrentProperty().checkState()==ListingState.REGISTERED){
-		  f.add(pay);
-	  }
+      } else if (
+        currentUser.getUserType() == UserType.LANDLORD &&
+        controller
+          .getCurrentProperty()
+          .getPostedBy()
+          .equals(currentUser.getEmail()) &&
+        controller.getCurrentProperty().checkState() == ListingState.REGISTERED
+      ) {
+        f.add(pay);
+      }
     }
     f.add(back);
     f.getContentPane().add(this);
     f.setVisible(true);
   }
-/**
+
+  /**
 a function to draw all non-action listening components on the page
 @param g Graphics object reference passed in from JPanel calling
 */
